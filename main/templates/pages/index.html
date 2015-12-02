@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags staticfiles widget_tweaks %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+
+    
+        {% block message %} 
+            {% if request.GET.sent %}    
+                <div class="alert alert-dismissable alert-info" data-alert="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {% trans page.form.response|richtext_filters|safe %}
+                </div>
+            {% endif %}
+        {% endblock %}
+    
+
+{% block contact %}
+            
+            {% trans page.form.content|richtext_filters|safe %}
+           
+        <section id="contact" class="section text-center">
+            <div class="container">
+                <h1 class="section-title">Կապվեք Մեզ</h1>
+                <div class="row">
+
+                    <!-- CONTACT FORM -->
+                    <div class="col-md-7 col-md-offset-1 text-left wow fadeInLeft" data-wow-duration="1s">
+                        <form role="form" action="" method="post">
+                            {% csrf_token %}
+                                        {% for hidden in form.hidden_fields %}
+                                            {{hidden}}
+                                        {% endfor %}
+
+                                    {% for vis in cform.visible_fields %}
+
+
+                                    {% for err in vis.errors %}<span style="color:red">{{ err }}</span>{% endfor %}
+                                           
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                                
+                                                {% render_field vis class="form-control" placeholder=vis.label required="required" %}
+                                            </div>
+                                        </div>
+
+                                    {% endfor %}
+
+                                    <div class="form-group row">
+                                        <div class="col-xs-6 col-xs-offset-6">
+                                            <button type="submit" class="form-control">Send</button>
+                                        </div>
+                                    </div>
+                        </form>
+                    </div>
+                    <!-- END CONTACT FORM -->
+
+
+
+                </div>
+            </div>
+        </section>
+            
+        </div>
+
+{% endblock %}
