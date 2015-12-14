@@ -1785,3 +1785,10 @@ input.faq-search:focus::-moz-input-placeholder {
 .table-center {
   display: table-cell;
   vertical-align: middle; }
+
+td, th {
+  padding: 15px;
+}
+table, th, td {
+    border: 1px solid #fff;
+}

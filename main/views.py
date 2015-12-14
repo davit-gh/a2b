@@ -15,3 +15,4 @@ def ridesearch(request):
 		items = PortfolioItem.objects.all()
 	#pdb.set_trace()
 	return render(request, 'pages/index.html', {'items': items})
+
