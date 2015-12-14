@@ -117,5 +117,6 @@ class Ride(Orderable):
     fromwhere = models.CharField(_("From"), max_length=100, blank=False)
     towhere = models.CharField(_("To"), max_length=100, blank=False)
     leavedate = models.DateTimeField(blank=True)
+    howmuch = models.IntegerField()
     driver = models.ForeignKey(Driver, related_name="rides")
     
