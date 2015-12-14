@@ -126,24 +126,48 @@
 
   
     <div class="container-fluid">
-        <div id="grid" class="row-fluid m-row shuffle--container shuffle--fluid">
+        
 
-            {% for item in items %}
-                <figure class="span6 m-span3 picture-item" data-groups='[{% for cat in item.categories.all %}"{{ cat.slug }}"{% if not forloop.last %}, {% endif %}{% endfor %}]' data-date-created="2011-08-14" data-title="{{ item.title }}">
-                  <div class="picture-item__inner">
-                    <img src="{{ MEDIA_URL }}{{ item.featured_image }}" alt="" height="145" width="230" />
-                    <div class="picture-item__details clearfix">
-                      
-                      <figcaption class="picture-item__title pull-left"><a href="{{ MEDIA_URL }}{{ item.featured_image }}" target="_blank">{{ item.title }}</a></figcaption>
-                      <p class="picture-item__tags pull-right">{% for cat in item.categories.all %}{{ cat.slug }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-                    </div>
-                    
-                  </div>
-                </figure>
-            {% endfor %}
-
-            <div class="col-sm-3 col-xs-3 shuffle__sizer"></div>
-        </div>
+            <table>
+                <tr>
+                    <th>
+                        Որտեղից
+                    </th>
+                    <th>
+                        Ուր
+                    </th>
+                    <th>
+                        Երբ
+                    </th>
+                    <th>
+                        Վարորդ
+                    </th>
+                    <th>
+                        Նկար
+                    </th>
+                </tr>
+                {% for driver in drivers %}
+                    {% for ride in driver.rides.all %}
+                        <tr>
+                            <td>
+                                {{ ride.fromwhere }}
+                            </td>
+                            <td>
+                                {{ ride.towhere }}
+                            </td>
+                            <td>
+                                {{ ride.leavedate }}
+                            </td>
+                            <td>
+                                {{ driver.title }}
+                            </td>
+                            <td>
+                                <img src="{{ MEDIA_URL }}{% thumbnail driver.featured_image 75 75 %}"/>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
     </div>
 </section>
 
