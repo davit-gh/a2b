@@ -70,7 +70,7 @@
                                     <div class="searchbar__input-wrapper">
                                     {% errors_for searchform %}
                                       {% for field in searchform.visible_fields %}
-                                          <label>
+                                          <label style="vertical-align: top">
                                               
                                               {% render_field field class="input-large input-contrast" placeholder=field.label required='required' %}
                                           </label>
