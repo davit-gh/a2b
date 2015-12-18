@@ -1,134 +1,98 @@
 <!DOCTYPE html>
 {% load staticfiles widget_tweaks get_form mezzanine_tags %}
 <html lang="en" class="ie_11_scroll">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="hhhwidth=device-width, initial-scale=1">
-        <title>App Landing Page</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="hhhwidth=device-width, initial-scale=1">
+    <title>A2B</title>
 
-        <!-- jQuery-->
-        <script src="{% static 'js/jquery.min.js' %}"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'js/modernizr.custom.min.js' %}"></script>
-        
-        {% searchform as searchform %}
-        {{ searchform.media }}
-        <!-- CSS -->
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/templatemo_style.css' %}">
-        <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="{% static 'images/car.ico' %}" />
+    <!-- jQuery-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/modernizr.custom.min.js' %}"></script>
 
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/shuffle-styles.css' %}" />
-        <!--[if lt IE 9]>
+    {% searchform as searchform %}
+    {{ searchform.media }}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/templatemo_style.css' %}">
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="{% static 'images/car.ico' %}"/>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/shuffle-styles.css' %}"/>
+    <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-    </head>
-    <body>
-        <!-- Top menu -->
-        <div class="show-menu">
-            <a href="#" class="shadow-top-down">+</a>
-        </div>
-        <nav class="main-menu shadow-top-down">
-            <ul class="nav nav-pills nav-stacked">
-                <li><a class="scroll_effect" href="#templatemo_home">Home</a></li>
-                <li><a class="scroll_effect" href="#templatemo_features">Features</a></li>
-                <li><a class="scroll_effect" href="#templatemo_download">Download</a></li>
-                <li><a rel="nofollow" href="http://www.facebook.com/templatemo" target="_parent">Fan Page</a></li>
-                <li><a class="scroll_effect" href="#templatemo_contact">Contact</a></li>
-                <li><a class="scroll_effect" href="elements.html">Elements</a></li>
-            </ul>
-        </nav>
-        <!-- Home -->
-        <section id="templatemo_home">
-            <div class="container">
-            {% block message %}{% endblock %}
-                <div class="templatemo_home_inner_wapper">
-                    <h1 class="text-center"><i class="fa fa-car"></i> A-ից B</h1>
-                </div>
-                <div class="templatemo_home_inner_wapper">
-                    <h2 class="text-center">Մենք ձեզ կՏեղաՓոխենք</h2>
-                    <p class="text-center">
-                        <div class="hero__content-footer hide-sm">
-                            <div class="col-sm-12">
-                              
-                              <div id="searchbar">
-                                <div class="searchbar">
-                                  <form id="searchbar-form" action="{% url 'ridesearch' %}" method="post">
-                                    {% csrf_token %}
-                                    {% for hidden in sform.hidden_fields %}
-                                    {{ hidden }}
-                                    {% endfor %}
-                                    {% if sform.non_field_errors %}
-                                        {{ sform.non_field_errors }}
-                                    {% endif %}
-                                    
-                                    <div class="searchbar__input-wrapper">
-                                    {% errors_for searchform %}
-                                      {% for field in searchform.visible_fields %}
-                                          <label style="vertical-align: top">
-                                              
-                                              {% render_field field class="input-large input-contrast" placeholder=field.label required='required' %}
-                                          </label>
-                                      {% endfor %}
-                                      <button
-                                        id="submit_location"
-                                        class="searchbar__submit btn btn-lg btn-primary center-block">
-                                        Փնտրել
-                                      </button>
-                                    </div>
-                                  </form>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                            
-                    </p>
-                </div>
-                <div class="templatemo_home_inner_wapper btn_wapper">
-                    <div class="col-sm-6">
-                        <a href="#templatemo_features" class="btn col-xs-12 scroll_effect shadow-top-down">
-                            <i class="fa fa-car"></i> Մեքենաներ
-                        </a>
-                    </div>
-                    <div class="col-sm-6">
-                        <a href="#templatemo_download" class="btn col-xs-12 scroll_effect shadow-top-down">
-                            <i class="fa fa-heart"></i> Օգտվել են
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Features -->
-<section id="templatemo_features">
-    <div id="shuffle-controls" class="col-xs-12">
+</head>
 
-        <div class="filter-options btn-group col-xs-6">
-          <button class="btn btn--warning filter-button" data-group="Sisian">Սիսիան</button>
-          <button class="btn btn--warning filter-button" data-group="Vanadzor">Վանաձոր</button>
-          <button class="btn btn--warning filter-button" data-group="Gyumri">Գյումրի</button>
-          
-        </div>
-    
-        <div class="col-xs-6">
-            <span id="sort">Դասավորել ըստ</span>
-              <select class="sort-options input-large input-contrast">
-                <option value>Default</option>
-                <option value="title">Title</option>
-                <option value="date-created">Date Created</option>
-              </select>
+<body>
+<!-- Home -->
+<section id="templatemo_home">
+    <div class="container a2b-background">
+        <div class="templatemo_home_inner_wapper btn_wapper">
+            <div class="col-sm-6">
+                <a href="#templatemo_cars" class="btn col-xs-12 scroll_effect shadow-top-down">
+                    <i class="fa fa-car"></i> Մեքենաներ
+                </a>
             </div>
+            <div class="col-sm-6">
+                <a href="#templatemo_contact" class="btn col-xs-12 scroll_effect shadow-top-down">
+                    <i class="fa fa-heart"></i> Կապվեք Մեզ Հետ
+                </a>
+            </div>
+        </div>
+
+
+        {% block message %}{% endblock %}
+        <div class="templatemo_home_inner_wapper">
+            <h1 class="text-center" style="margin: 1em 0;"><i class="fa fa-car"></i> A-ից B</h1>
+        </div>
+        <div>
+            <h2 class="text-center">Մենք ձեզ կՏեղաՓոխենք</h2>
+        </div>
+
+        <div class="hero__content-footer hide-sm">
+            <div id="searchbar">
+                <div class="searchbar">
+                    <form id="searchbar-form" action="{% url 'ridesearch' %}" method="post">
+                        <div>
+                            {% csrf_token %}
+                            {% for hidden in sform.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {% if sform.non_field_errors %}
+                                {{ sform.non_field_errors }}
+                            {% endif %}
+
+                            <div class="searchbar__input-wrapper">
+                                {% errors_for searchform %}
+                                {% for field in searchform.visible_fields %}
+                                    <label style="vertical-align: top">
+
+                                        {% render_field field class="input-large input-contrast" placeholder=field.label required='required' %}
+                                    </label>
+                                {% endfor %}
+                                <button
+                                        id="submit_location"
+                                        class="searchbar__submit btn btn-lg btn-primary">
+                                    Փնտրել
+                                </button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-  
     <div class="container-fluid">
-        
-
-            <table>
+        <div class="a2b-ride-table table-responsive">
+            <table class="table table-hover">
+                <thead>
                 <tr>
                     <th>
                         Որտեղից
@@ -145,10 +109,9 @@
                     <th>
                         Վարորդ
                     </th>
-                    <th>
-                        Նկար
-                    </th>
                 </tr>
+                </thead>
+                <tbody>
                 {% for driver in drivers %}
                     {% for ride in driver.rides.all %}
                         <tr>
@@ -166,68 +129,48 @@
                             </td>
                             <td>
                                 {{ driver.title }}
-                            </td>
-                            <td>
                                 <img src="{{ MEDIA_URL }}{% thumbnail driver.featured_image 75 75 %}"/>
                             </td>
                         </tr>
                     {% endfor %}
                 {% endfor %}
+                <tbody>
             </table>
+        </div>
     </div>
+
+
+</section>
+<!-- Features -->
+<section id="templatemo_cars">
+    Avtoner@ stex en
 </section>
 
-<section id="templatemo_download">
-            <div class="container">
-                <header class="template_header">
-                    <h1 class="text-center"><span></span> ՏեղաՓոխել ենք <span>...</span></h1>
-                </header>
-                <div class="templatemo_download_text_wapper">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                    </p>
-                </div>
-                <div class="col-xs-12">
-                    <h2>5,050</h2>
-                </div>
-                <div class="col-xs-12">
-                    <p>Ավելի քան 5000 հոգի արդեն գտել են մեքենա մեր միջոցով</p>
-                </div>
-                <div class="col-xs-12">
-                    <a href="#" class="shadow-top-down"><img src="{% static 'images/happyballs.jpg' %}" width="100%" /></a>
-                </div>
+<!-- Contact -->
+{% block contact %}{% endblock %}
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 footer-copyright">
+                <p>Copyright &copy; 2015 <a href="#" target="_parent">A2B</a></p>
             </div>
-        </section>
-        <!-- Contact -->
-        {% block contact %}{% endblock %}
-        <!-- Footer -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 footer-copyright">
-                        <p>Copyright &copy; 2015 <a href="#" target="_parent">A to B</a></p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/Shuffle/3.1.1/jquery.shuffle.min.js"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
+        </div>
+    </div>
+</footer>
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/Shuffle/3.1.1/jquery.shuffle.min.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
 
 
-
-        <script src="{% static 'js/page.js' %}"></script>
-        <script src="{% static 'js/evenheights.js' %}"></script>
-
+<script src="{% static 'js/page.js' %}"></script>
+<script src="{% static 'js/evenheights.js' %}"></script>
 
 
+<script src="{% static 'js/homepage.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
 
-        
-        <script src="{% static 'js/homepage.js' %}"></script>
-        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-        
-        <script src="{% static 'js/parallax.min.js' %}"></script>
-        <!-- template script -->
-        <script src="{% static 'js/templatemo_scripts.js' %}"></script>
-    </body>
+<script src="{% static 'js/parallax.min.js' %}"></script>
+<!-- template script -->
+<script src="{% static 'js/templatemo_scripts.js' %}"></script>
+</body>
 </html>

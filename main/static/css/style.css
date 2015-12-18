@@ -1783,12 +1783,47 @@ input.faq-search:focus::-moz-input-placeholder {
   table-layout: fixed; }
 
 .table-center {
-  display: table-cell;
-  vertical-align: middle; }
+    display: table-cell;
+    vertical-align: middle;
+}
 
 td, th {
-  padding: 15px;
+    padding: 15px;
 }
+
 table, th, td {
     border: 1px solid #fff;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: gray;
+}
+
+.a2b-ride-table {
+    color: white;
+}
+
+.a2b-ride-table {
+    padding: 50px 0px;
+}
+
+.a2b-ride-table table th {
+    text-align: center;
+    font-weight: bold;
+}
+
+.searchbar form {
+    max-width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.searchbar button {
+    margin: 0 0 !important;
+    display: inline-block;
+}
+
+.a2b-background{
+    padding: 1em 0;
+    background-color: rgba(0, 0, 0, 0.7);
 }
