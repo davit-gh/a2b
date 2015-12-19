@@ -12,6 +12,9 @@ function sourcefilter(val){
     jo.hide();
     jo.filter(function (i, v) {
         var $t = $(this);
+        if (val.value == "") {
+            return true;
+        }
         if ($t[0].cells[0].innerText.trim() == val.value) {
             return true;
         }
@@ -28,6 +31,9 @@ function destfilter(val){
     jo.hide();
     jo.filter(function (i, v) {
         var $t = $(this);
+        if (val.value == "") {
+            return true;
+        }
         if ($t[0].cells[1].innerText.trim() == val.value) {
             return true;
         }
