@@ -1,4 +1,4 @@
-from main.models import City, Ride
+from main.models import City, Ride, Contactus
 from django.forms import ModelForm, Textarea
 from django import forms
 from django.utils.translation import ugettext as _
@@ -44,3 +44,7 @@ class RideAdminForm(ModelForm):
 		fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'howmuch', 'driver']
 		
 
+class ContactusForm(ModelForm):
+	class Meta:
+		model = Contactus
+		fields = ['name', 'email', 'message']
