@@ -22,7 +22,7 @@ class RidesearchForm(ModelForm):
 		fields = ['fromwhere', 'towhere', 'leavedate']
 
 		widgets = {
-            		'leavedate': DateTimeWidget(attrs={'id':"id_source"}, options={'startDate':'+1d'}),
+            		'leavedate': DateWidget(attrs={'id':"id_source"}, options={'startDate':'+1d'}),
        	}
 
 	def clean_start_date(self):
