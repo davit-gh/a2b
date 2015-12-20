@@ -34,12 +34,7 @@
 <section id="templatemo_home">
     <div class="container a2b-background">
         <div class="templatemo_home_inner_wapper btn_wapper">
-            <div class="col-sm-6">
-                <a href="#templatemo_cars" class="btn col-xs-12 scroll_effect shadow-top-down">
-                    <i class="fa fa-car"></i> Մեքենաներ
-                </a>
-            </div>
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <a href="#templatemo_contact" class="btn col-xs-12 scroll_effect shadow-top-down">
                     <i class="fa fa-heart"></i> Կապվեք Մեզ Հետ
                 </a>
@@ -69,14 +64,14 @@
                             {% endif %}
 
                             <div class="searchbar__input-wrapper">
-                                
+
                                 {% for field in searchform.visible_fields %}
                                     <label style="vertical-align: top">
 
                                         {% render_field field class="input-large input-contrast" placeholder=field.label required='required' %}
                                     </label>
                                 {% endfor %}
-                                
+
                             </div>
                     </form>
                 </div>
@@ -110,7 +105,7 @@
                 <tbody id="fbody">
                 {% for driver in drivers %}
                     {% for ride in driver.rides.all %}
-                        <tr>
+                        <tr data-id="{{ driver.id }}" data-toggle="modal" data-target="#myModal">
                             <td>
                                 {{ ride.fromwhere }}
                             </td>
@@ -136,10 +131,6 @@
     </div>
 
 
-</section>
-<!-- Features -->
-<section id="templatemo_cars">
-    Avtoner@ stex en
 </section>
 
 <!-- Contact -->
@@ -168,5 +159,44 @@
 <script src="{% static 'js/parallax.min.js' %}"></script>
 <!-- template script -->
 <script src="{% static 'js/templatemo_scripts.js' %}"></script>
+<!-- modal javascript -->
+<script>
+    $(function () {
+        $('#myModal').modal({
+            keyboard: true,
+            backdrop: "static",
+            show: false
+
+        }).on('show.bs.modal', function (event) { //subscribe to show method
+
+            var getIdFromRow = $(event.relatedTarget).closest('tr').data('id'); //get the id from tr
+            console.log(getIdFromRow);
+            //make your ajax call populate items or what even you need
+
+            $(this).find('#myModal').html($('<b> Order Id selected: ' + getIdFromRow + '</b>'))
+        });
+    });
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Anun Azganun - heraxos</h4>
+            </div>
+            <div class="modal-body">
+                <p>Nkarner</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>
