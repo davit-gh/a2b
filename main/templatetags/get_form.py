@@ -7,3 +7,6 @@ def searchform(*args):
     #pdb.set_trace()    
     return RidesearchForm()
     
+@register.simple_tag
+def get_contact_form(*args):
+	return ContactusForm()

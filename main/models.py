@@ -39,3 +39,16 @@ class Ride(models.Model):
     
     def __unicode__(self):
             return self.fromwhere
+
+class Contactus(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+    email = models.EmailField(blank=False)
+    message = models.TextField(blank=False)
+    message_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    class Meta:
+        verbose_name = "Contact"
+        verbose_name_plural = "Contacts"
+    
+    def __unicode__(self):
+            return self.email
