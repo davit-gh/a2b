@@ -1849,3 +1849,11 @@ div.pager span.active {
     background: #c00;
 }
 
+@media (min-width: 768px) {
+.modal-dialog-wide
+{ width: 80%;/* your width */ }
+}
+
+.driver-images img {
+    margin: 0.5em 0.5em;
+}
