@@ -32,3 +32,10 @@ class Ride(models.Model):
     endtime = models.TimeField(blank=True)
     howmuch = models.IntegerField()
     driver = models.ForeignKey(Driver, related_name="rides")
+
+    class Meta:
+        verbose_name = "Ride"
+        verbose_name_plural = "Rides"
+    
+    def __unicode__(self):
+            return self.fromwhere

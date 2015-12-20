@@ -15,8 +15,8 @@ import pdb
 class RidesearchForm(ModelForm):
 
         
-	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'sourcefilter(this)'}))
-	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'destfilter(this)'}))
+	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="All", to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'sourcefilter(this)'}))
+	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), empty_label="All", to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'destfilter(this)'}))
 	class Meta:
  		model = Ride
 		fields = ['fromwhere', 'towhere', 'leavedate']
