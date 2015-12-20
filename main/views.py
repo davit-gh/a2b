@@ -3,7 +3,6 @@ from main.models import Driver
 from main.forms import RidesearchForm, ContactusForm
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-import pdb
 # Create your views here.
 def contactus(request):
 	if request.method == 'POST':
@@ -12,6 +11,7 @@ def contactus(request):
         	if form.is_valid():
             	# process the data in form.cleaned_data as required
             		form.save()
+            		form = ContactusForm()
             	# redirect to a new URL:
 			messages.info(request, _("We received your message, we will respond shortly. Thank you!"))
 		else:
