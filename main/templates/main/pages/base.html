@@ -120,7 +120,7 @@
                             </td>
                             <td>
                                 {{ driver.title }}
-                                <img src="{{ MEDIA_URL }}{{ driver.featured_image }}"/>
+                                <img src="{{ driver.featured_image.url }}"/>
                             </td>
                         </tr>
                     {% endfor %}
@@ -170,10 +170,19 @@
         }).on('show.bs.modal', function (event) { //subscribe to show method
 
             var getIdFromRow = $(event.relatedTarget).closest('tr').data('id'); //get the id from tr
-            console.log(getIdFromRow);
+            var $that = $(this);
             //make your ajax call populate items or what even you need
-
-            $(this).find('#myModal').html($('<b> Order Id selected: ' + getIdFromRow + '</b>'))
+            $.post( "{% url 'get_car_images' %}", { id: getIdFromRow, csrfmiddlewaretoken : '{{ csrf_token  }}' }, function( data ) {
+                var images = data.images, 
+                    html = '';
+                    
+                for(var i in images){ 
+                    html += '<img src="'+images[i]+'" width="300px"/>';
+                }
+                $('h4.modal-title').html(data.name + ' - ' + data.mobile);
+                $('.driver-images').html(html);
+            });
+            
         });
     });
 </script>
