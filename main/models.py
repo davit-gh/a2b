@@ -59,3 +59,13 @@ class Contactus(models.Model):
     
     def __unicode__(self):
             return self.email
+
+class HowItWorks(models.Model):
+    desc = models.TextField(blank=False)
+
+    class Meta:
+        verbose_name = "How It Works"
+        verbose_name_plural = "How It Workss"
+    
+    def __unicode__(self):
+            return "Description"

@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.conf import settings
+from main import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url("^$", 'main.views.contactus', name="home"),
-    url(r'^search',  'main.views.ridesearch', name='ridesearch'),
-    url(r'^getcar',  'main.views.get_car_images', name='get_car_images'),
+    url("^$", views.contactus, name="home"),
+    url(r'^search',  views.ridesearch, name='ridesearch'),
+    url(r'^getcar',  views.get_car_images, name='get_car_images'),
 ]
