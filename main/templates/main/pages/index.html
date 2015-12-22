@@ -7,12 +7,17 @@
 
     
         {% block message %} 
-            {% if request.GET.sent %}    
-                <div class="alert alert-dismissable alert-info" data-alert="alert">
+            <div class="container message">
+                {% if messages %}
+                {% for message in messages %}
+                <div id="alert-div" class="alert alert-dismissable alert-info" data-alert="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    
+                    {{ message }}
                 </div>
-            {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+            
         {% endblock %}
     
 

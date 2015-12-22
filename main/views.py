@@ -3,7 +3,9 @@ from main.models import Driver
 from main.forms import RidesearchForm, ContactusForm
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-import pdb
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+import json, pdb
 # Create your views here.
 def contactus(request):
 	if request.method == 'POST':
@@ -12,6 +14,7 @@ def contactus(request):
         	if form.is_valid():
             	# process the data in form.cleaned_data as required
             		form.save()
+            		form = ContactusForm()
             	# redirect to a new URL:
 			messages.info(request, _("We received your message, we will respond shortly. Thank you!"))
 		else:
@@ -35,3 +38,10 @@ def ridesearch(request):
 	#pdb.set_trace()
 	return render(request, 'main/pages/index.html', {'items': items})
 
+def get_car_images(request):
+	if request.method == 'POST' and request.is_ajax():
+		id = request.POST.get('id','')
+		driver = get_object_or_404(Driver, id = id)
+		images = map(lambda x: x.image.url, driver.images.all())
+		#pdb.set_trace()
+		return JsonResponse({'images': images, 'name': driver.name, 'mobile': driver.mobile })

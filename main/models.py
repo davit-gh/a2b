@@ -16,14 +16,21 @@ class City(models.Model):
 
 class Driver(models.Model):
     name = models.CharField(max_length=100, blank=False)
-    featured_image = models.FileField(verbose_name="Featured Image", upload_to=
-            'uploads/', max_length=255, null=True, blank=True)
+    mobile = models.CharField(max_length=30, blank=False)
+    featured_image = models.ImageField(upload_to="uploads", null=True, blank=True)
     class Meta:
         verbose_name = "Driver"
         verbose_name_plural = "Drivers"
     
     def __unicode__(self):
             return self.name
+
+class DriverCarImage(models.Model):
+    driver = models.ForeignKey(Driver, related_name="images")
+    image = models.ImageField(upload_to="uploads/cars", null=True, blank=True)
+    class Meta:
+        verbose_name="Driver Car Image"
+        verbose_name_plural="Driver Car Images"
 
 class Ride(models.Model):
     fromwhere = models.CharField("From", max_length=100, blank=False)
