@@ -113,13 +113,12 @@
                                 {{ ride.towhere }}
                             </td>
                             <td>
-                                {{ ride.leavedate }}
+                                {{ ride.leavedate }} - {{ ride.endtime }}
                             </td>
                             <td>
                                 {{ ride.howmuch }}
                             </td>
                             <td>
-                                {{ driver.title }}
                                 <img src="{{ driver.featured_image.url }}"/>
                             </td>
                         </tr>
@@ -133,6 +132,16 @@
 
 </section>
 
+<section id="how-it-works">
+    <div class="container">
+        <h2 class="section-title">Ինչպե՞ս է աշխատում</h2>
+        <div class="row">
+            <p id="how">
+                {{ howitworks }}
+            </p>
+        </div>
+    </div>
+</section>
 <!-- Contact -->
 {% block contact %}{% endblock %}
 <!-- Footer -->
@@ -170,7 +179,6 @@
         }).on('show.bs.modal', function (event) { //subscribe to show method
 
             var getIdFromRow = $(event.relatedTarget).closest('tr').data('id'); //get the id from tr
-            var $that = $(this);
             //make your ajax call populate items or what even you need
             $.post( "{% url 'get_car_images' %}", { id: getIdFromRow, csrfmiddlewaretoken : '{{ csrf_token  }}' }, function( data ) {
                 var images = data.images, 
@@ -195,14 +203,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Armen - 093112233</h4>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <div class="driver-images">
-                    <img src="static/images/1.jpg" width="300px;" />
-                    <img src="static/images/2.jpg" width="300px;" />
-                    <img src="static/images/3.jpg" width="300px;" />
-                </div>
+                <div class="driver-images"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

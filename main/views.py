@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from main.models import Driver
+from main.models import Driver, HowItWorks
 from main.forms import RidesearchForm, ContactusForm
 from django.contrib import messages
 from django.utils.translation import ugettext as _
@@ -23,8 +23,8 @@ def contactus(request):
     	else:
         	form = ContactusForm()
 	drivers = Driver.objects.all()
-		
-	return render(request,'main/pages/index.html',{'form':form, 'drivers': drivers})
+	howitworks = get_object_or_404(HowItWorks, pk=1)
+	return render(request,'main/pages/index.html',{'form':form, 'drivers': drivers, 'howitworks': howitworks.desc })
 	
 def ridesearch(request):
 	if request.method == 'POST':
