@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load render_table from django_tables2 %}
 {% load staticfiles widget_tweaks get_form %}
 <html lang="en" class="ie_11_scroll">
 <head>
@@ -71,7 +72,7 @@
                                         {% render_field field class="input-large input-contrast" placeholder=field.label required='required' %}
                                     </label>
                                 {% endfor %}
-
+                                <button class="btn btn-primary">Փնտրել</button>
                             </div>
                     </form>
                 </div>
@@ -82,50 +83,7 @@
 
     <div class="container-fluid">
         <div class="a2b-ride-table table-responsive">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>
-                        Որտեղից
-                    </th>
-                    <th>
-                        Ուր
-                    </th>
-                    <th>
-                        Երբ
-                    </th>
-                    <th>
-                        Ի՞նչ արժի
-                    </th>
-                    <th>
-                        Վարորդ
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="fbody">
-                {% for driver in drivers %}
-                    {% for ride in driver.rides.all %}
-                        <tr data-id="{{ driver.id }}" data-toggle="modal" data-target="#myModal">
-                            <td>
-                                {{ ride.fromwhere }}
-                            </td>
-                            <td>
-                                {{ ride.towhere }}
-                            </td>
-                            <td>
-                                {{ ride.leavedate }} - {{ ride.endtime }}
-                            </td>
-                            <td>
-                                {{ ride.howmuch }}
-                            </td>
-                            <td>
-                                <img src="{{ driver.featured_image.url }}"/>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {% endfor %}
-                <tbody>
-            </table>
+            {% render_table table %}
         </div>
     </div>
 
@@ -154,19 +112,6 @@
         </div>
     </div>
 </footer>
-<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/Shuffle/3.1.1/jquery.shuffle.min.js"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
-
-
-<script src="{% static 'js/page.js' %}"></script>
-<script src="{% static 'js/evenheights.js' %}"></script>
-
-
-<script src="{% static 'js/homepage.js' %}"></script>
-<script src="{% static 'js/jquery-ui.min.js' %}"></script>
-
-<script src="{% static 'js/parallax.min.js' %}"></script>
-<!-- template script -->
 <script src="{% static 'js/templatemo_scripts.js' %}"></script>
 <!-- modal javascript -->
 <script>
@@ -178,7 +123,7 @@
 
         }).on('show.bs.modal', function (event) { //subscribe to show method
 
-            var getIdFromRow = $(event.relatedTarget).closest('tr').data('id'); //get the id from tr
+            var getIdFromRow = $(event.relatedTarget).closest('img').data('id'); //get the id from tr
             //make your ajax call populate items or what even you need
             $.post( "{% url 'get_car_images' %}", { id: getIdFromRow, csrfmiddlewaretoken : '{{ csrf_token  }}' }, function( data ) {
                 var images = data.images, 

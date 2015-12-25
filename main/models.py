@@ -37,7 +37,7 @@ class Ride(models.Model):
     towhere = models.CharField("To", max_length=100, blank=False)
     leavedate = models.DateTimeField(blank=True)
     endtime = models.TimeField(blank=True)
-    howmuch = models.IntegerField()
+    howmuch = models.IntegerField(blank=True)
     driver = models.ForeignKey(Driver, related_name="rides")
 
     class Meta:
@@ -69,3 +69,16 @@ class HowItWorks(models.Model):
     
     def __unicode__(self):
             return "Description"
+
+
+class UserSearch(models.Model):
+    fromwhere = models.CharField("From", max_length=100, blank=False)
+    towhere = models.CharField("To", max_length=100, blank=False)
+    leavedate = models.DateField(blank=True)
+
+    class Meta:
+        verbose_name = "User Search"
+        verbose_name_plural = "User Searches"
+    
+    def __unicode__(self):
+            return self.email

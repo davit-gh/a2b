@@ -1868,3 +1868,8 @@ div.pager span.active {
   color: #fff;
   text-align: justify;
 }
+
+.cardinality{
+  display: block !important;
+  width: 155px;
+}
