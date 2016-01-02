@@ -1,9 +1,10 @@
+# coding: utf-8
 from django.shortcuts import render
 from main.models import Driver, HowItWorks, Ride
 from main.tables import RideTable
 from main.forms import UserSearchForm, ContactusForm
 from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django_tables2   import RequestConfig
@@ -18,7 +19,7 @@ def contactus(request):
             		form.save()
             		form = ContactusForm()
             	# redirect to a new URL:
-			messages.info(request, _("We received your message, we will respond shortly. Thank you!"))
+			messages.info(request, "Մենք ստացանք Ձեր նամակը և շուտով կպատասխանենք։ Շնորհակալություն։")
 		else:
 			messages.error(request, _("Your message has not been sent. Please fill in all the fields."))
     	# if a GET (or any other method) we'll create a blank form

@@ -1873,3 +1873,15 @@ div.pager span.active {
   display: block !important;
   width: 155px;
 }
+
+img#driver-img{
+  cursor: pointer;
+}
+
+.alert{
+  padding: 5px;
+  margin-bottom: 0;
+}
+.alert-dismissable, .alert-dismissible {
+padding-right: 35px;
+}
