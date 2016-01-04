@@ -1,6 +1,6 @@
 from django.contrib import admin
 from main.models import Driver, Ride, City, Contactus, DriverCarImage, HowItWorks
-from main.forms import RidesearchForm, RideAdminForm
+from main.forms import RideAdminForm
 
 class RideAdmin(admin.ModelAdmin):
 	"""docstring for RideAdmin"""

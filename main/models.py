@@ -1,3 +1,4 @@
+# coding: utf-8
 from __future__ import unicode_literals
 
 from django.db import models
@@ -37,7 +38,7 @@ class Ride(models.Model):
     towhere = models.CharField("To", max_length=100, blank=False)
     leavedate = models.DateTimeField(blank=True)
     endtime = models.TimeField(blank=True)
-    howmuch = models.IntegerField()
+    howmuch = models.IntegerField(blank=True)
     driver = models.ForeignKey(Driver, related_name="rides")
 
     class Meta:
@@ -48,9 +49,9 @@ class Ride(models.Model):
             return self.fromwhere
 
 class Contactus(models.Model):
-    name = models.CharField(max_length=100, blank=False)
-    email = models.EmailField(blank=False)
-    message = models.TextField(blank=False)
+    name = models.CharField("Անուն", max_length=100, blank=False)
+    email = models.EmailField("Էլ․ փոստ", blank=False)
+    message = models.TextField("Նամակ", blank=False)
     message_date = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
@@ -69,3 +70,16 @@ class HowItWorks(models.Model):
     
     def __unicode__(self):
             return "Description"
+
+
+class UserSearch(models.Model):
+    fromwhere = models.CharField(max_length=100, blank=False)
+    towhere = models.CharField(max_length=100, blank=False)
+    leavedate = models.DateField(blank=True)
+
+    class Meta:
+        verbose_name = "User Search"
+        verbose_name_plural = "User Searches"
+    
+    def __unicode__(self):
+            return self.email

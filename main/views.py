@@ -1,11 +1,14 @@
+# coding: utf-8
 from django.shortcuts import render
-from main.models import Driver, HowItWorks
-from main.forms import RidesearchForm, ContactusForm
+from main.models import Driver, HowItWorks, Ride
+from main.tables import RideTable
+from main.forms import UserSearchForm, ContactusForm
 from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-import json, pdb
+from django_tables2   import RequestConfig
+import json, pdb, datetime
 # Create your views here.
 def contactus(request):
 	if request.method == 'POST':
@@ -16,27 +19,36 @@ def contactus(request):
             		form.save()
             		form = ContactusForm()
             	# redirect to a new URL:
-			messages.info(request, _("We received your message, we will respond shortly. Thank you!"))
+			messages.info(request, "Մենք ստացանք Ձեր նամակը և շուտով կպատասխանենք։ Շնորհակալություն։")
 		else:
 			messages.error(request, _("Your message has not been sent. Please fill in all the fields."))
     	# if a GET (or any other method) we'll create a blank form
     	else:
         	form = ContactusForm()
-	drivers = Driver.objects.all()
+	rides = Ride.objects.all()
 	howitworks = get_object_or_404(HowItWorks, pk=1)
-	return render(request,'main/pages/index.html',{'form':form, 'drivers': drivers, 'howitworks': howitworks.desc })
+	table = RideTable(rides)
+	RequestConfig(request, paginate={"per_page": 3}).configure(table)
+	return render(request,'main/pages/index.html',{'form':form, 'table': table, 'howitworks': howitworks.desc })
 	
 def ridesearch(request):
 	if request.method == 'POST':
-		items = PortfolioItem.objects.filter(categories__slug=request.POST['towhere'])
-		form = RidesearchForm(request.POST)
+		form = UserSearchForm(request.POST)
 		if form.is_valid():
+			post_dict = request.POST
+			d = datetime.datetime.strptime(post_dict['leavedate'], '%d/%m/%Y')
+			rides = Ride.objects.filter(fromwhere=post_dict['fromwhere'], towhere=post_dict['towhere'], leavedate__year=d.year, leavedate__month=d.month, leavedate__day=d.day)
 			form.save()
 	else:
-		form = RidesearchForm()
-		items = PortfolioItem.objects.all()
+		form = UserSearchForm()
+		rides = Ride.objects.all()
+		#items = PortfolioItem.objects.all()
 	#pdb.set_trace()
-	return render(request, 'main/pages/index.html', {'items': items})
+	table = RideTable(rides)
+	RequestConfig(request).configure(table)
+	form = ContactusForm()
+	howitworks = get_object_or_404(HowItWorks, pk=1)
+	return render(request, 'main/pages/index.html', {'table': table, 'form':form, 'howitworks': howitworks.desc })
 
 def get_car_images(request):
 	if request.method == 'POST' and request.is_ajax():

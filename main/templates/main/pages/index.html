@@ -32,7 +32,7 @@
 
                     <!-- CONTACT FORM -->
                     <div class="col-md-7 col-md-offset-1 text-left wow fadeInLeft" data-wow-duration="1s">
-                        <form role="form" action="" method="post">
+                        <form role="form" action="{% url 'home' %}" method="post">
                             {% csrf_token %}
                                         {% for hidden in form.hidden_fields %}
                                             {{hidden}}
