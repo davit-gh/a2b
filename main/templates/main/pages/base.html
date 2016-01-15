@@ -34,6 +34,11 @@
 <!-- Home -->
 <section id="templatemo_home">
     <div class="container a2b-background">
+        <div class="row">
+            Աննախադեպ ամանորյա նվեր վարորդներին, մինչև մարտի մեկը հայտարարություն տեղադրելը անվճար է
+            (This needs to be designed and properly placed)
+        </div>
+
         <div class="templatemo_home_inner_wapper btn_wapper">
             <div class="col-sm-12">
                 <a href="#templatemo_contact" class="btn col-xs-12 scroll_effect shadow-top-down">
@@ -45,10 +50,54 @@
 
         {% block message %}{% endblock %}
         <div class="templatemo_home_inner_wapper">
-            <h1 class="text-center" style="margin: 1em 0;"><i class="fa fa-car"></i> A-ից B</h1>
+            <h1 class="text-center" style="margin: 0 0;"><i class="fa fa-car"></i> <span style="color:orange">A</span>-ից <span style="color:orange">B</span></h1>
         </div>
         <div>
-            <h2 class="text-center">Մենք ձեզ կՏեղաՓոխենք</h2>
+            <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <img class="advantage-graphic" src="static/images/driver.png">
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <span class="advantage-header">Վարորդներին</span>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="advantage-list">
+                            <ol>
+                                <li>Տեղադրիր հայտարարություն</li>
+                                <li>Վերցրու ուղևոր</li>
+                                <li>Վաստակիր գումար</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <img class="advantage-graphic" src="static/images/passenger.png">
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <span class="advantage-header">Ուղևորներին</span>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="advantage-list">
+                            <ol class="advantage-list">
+                                <li>Պայմանավորվիր վարորդի հետ</li>
+                                <li>Ճանապարհորդիր ավելի էժան</li>
+                                <li>Ընկերակցիր</li>
+                            </ol>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
 
         <div class="text-center hide-sm">
@@ -72,7 +121,7 @@
                                         {% render_field field class="input-large input-contrast" placeholder=field.label required='required' %}
                                     </label>
                                 {% endfor %}
-                                <button class="btn btn-primary">Փնտրել</button>
+                                <button class="btn btn-primary" style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել</button>
                             </div>
                     </form>
                 </div>
