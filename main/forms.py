@@ -18,6 +18,7 @@ import pdb
 
 
 class UserSearchForm(ModelForm):
+	
      
 	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'sourcefilter(this)'}))
 	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'destfilter(this)'}))

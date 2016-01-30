@@ -10,6 +10,7 @@
 
     <!-- jQuery-->
     <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/modernizr.custom.min.js' %}"></script>
 
@@ -31,20 +32,22 @@
 </head>
 
 <body>
+        <div class="show-menu">
+            <a href="#" class="shadow-top-down">+</a>
+        </div>
+        <nav class="main-menu shadow-top-down">
+            <ul class="nav nav-pills nav-stacked">
+                <li><a class="scroll_effect" href="#templatemo_home">Home</a></li>
+                <li><a class="scroll_effect" href="#templatemo_contact">Կապվեք Մեզ Հետ</a></li>
+                <li><a rel="nofollow" href="http://www.facebook.com/cpupanda" target="_parent">Fan Page</a></li>
+            </ul>
+        </nav>
 <!-- Home -->
 <section id="templatemo_home">
     <div class="container a2b-background">
         <div class="row">
             Աննախադեպ ամանորյա նվեր վարորդներին, մինչև մարտի մեկը հայտարարություն տեղադրելը անվճար է
             (This needs to be designed and properly placed)
-        </div>
-
-        <div class="templatemo_home_inner_wapper btn_wapper">
-            <div class="col-sm-12">
-                <a href="#templatemo_contact" class="btn col-xs-12 scroll_effect shadow-top-down">
-                    <i class="fa fa-heart"></i> Կապվեք Մեզ Հետ
-                </a>
-            </div>
         </div>
 
 
@@ -118,7 +121,7 @@
                                 {% for field in searchform.visible_fields %}
                                     <label style="vertical-align: top">
 
-                                        {% render_field field class="input-large input-contrast" placeholder=field.label required='required' %}
+                                        {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" required='required' %}
                                     </label>
                                 {% endfor %}
                                 <button class="btn btn-primary" style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել</button>
