@@ -1887,6 +1887,10 @@ img#driver-img{
   cursor: pointer;
 }
 
+.driver {
+    text-align: center;
+}
+
 .alert{
   padding: 5px;
   margin-bottom: 0;
