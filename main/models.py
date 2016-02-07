@@ -61,16 +61,6 @@ class Contactus(models.Model):
     def __unicode__(self):
             return self.email
 
-class HowItWorks(models.Model):
-    desc = models.TextField(blank=False)
-
-    class Meta:
-        verbose_name = "How It Works"
-        verbose_name_plural = "How It Workss"
-    
-    def __unicode__(self):
-            return "Description"
-
 
 class UserSearch(models.Model):
     fromwhere = models.CharField(max_length=100, blank=False)

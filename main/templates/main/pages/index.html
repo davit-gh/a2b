@@ -77,3 +77,9 @@
     </div>
 
 {% endblock %}
+
+{% block login %}
+    <button type="button" class="btn btn-default navbar-btn login" data-toggle="modal" data-target="#login-modal">
+        <span>{% if request.user.is_authenticated %}Բարև {{ request.user.username }}!{% else %}Մուտք գործել/գրանցվել{% endif %}</span>
+    </button>
+{% endblock %}
