@@ -32,6 +32,7 @@
 </head>
 
 <body>
+
 <div class="show-menu">
     <a href="#" class="shadow-top-down">+</a>
 </div>
@@ -43,7 +44,54 @@
         <li><a rel="nofollow" href="http://www.facebook.com/a2b" target="_parent">Fan Page</a></li>
     </ul>
 </nav>
+{% block login %}{% endblock %}
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="Login">{% if request.user.is_authenticated %}Բարև {{ request.user.username }}!{% else %}Գրանցվել{% endif %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% if request.user.is_authenticated %}
+                        
+                        
+                        <p class="text-center"><a class="center-block" href="{% url "logout" %}">Դուրս գալ</a></p>
+                    {% else %}
+                        
+                        <form action="{% url "signup" %}" method="post">
+                            
+                            {% csrf_token %}
+            
+                            {% for hidden in loginform.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in loginform.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.label_tag }}{{ vis.errors }}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %}
+                            <input type="hidden" value="from_popup" name="from_popup" />
+                            <p class="text-center">
+                                <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Մտնել</button>
+                            </p>
+
+                        </form>
+                        
+                        <p class="text-center text-muted">Դեռ գրանցված չեք?</p>
+                        <p class="text-center text-muted"><a href="{% url "signup" %}"><strong>Գրանցվեք հիմա</a>
+                            </strong>! Դա շատ արագ է և այնուհետ կարող եք ապրանքներ ավելացնել։</p>
+                    {% endif %}
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- Home -->
+{% block content %}
 <section id="templatemo_home">
     <div class="container a2b-background">
         <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
@@ -155,11 +203,12 @@
 
         <div class="row">
             <p id="how">
-                {{ howitworks }}
+                How it works text goes here
             </p>
         </div>
     </div>
 </section>
+{% endblock %}
 <!-- Contact -->
 {% block contact %}{% endblock %}
 <!-- Footer -->

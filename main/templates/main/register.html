@@ -1,0 +1,111 @@
+{% extends 'main/pages/base.html' %}
+{% load widget_tweaks tags i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<body>
+    <!-- *** NAVBAR ***
+_________________________________________________________ -->
+
+
+    <!-- /#navbar -->
+
+    <!-- *** NAVBAR END *** -->
+
+    <!-- *** LOGIN MODAL ***
+_________________________________________________________ -->
+
+    
+
+    
+{% block content %}
+    <div id="all">
+
+        <div id="content">
+            <div class="container">
+
+                
+
+                <div class="col-md-6">
+                    <div class="box">
+                        <h1>Նոր հաշիվ</h1>
+                        
+                        <p class="lead">Դեռ չե՞ք գրանցվել մեզ մոտ</p>
+                        
+                        <p class="text-muted">Գրանցվելուց հետո ապրանքներ ավելացնելու հնարավորություն կունենաք</p>
+
+                        <hr>
+
+                        <form action="{% url "signup" %}" method="post">
+                            {% csrf_token %}
+                            {% errors_for signup_form %}
+                            {% for hidden in signup_form.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in signup_form.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.label_tag }}{% for error in vis.errors %} <span id=error>{{ error }}</span>{% endfor %}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %} 
+                            <div class="text-center">
+                                <button id="register_button" type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i> Գրանցվել</button>
+                            </div>
+                           
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="box">
+                        <h1>Մուտք գործել</h1>
+                        
+                        <p class="lead">Արդեն գրանցվա՞ծ եք</p>
+                        <p class="text-muted">Մուտքագրեք ձեր օգտանունն ու գաղտնաբառն այստեղ։</p>
+
+                        <hr>
+
+                        <form action="{% url "signup" %}" method="post">
+                            {% csrf_token %}
+                            {% errors_for login_form %}
+                            {% for hidden in login_form.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in login_form.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.errors }}
+                                    {{ vis.label_tag }}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %}
+                                <div class="text-center">
+                                    <button id="login_button" type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Մտնել</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /#content -->
+
+{% endblock %}        
+
+
+
+    </div>
+    <!-- /#all -->
+
+
+    <!-- #### JAVASCRIPT FILES ### -->
+
+
+
+
+</body>
+
+</html>
