@@ -7,6 +7,7 @@
 
 
 {% block message %}
+    {% if message %}
     <div class="container message">
         {% if messages %}
             {% for message in messages %}
@@ -17,6 +18,7 @@
             {% endfor %}
         {% endif %}
     </div>
+    {% endif %}
 
 {% endblock %}
 
@@ -79,7 +81,8 @@
 {% endblock %}
 
 {% block login %}
-    <button type="button" class="btn btn-default navbar-btn login" data-toggle="modal" data-target="#login-modal">
+    <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal" data-target="#login-modal"
+            style="top: 0px;">
         <span>{% if request.user.is_authenticated %}Բարև {{ request.user.username }}!{% else %}Մուտք գործել/գրանցվել{% endif %}</span>
     </button>
 {% endblock %}
