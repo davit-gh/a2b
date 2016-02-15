@@ -33,6 +33,7 @@
 
 <body>
 
+{% block menu %}
 <div class="show-menu">
     <a href="#" class="shadow-top-down">+</a>
 </div>
@@ -44,15 +45,12 @@
         <li><a rel="nofollow" href="http://www.facebook.com/a2b" target="_parent">Fan Page</a></li>
     </ul>
 </nav>
+{% endblock %}
 {% block login %}{% endblock %}
 <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
         <div class="modal-dialog modal-sm">
 
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="Login">{% if request.user.is_authenticated %}Բարև {{ request.user.username }}!{% else %}Գրանցվել{% endif %}</h4>
-                </div>
                 <div class="modal-body">
                     {% if request.user.is_authenticated %}
                         
@@ -75,14 +73,17 @@
                             {% endfor %}
                             <input type="hidden" value="from_popup" name="from_popup" />
                             <p class="text-center">
-                                <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Մտնել</button>
+                                <button class="btn btn-primary"
+                                        style="background-color: orange; border-color: orange; font-weight: bold">>
+                                    <i class="fa fa-sign-in"></i> Մտնել</button>
                             </p>
 
                         </form>
                         
                         <p class="text-center text-muted">Դեռ գրանցված չեք?</p>
-                        <p class="text-center text-muted"><a href="{% url "signup" %}"><strong>Գրանցվեք հիմա</a>
-                            </strong>! Դա շատ արագ է և այնուհետ կարող եք ապրանքներ ավելացնել։</p>
+                        <p class="text-center text-muted">
+                            <a href="{% url "signup" %}"><strong style="color:orange;">Գրանցվեք հիմա</strong></a>
+                            </strong>! Դա շատ արագ է և կկարողանաք ավելացնել հայտարարություններ։</p>
                     {% endif %}
                     
 
