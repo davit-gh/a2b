@@ -23,4 +23,7 @@ urlpatterns = [
     url("^$", views.contactus, name="home"),
     url(r'^search',  views.ridesearch, name='ridesearch'),
     url(r'^getcar',  views.get_car_images, name='get_car_images'),
+    url("^login$", views.signup, name="signup"),
+    url("^logout$", views.logout, name="logout"),
+    url("^signup$", views.signup, name="signup"),
 ]

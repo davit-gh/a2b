@@ -1,0 +1,91 @@
+{% extends 'main/pages/base.html' %}
+{% load widget_tweaks tags i18n %}
+
+{% block menu %}
+
+{% endblock %}
+    
+{% block content %}
+    <div id="all">
+
+        <div id="content">
+            <div class="templatemo_home_inner_wapper">
+                <h1 class="text-center" style="margin: 0.4em 0;">
+                    <i class="fa fa-car"></i>
+                    <span style="color:orange">A</span>-ից
+                    <span style="color:orange">B</span></h1>
+            </div>
+            <div class="container">
+
+                
+
+                <div class="col-md-6">
+                    <div class="box">
+                        <h1>Գրանցվել</h1>
+                        
+                        <p class="lead">Դեռ չե՞ք գրանցվել մեզ մոտ</p>
+                        
+                        <p class="text-muted">Գրանցվելուց հետո հայտարարություններ ավելացնելու հնարավորություն կունենաք</p>
+
+                        <hr>
+
+                        <form action="{% url "signup" %}" method="post">
+                            {% csrf_token %}
+                            {% errors_for signup_form %}
+                            {% for hidden in signup_form.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in signup_form.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.label_tag }}{% for error in vis.errors %} <span id=error>{{ error }}</span>{% endfor %}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %} 
+                            <div class="text-center">
+                                <button id="register_button" type="submit" class="btn btn-primary"
+                                        style="background-color: orange; border-color: orange; font-weight: bold">
+                                    <i class="fa fa-user-md"></i> Գրանցվել</button>
+                            </div>
+                           
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="box">
+                        <h1>Մուտք գործել</h1>
+                        
+                        <p class="lead">Արդեն գրանցվա՞ծ եք</p>
+                        <p class="text-muted">Մուտքագրեք ձեր օգտանունն ու գաղտնաբառն այստեղ</p>
+
+                        <hr>
+
+                        <form action="{% url "signup" %}" method="post">
+                            {% csrf_token %}
+                            {% errors_for login_form %}
+                            {% for hidden in login_form.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in login_form.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.errors }}
+                                    {{ vis.label_tag }}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %}
+                                <div class="text-center">
+                                    <button id="login_button" type="submit" class="btn btn-primary"
+                                            style="background-color: orange; border-color: orange; font-weight: bold"
+                                            ><i class="fa fa-sign-in"></i> Մտնել</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /#content -->
+
+{% endblock %}        

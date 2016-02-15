@@ -32,28 +32,82 @@
 </head>
 
 <body>
-        <div class="show-menu">
-            <a href="#" class="shadow-top-down">+</a>
+
+{% block menu %}
+<div class="show-menu">
+    <a href="#" class="shadow-top-down">+</a>
+</div>
+<nav class="main-menu shadow-top-down">
+    <ul class="nav nav-pills nav-stacked">
+        <li><a class="scroll_effect" href="#templatemo_home">Սկիզբ</a></li>
+        <li><a class="scroll_effect" href="#how-it-works">Ինչպե՞ս է աշխատում</a></li>
+        <li><a class="scroll_effect" href="#templatemo_contact">Կապվեք Մեզ Հետ</a></li>
+        <li><a rel="nofollow" href="http://www.facebook.com/a2b" target="_parent">Fan Page</a></li>
+    </ul>
+</nav>
+{% endblock %}
+{% block login %}{% endblock %}
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-body">
+                    {% if request.user.is_authenticated %}
+                        
+                        
+                        <p class="text-center"><a class="center-block" href="{% url "logout" %}">Դուրս գալ</a></p>
+                    {% else %}
+                        
+                        <form action="{% url "signup" %}" method="post">
+                            
+                            {% csrf_token %}
+            
+                            {% for hidden in loginform.hidden_fields %}
+                               {{hidden}}
+                            {% endfor %}
+                            {% for vis in loginform.visible_fields %}
+                                <div class="form-group">
+                                    {{ vis.label_tag }}{{ vis.errors }}
+                                    {% render_field vis class="form-control" %}
+                                </div>
+                            {% endfor %}
+                            <input type="hidden" value="from_popup" name="from_popup" />
+                            <p class="text-center">
+                                <button class="btn btn-primary"
+                                        style="background-color: orange; border-color: orange; font-weight: bold">>
+                                    <i class="fa fa-sign-in"></i> Մտնել</button>
+                            </p>
+
+                        </form>
+                        
+                        <p class="text-center text-muted">Դեռ գրանցված չեք?</p>
+                        <p class="text-center text-muted">
+                            <a href="{% url "signup" %}"><strong style="color:orange;">Գրանցվեք հիմա</strong></a>
+                            </strong>! Դա շատ արագ է և կկարողանաք ավելացնել հայտարարություններ։</p>
+                    {% endif %}
+                    
+
+                </div>
+            </div>
         </div>
-        <nav class="main-menu shadow-top-down">
-            <ul class="nav nav-pills nav-stacked">
-                <li><a class="scroll_effect" href="#templatemo_home">Home</a></li>
-                <li><a class="scroll_effect" href="#templatemo_contact">Կապվեք Մեզ Հետ</a></li>
-                <li><a rel="nofollow" href="http://www.facebook.com/cpupanda" target="_parent">Fan Page</a></li>
-            </ul>
-        </nav>
+    </div>
 <!-- Home -->
+{% block content %}
 <section id="templatemo_home">
     <div class="container a2b-background">
-        <div class="row">
-            Աննախադեպ ամանորյա նվեր վարորդներին, մինչև մարտի մեկը հայտարարություն տեղադրելը անվճար է
-            (This needs to be designed and properly placed)
+        <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
+            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
+                Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
+            </span>
         </div>
 
 
         {% block message %}{% endblock %}
         <div class="templatemo_home_inner_wapper">
-            <h1 class="text-center" style="margin: 0 0;"><i class="fa fa-car"></i> <span style="color:orange">A</span>-ից <span style="color:orange">B</span></h1>
+            <h1 class="text-center" style="margin: 0.4em 0;">
+                <i class="fa fa-car"></i>
+                <span style="color:orange">A</span>-ից
+                <span style="color:orange">B</span></h1>
         </div>
         <div>
             <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
@@ -64,7 +118,7 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" src="static/images/driver.png">
+                        <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="static/images/driver.png">
                     </div>
                     <div class="col-sm-12 text-center">
                         <span class="advantage-header">Վարորդներին</span>
@@ -124,7 +178,9 @@
                                         {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" required='required' %}
                                     </label>
                                 {% endfor %}
-                                <button class="btn btn-primary" style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել</button>
+                                <button class="btn btn-primary"
+                                        style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել
+                                </button>
                             </div>
                     </form>
                 </div>
@@ -145,13 +201,15 @@
 <section id="how-it-works">
     <div class="container">
         <h2 class="section-title">Ինչպե՞ս է աշխատում</h2>
+
         <div class="row">
             <p id="how">
-                {{ howitworks }}
+                How it works text goes here
             </p>
         </div>
     </div>
 </section>
+{% endblock %}
 <!-- Contact -->
 {% block contact %}{% endblock %}
 <!-- Footer -->
@@ -159,7 +217,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 footer-copyright">
-                <p>Copyright &copy; 2015 <a href="#" target="_parent">A2B</a></p>
+                <p>Copyright &copy; 2016 <a href="#" target="_parent">a2b</a></p>
             </div>
         </div>
     </div>
@@ -177,17 +235,20 @@
 
             var getIdFromRow = $(event.relatedTarget).closest('img').data('id'); //get the id from tr
             //make your ajax call populate items or what even you need
-            $.post( "{% url 'get_car_images' %}", { id: getIdFromRow, csrfmiddlewaretoken : '{{ csrf_token  }}' }, function( data ) {
-                var images = data.images, 
-                    html = '';
-                    
-                for(var i in images){ 
-                    html += '<img src="'+images[i]+'" width="300px"/>';
+            $.post("{% url 'get_car_images' %}", {
+                id: getIdFromRow,
+                csrfmiddlewaretoken: '{{ csrf_token  }}'
+            }, function (data) {
+                var images = data.images,
+                        html = '';
+
+                for (var i in images) {
+                    html += '<img src="' + images[i] + '" width="300px"/>';
                 }
                 $('h4.modal-title').html(data.name + ' - ' + data.mobile);
                 $('.driver-images').html(html);
             });
-            
+
         });
     });
 </script>
