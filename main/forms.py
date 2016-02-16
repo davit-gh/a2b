@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from main.models import City, Ride, Contactus, UserSearch
+from main.models import City, Ride, Contactus, UserSearch, Driver
 from django.forms import ModelForm, Textarea
 from django import forms
 from django.utils.translation import ugettext as _
@@ -17,7 +17,6 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import ugettext
 from django.contrib.auth import authenticate
-
 
 
 class UserSearchForm(ModelForm):
@@ -53,31 +52,9 @@ class ContactusForm(ModelForm):
 		fields = ['name', 'email', 'message']
 
 
-class Html5Mixin(object):
-    """
-    Mixin for form classes. Adds HTML5 features to forms for client
-    side validation by the browser, like a "required" attribute and
-    "email" and "url" input types.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super(Html5Mixin, self).__init__(*args, **kwargs)
-        if hasattr(self, "fields"):
-            # Autofocus first field
-            first_field = next(iter(self.fields.values()))
-            first_field.widget.attrs["autofocus"] = ""
-
-            for name, field in self.fields.items():
-                if settings.FORMS_USE_HTML5:
-                    if isinstance(field, forms.EmailField):
-                        self.fields[name].widget.input_type = "email"
-                    elif isinstance(field, forms.URLField):
-                        self.fields[name].widget.input_type = "url"
-                if field.required:
-                    self.fields[name].widget.attrs["required"] = ""
 
 
-class LoginForm(Html5Mixin, forms.Form):
+class LoginForm(forms.Form):
     """
     Fields for login.
     """
@@ -107,18 +84,20 @@ class LoginForm(Html5Mixin, forms.Form):
         return getattr(self, "_user", None)
 
 
-class ProfileForm(Html5Mixin, forms.ModelForm):
+class ProfileForm(forms.ModelForm):
+    
     """
     ModelForm for auth.User - used for signup and profile update.
     If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
     fields are injected into the form.
     """
-
-    password1 = forms.CharField(label="Password",
+    mobile          = forms.CharField()
+    featured_image  = forms.ImageField(required=False)
+    password1       = forms.CharField(label="Password",
                                 widget=forms.PasswordInput(render_value=False))
-    password2 = forms.CharField(label="Password (again)",
+    password2       = forms.CharField(label="Password (again)",
                                 widget=forms.PasswordInput(render_value=False))
-
+    
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email", "username")
@@ -128,9 +107,15 @@ class ProfileForm(Html5Mixin, forms.ModelForm):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self._signup = self.instance.id is None
         user_fields = User._meta.get_all_field_names()
+        user = kwargs.pop('instance', None)
+        if user:
+            self.fields['mobile'].initial = user.driver.mobile
+            self.fields['featured_image'].initial = user.driver.featured_image
+        #import pdb;pdb.set_trace()
         try:
             self.fields["username"].help_text = ugettext(
                         "Only letters, numbers, dashes or underscores please")
+            
         except KeyError:
             pass
         for field in self.fields:

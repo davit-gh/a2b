@@ -54,7 +54,7 @@
                 <div class="modal-body">
                     {% if request.user.is_authenticated %}
                         
-                        
+                        <p class="text-center"><a class="center-block" href="{% url "profile_update" %}">Պրոֆիլ</a></p>
                         <p class="text-center"><a class="center-block" href="{% url "logout" %}">Դուրս գալ</a></p>
                     {% else %}
                         
@@ -102,7 +102,20 @@
         </div>
 
 
-        {% block message %}{% endblock %}
+        {% block message %}
+            {% if messages %}
+                <div class="container message">
+                    {% for message in messages %}
+                        <div id="alert-div" class="alert alert-dismissable alert-info" data-alert="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endblock %}
+
+
         <div class="templatemo_home_inner_wapper">
             <h1 class="text-center" style="margin: 0.4em 0;">
                 <i class="fa fa-car"></i>
@@ -163,12 +176,9 @@
                     <form id="searchbar-form" action="{% url 'ridesearch' %}" method="post">
                         <div>
                             {% csrf_token %}
-                            {% for hidden in sform.hidden_fields %}
+                            {% for hidden in searchform.hidden_fields %}
                                 {{ hidden }}
                             {% endfor %}
-                            {% if sform.non_field_errors %}
-                                {{ sform.non_field_errors }}
-                            {% endif %}
 
                             <div class="searchbar__input-wrapper">
 
