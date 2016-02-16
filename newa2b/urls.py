@@ -27,4 +27,5 @@ urlpatterns = [
     url("^logout$", views.logout, name="logout"),
     url("^signup$", views.signup, name="signup"),
     url("^update$", views.profile_update, name="profile_update"),
+    url("^rides$", views.rides, name="rides"),
 ]

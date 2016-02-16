@@ -10,8 +10,7 @@ DateInput = partial(forms.DateInput, )
 
 # Form Fields
 from django.utils import timezone
-from datetimewidget.widgets import DateTimeWidget
-from datetimewidget.widgets import DateWidget
+from datetimewidget.widgets import DateTimeWidget, TimeWidget, DateWidget
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -37,14 +36,18 @@ class UserSearchForm(ModelForm):
 		return leave_date.strftime('%Y-%m-%d')
 		
 class RideAdminForm(ModelForm):
-
-        
-	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
-	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
-	class Meta:
- 		model = Ride
-		fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'howmuch', 'driver']
-		
+    fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
+    towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
+    leavedate   = forms.CharField(widget=DateTimeWidget(attrs={'id':"id_source"}, options={'startDate':'+1d'}))
+    endtime     = forms.CharField(widget=TimeWidget())
+    class Meta:
+        model = Ride
+        fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'howmuch']
+	
+    def clean_leavedate(self):
+        leave_datetime = self.cleaned_data["leavedate"]
+        leave_date = datetime.strptime(leave_datetime,'%d/%m/%Y %H:%M')
+        return leave_date.strftime('%Y-%m-%d %H:%M')
 
 class ContactusForm(ModelForm):
 	class Meta:
@@ -106,7 +109,7 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self._signup = self.instance.id is None
-        user_fields = User._meta.get_all_field_names()
+        user_fields = User._meta.get_fields()
         user = kwargs.pop('instance', None)
         if user:
             self.fields['mobile'].initial = user.driver.mobile
