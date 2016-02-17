@@ -39,18 +39,20 @@ def contactus(request):
 	
 def ridesearch(request):
     if request.method == 'POST':
-        form = ContactusForm(request.POST)
+        form = ContactusForm(request.POST);import pdb;pdb.set_trace()
         if form.is_valid():
 	    form.save()
 	    form = ContactusForm()
         post_dict = request.POST
-         
-        if post_dict.get('leavedate', None):
-            d = datetime.datetime.strptime(post_dict['leavedate'], '%d/%m/%Y')
-            rides = Ride.objects.filter(fromwhere=post_dict['fromwhere'], towhere=post_dict['towhere'], 
-                                        leavedate__year=d.year, leavedate__month=d.month, leavedate__day=d.day)
-        else:
-            rides = Ride.objects.filter(fromwhere=post_dict['fromwhere'], towhere=post_dict['towhere'])
+        if not post_dict.get('fromwhere') and not post_dict.get('towhere'):
+            rides = Ride.objects.all()
+        else: 
+            if post_dict.get('leavedate', None):
+                d = datetime.datetime.strptime(post_dict['leavedate'], '%d/%m/%Y')
+                rides = Ride.objects.filter(fromwhere=post_dict['fromwhere'], towhere=post_dict['towhere'], 
+                                            leavedate__year=d.year, leavedate__month=d.month, leavedate__day=d.day)
+            else:
+                rides = Ride.objects.filter(fromwhere=post_dict['fromwhere'], towhere=post_dict['towhere'])
 
     else:
 	form = ContactusForm()
