@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from main.models import City, Ride, Contactus, UserSearch
+from main.models import City, Ride, Contactus, UserSearch, Driver
 from django.forms import ModelForm, Textarea
 from django import forms
 from django.utils.translation import ugettext as _
@@ -10,14 +10,12 @@ DateInput = partial(forms.DateInput, )
 
 # Form Fields
 from django.utils import timezone
-from datetimewidget.widgets import DateTimeWidget
-from datetimewidget.widgets import DateWidget
+from datetimewidget.widgets import DateTimeWidget, TimeWidget, DateWidget
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import ugettext
 from django.contrib.auth import authenticate
-
 
 
 class UserSearchForm(ModelForm):
@@ -38,14 +36,18 @@ class UserSearchForm(ModelForm):
 		return leave_date.strftime('%Y-%m-%d')
 		
 class RideAdminForm(ModelForm):
-
-        
-	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
-	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
-	class Meta:
- 		model = Ride
-		fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'howmuch', 'driver']
-		
+    fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
+    towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
+    leavedate   = forms.CharField(widget=DateTimeWidget(attrs={'id':"id_source"}, options={'startDate':'+1d'}))
+    endtime     = forms.CharField(widget=TimeWidget())
+    class Meta:
+        model = Ride
+        fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'howmuch']
+	
+    def clean_leavedate(self):
+        leave_datetime = self.cleaned_data["leavedate"]
+        leave_date = datetime.strptime(leave_datetime,'%d/%m/%Y %H:%M')
+        return leave_date.strftime('%Y-%m-%d %H:%M')
 
 class ContactusForm(ModelForm):
 	class Meta:
@@ -53,31 +55,9 @@ class ContactusForm(ModelForm):
 		fields = ['name', 'email', 'message']
 
 
-class Html5Mixin(object):
-    """
-    Mixin for form classes. Adds HTML5 features to forms for client
-    side validation by the browser, like a "required" attribute and
-    "email" and "url" input types.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super(Html5Mixin, self).__init__(*args, **kwargs)
-        if hasattr(self, "fields"):
-            # Autofocus first field
-            first_field = next(iter(self.fields.values()))
-            first_field.widget.attrs["autofocus"] = ""
-
-            for name, field in self.fields.items():
-                if settings.FORMS_USE_HTML5:
-                    if isinstance(field, forms.EmailField):
-                        self.fields[name].widget.input_type = "email"
-                    elif isinstance(field, forms.URLField):
-                        self.fields[name].widget.input_type = "url"
-                if field.required:
-                    self.fields[name].widget.attrs["required"] = ""
 
 
-class LoginForm(Html5Mixin, forms.Form):
+class LoginForm(forms.Form):
     """
     Fields for login.
     """
@@ -107,18 +87,20 @@ class LoginForm(Html5Mixin, forms.Form):
         return getattr(self, "_user", None)
 
 
-class ProfileForm(Html5Mixin, forms.ModelForm):
+class ProfileForm(forms.ModelForm):
+    
     """
     ModelForm for auth.User - used for signup and profile update.
     If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
     fields are injected into the form.
     """
-
-    password1 = forms.CharField(label="Password",
+    mobile          = forms.CharField()
+    featured_image  = forms.ImageField(required=False)
+    password1       = forms.CharField(label="Password",
                                 widget=forms.PasswordInput(render_value=False))
-    password2 = forms.CharField(label="Password (again)",
+    password2       = forms.CharField(label="Password (again)",
                                 widget=forms.PasswordInput(render_value=False))
-
+    
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email", "username")
@@ -127,10 +109,16 @@ class ProfileForm(Html5Mixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self._signup = self.instance.id is None
-        user_fields = User._meta.get_all_field_names()
+        user_fields = User._meta.get_fields()
+        user = kwargs.pop('instance', None)
+        if user:
+            self.fields['mobile'].initial = user.driver.mobile
+            self.fields['featured_image'].initial = user.driver.featured_image
+        #import pdb;pdb.set_trace()
         try:
             self.fields["username"].help_text = ugettext(
                         "Only letters, numbers, dashes or underscores please")
+            
         except KeyError:
             pass
         for field in self.fields:

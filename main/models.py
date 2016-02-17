@@ -1,6 +1,6 @@
 # coding: utf-8
 from __future__ import unicode_literals
-
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -16,15 +16,15 @@ class City(models.Model):
 
 
 class Driver(models.Model):
-    name = models.CharField(max_length=100, blank=False)
     mobile = models.CharField(max_length=30, blank=False)
     featured_image = models.ImageField(upload_to="uploads", null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Driver"
         verbose_name_plural = "Drivers"
     
     def __unicode__(self):
-            return self.name
+            return self.mobile
 
 class DriverCarImage(models.Model):
     driver = models.ForeignKey(Driver, related_name="images")

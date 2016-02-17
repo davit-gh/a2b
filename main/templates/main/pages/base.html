@@ -53,8 +53,8 @@
             <div class="modal-content">
                 <div class="modal-body">
                     {% if request.user.is_authenticated %}
-                        
-                        
+                        <p class="text-center"><a class="center-block" href="{% url "rides" %}">Երթուղիներ</a></p>
+                        <p class="text-center"><a class="center-block" href="{% url "profile_update" %}">Պրոֆիլ</a></p>
                         <p class="text-center"><a class="center-block" href="{% url "logout" %}">Դուրս գալ</a></p>
                     {% else %}
                         
@@ -102,7 +102,20 @@
         </div>
 
 
-        {% block message %}{% endblock %}
+        {% block message %}
+            {% if messages %}
+                <div class="container message">
+                    {% for message in messages %}
+                        <div id="alert-div" class="alert alert-dismissable alert-info" data-alert="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endblock %}
+
+
         <div class="templatemo_home_inner_wapper">
             <h1 class="text-center" style="margin: 0.4em 0;">
                 <i class="fa fa-car"></i>
@@ -161,27 +174,20 @@
             <div id="center-block searchbar">
                 <div class="searchbar">
                     <form id="searchbar-form" action="{% url 'ridesearch' %}" method="post">
-                        <div>
                             {% csrf_token %}
-                            {% for hidden in sform.hidden_fields %}
+                            {% for hidden in searchform.hidden_fields %}
                                 {{ hidden }}
                             {% endfor %}
-                            {% if sform.non_field_errors %}
-                                {{ sform.non_field_errors }}
-                            {% endif %}
 
-                            <div class="searchbar__input-wrapper">
+                            {% for field in searchform.visible_fields %}
+                                <label style="vertical-align: top">
 
-                                {% for field in searchform.visible_fields %}
-                                    <label style="vertical-align: top">
-
-                                        {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" required='required' %}
-                                    </label>
-                                {% endfor %}
-                                <button class="btn btn-primary"
-                                        style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել
-                                </button>
-                            </div>
+                                    {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" %}
+                                </label>
+                            {% endfor %}
+                            <button class="btn btn-primary"
+                                    style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել
+                            </button>
                     </form>
                 </div>
             </div>
