@@ -95,7 +95,7 @@ class ProfileForm(forms.ModelForm):
     fields are injected into the form.
     """
     mobile          = forms.CharField()
-    featured_image  = forms.ImageField(required=False)
+    featured_image  = forms.ImageField(required=True)
     password1       = forms.CharField(label="Password",
                                 widget=forms.PasswordInput(render_value=False))
     password2       = forms.CharField(label="Password (again)",
