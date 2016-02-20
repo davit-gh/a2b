@@ -53,7 +53,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     {% if request.user.is_authenticated %}
-                        <p class="text-center"><a class="center-block" href="{% url "rides" %}">Երթուղիներ</a></p>
+                        
                         <p class="text-center"><a class="center-block" href="{% url "profile_update" %}">Պրոֆիլ</a></p>
                         <p class="text-center"><a class="center-block" href="{% url "logout" %}">Դուրս գալ</a></p>
                     {% else %}
@@ -174,20 +174,24 @@
             <div id="center-block searchbar">
                 <div class="searchbar">
                     <form id="searchbar-form" action="{% url 'ridesearch' %}" method="post">
+                        <div>
                             {% csrf_token %}
                             {% for hidden in searchform.hidden_fields %}
                                 {{ hidden }}
                             {% endfor %}
 
-                            {% for field in searchform.visible_fields %}
-                                <label style="vertical-align: top">
+                            <div class="searchbar__input-wrapper">
 
-                                    {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" %}
-                                </label>
-                            {% endfor %}
-                            <button class="btn btn-primary"
-                                    style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել
-                            </button>
+                                {% for field in searchform.visible_fields %}
+                                    <label style="vertical-align: top">
+
+                                        {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" required='required' %}
+                                    </label>
+                                {% endfor %}
+                                <button class="btn btn-primary"
+                                        style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել
+                                </button>
+                            </div>
                     </form>
                 </div>
             </div>
@@ -236,9 +240,7 @@
             keyboard: true,
             backdrop: "static",
             show: false
-
         }).on('show.bs.modal', function (event) { //subscribe to show method
-
             var getIdFromRow = $(event.relatedTarget).closest('img').data('id'); //get the id from tr
             //make your ajax call populate items or what even you need
             $.post("{% url 'get_car_images' %}", {
@@ -247,14 +249,12 @@
             }, function (data) {
                 var images = data.images,
                         html = '';
-
                 for (var i in images) {
                     html += '<img src="' + images[i] + '" width="300px"/>';
                 }
                 $('h4.modal-title').html(data.name + ' - ' + data.mobile);
                 $('.driver-images').html(html);
             });
-
         });
     });
 </script>
