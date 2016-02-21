@@ -27,9 +27,9 @@
 		            {% endfor %}
 			    </div>
 				
-			    {{ imageFormset.management_form }}
+			    {{ formset.management_form }}
 
-		{% for form in imageFormset %}
+		{% for form in formset %}
 		        {% for hidden in form.hidden_fields %}
 			       {{hidden}}
 			    {% endfor %}
@@ -38,7 +38,7 @@
 		                <div class="col-sm-6">
 		                    <div class="form-group">
 		                        {{ vis.label_tag }}{{ vis.errors }}
-		                        {% render_field vis class="form-control"> %}
+		                        {% render_field vis class="form-control" %}
 		                    </div>
 		                </div>
 		                

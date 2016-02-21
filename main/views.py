@@ -1,8 +1,8 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
-from main.models import DriverCarImage, Ride, Driver
+from main.models import Ride, Driver, DriverCarImage
 from main.tables import RideTable
-from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm
+from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarImageForm
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.contrib.auth import (authenticate, login as auth_login,
                                                logout as auth_logout)
 from django.contrib.auth.decorators import login_required
-from django.forms import modelformset_factory
+from django.forms import formset_factory
 
 # Create your views here.
 def contactus(request):
@@ -88,7 +88,7 @@ def signup(request, template="main/register.html"):
     Login form.
     """
     login_form = LoginForm(prefix="login")
-    DriverCarImageFormSet = modelformset_factory(DriverCarImage, exclude=('driver',), extra=3)
+    DriverCarImageFormSet = formset_factory(CarImageForm, extra=3)
     signup_form = ProfileForm()
     formset = DriverCarImageFormSet
     if request.method == "POST":
@@ -114,8 +114,12 @@ def signup(request, template="main/register.html"):
                             featured_image=request.FILES.get('featured_image', None))#set mobile and featured image
             driver.save()
             
-            fset = formset.save(commit=False)
-            for fs in fset: fs.driver = driver; fs.save()
+            if formset.is_valid():
+                for form in formset: 
+                    cd = form.cleaned_data
+                    if cd:
+                        dci = DriverCarImage(driver=driver, image=cd.get('image'))
+                        dci.save()
             
             messages.info(request, "Successfully signed up")
             auth_login(request, new_user)
@@ -132,27 +136,29 @@ def profile_update(request, template="main/pages/account_profile_update.html"):
     """
     
     profile_form = ProfileForm
-    DriverCarImageFormSet = modelformset_factory(DriverCarImage, exclude=('driver',), max_num=3)
+    DriverCarImageFormSet = formset_factory(CarImageForm, extra=3, max_num=3)
+    driver = Driver.objects.get(user=request.user)
     if request.method == "POST":
         form = profile_form(request.POST, request.FILES or None,
                             instance=request.user)
-        imageFormset = DriverCarImageFormSet(request.POST, request.FILES)
+        formset = DriverCarImageFormSet(request.POST, request.FILES)
         featured = request.FILES.get('featured_image', None)
-        driver = Driver.objects.get(user=request.user)
-        if form.is_valid() and imageFormset.is_valid():
+        
+        if form.is_valid() and formset.is_valid():
+            #import pdb;pdb.set_trace()
             driver.mobile = request.POST.get('mobile', None)
-            if featured:
-                driver.featured_image = featured
+            driver.featured_image = featured
+            #driver.images = 
             driver.save()
             form.save()
-            if imageFormset.has_changed(): 
-                imageFormset.save()
+            #if formset.has_changed(): 
+             #   formset.save()
             messages.info(request, _("Profile updated"))
             return redirect("/")
     else:
-        form = profile_form(instance=request.user)
-        imageFormset = DriverCarImageFormSet()
-    context = {"form": form, "title": _("Update Profile"), "imageFormset": imageFormset}
+        form = profile_form(instance=request.user)#;
+        formset = DriverCarImageFormSet(initial=[{'image': obj.image} for obj in driver.images.all()])
+    context = {"form": form, "title": _("Update Profile"), "formset": formset}
     return render(request, template, context)
 
 

@@ -87,6 +87,10 @@ class LoginForm(forms.Form):
         return getattr(self, "_user", None)
 
 
+class CarImageForm(forms.Form):
+    image = forms.ImageField(required=False)
+
+
 class ProfileForm(forms.ModelForm):
     
     """
