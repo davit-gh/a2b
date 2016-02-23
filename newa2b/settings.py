@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'main',
     'newa2b',
     'widget_tweaks',
+    'jquery',
+    'djangoformsetjs',
+    'template_debug',
 ]
 
 MIDDLEWARE_CLASSES = [

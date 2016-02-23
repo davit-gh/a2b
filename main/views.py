@@ -13,7 +13,8 @@ from django.contrib import messages
 from django.contrib.auth import (authenticate, login as auth_login,
                                                logout as auth_logout)
 from django.contrib.auth.decorators import login_required
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
+from django import forms
 
 # Create your views here.
 def contactus(request):
@@ -39,7 +40,7 @@ def contactus(request):
 	
 def ridesearch(request):
     if request.method == 'POST':
-        form = ContactusForm(request.POST);import pdb;pdb.set_trace()
+        form = ContactusForm(request.POST)
         if form.is_valid():
 	    form.save()
 	    form = ContactusForm()
@@ -88,7 +89,7 @@ def signup(request, template="main/register.html"):
     Login form.
     """
     login_form = LoginForm(prefix="login")
-    DriverCarImageFormSet = formset_factory(CarImageForm, extra=3)
+    DriverCarImageFormSet = formset_factory(CarImageForm, max_num=6)
     signup_form = ProfileForm()
     formset = DriverCarImageFormSet
     if request.method == "POST":
@@ -136,28 +137,30 @@ def profile_update(request, template="main/pages/account_profile_update.html"):
     """
     
     profile_form = ProfileForm
-    DriverCarImageFormSet = formset_factory(CarImageForm, extra=3, max_num=3)
+    DriverCarImageFormSet = inlineformset_factory(Driver, DriverCarImage, fields=('image',), max_num=6,
+                            widgets={'image': forms.FileInput()})
     driver = Driver.objects.get(user=request.user)
     if request.method == "POST":
         form = profile_form(request.POST, request.FILES or None,
                             instance=request.user)
-        formset = DriverCarImageFormSet(request.POST, request.FILES)
+        formset = DriverCarImageFormSet(request.POST, request.FILES, instance=driver)
         featured = request.FILES.get('featured_image', None)
         
         if form.is_valid() and formset.is_valid():
             #import pdb;pdb.set_trace()
             driver.mobile = request.POST.get('mobile', None)
-            driver.featured_image = featured
+            if featured:
+                driver.featured_image = featured
             #driver.images = 
             driver.save()
             form.save()
-            #if formset.has_changed(): 
-             #   formset.save()
+            if formset.has_changed(): 
+                formset.save()
             messages.info(request, _("Profile updated"))
-            return redirect("/")
+            return redirect("/update")
     else:
         form = profile_form(instance=request.user)#;
-        formset = DriverCarImageFormSet(initial=[{'image': obj.image} for obj in driver.images.all()])
+        formset = DriverCarImageFormSet(instance=driver)
     context = {"form": form, "title": _("Update Profile"), "formset": formset}
     return render(request, template, context)
 

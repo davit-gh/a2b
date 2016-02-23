@@ -1,8 +1,11 @@
 {% extends 'main/pages/base.html' %}
-{% load widget_tweaks tags i18n %}
+{% load widget_tweaks tags staticfiles formset_tags %}
+
+{% block extra_js %}
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
+{% endblock %}
 
 {% block menu %}
-
 {% endblock %}
     
 {% block content %}
@@ -41,23 +44,41 @@
                                     {% render_field vis class="form-control" %}
                                 </div>
                             {% endfor %} 
-                            {{ formset.management_form }}
-                            {% for form in formset %}
-                                    {% for hidden in form.hidden_fields %}
-                                       {{hidden}}
-                                    {% endfor %}
-                                    <div class="row">
-                                        {% for vis in form.visible_fields %}
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    {{ vis.label_tag }}{{ vis.errors }}
-                                                    {% render_field vis class="form-control"> %}
-                                                </div>
+                            <div id="formset" data-formset-prefix="{{ formset.prefix }}">
+                                {{ formset.management_form }}
+                                <div data-formset-body>
+                                    {% for form in formset %}
+                                        <div data-formset-form>
+                                            {{ form.id }}
+                                            <div id="image-div" class="col-sm-6">
+                                                {{ form.image }}
                                             </div>
-                                            
-                                        {% endfor %}
-                                    </div>                                    
-                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <script type="form-template" data-formset-empty-form>
+                                    {% escapescript %}
+                                        <div data-formset-form>
+                                            {{ formset.empty_form.id }}
+                                            <div id="image-div" class="col-sm-6">
+                                                {{ formset.empty_form.image }}
+                                            </div>
+                                        </div>
+                                    {% endescapescript %}
+                                </script>
+
+                                <!-- This button will add a new form when clicked -->
+                                <input type="button" value="Add another" data-formset-add>
+
+                                <script>jQuery(function($) {
+                                    $("#formset").formset({
+                                        animateForms: true,
+                                        hasMaxFormsClass: true
+                                    });
+                                });
+                                </script>
+                            </div>
+
                             <div class="text-center">
                                 <button id="register_button" type="submit" class="btn btn-primary"
                                         style="background-color: orange; border-color: orange; font-weight: bold">
