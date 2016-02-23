@@ -87,6 +87,10 @@ class LoginForm(forms.Form):
         return getattr(self, "_user", None)
 
 
+class CarImageForm(forms.Form):
+    image = forms.ImageField(required=False)
+
+
 class ProfileForm(forms.ModelForm):
     
     """
@@ -95,7 +99,7 @@ class ProfileForm(forms.ModelForm):
     fields are injected into the form.
     """
     mobile          = forms.CharField()
-    featured_image  = forms.ImageField(required=False)
+    featured_image  = forms.ImageField(required=True, widget=forms.FileInput)
     password1       = forms.CharField(label="Password",
                                 widget=forms.PasswordInput(render_value=False))
     password2       = forms.CharField(label="Password (again)",
@@ -113,8 +117,9 @@ class ProfileForm(forms.ModelForm):
         user = kwargs.pop('instance', None)
         if user:
             self.fields['mobile'].initial = user.driver.mobile
+            #import pdb;pdb.set_trace()
             self.fields['featured_image'].initial = user.driver.featured_image
-        #import pdb;pdb.set_trace()
+        
         try:
             self.fields["username"].help_text = ugettext(
                         "Only letters, numbers, dashes or underscores please")

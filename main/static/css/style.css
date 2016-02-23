@@ -1941,7 +1941,9 @@ padding-right: 35px;
     border-radius: 100%;
 }
 
-
+#image-div{
+  padding: 15px 0;
+}
 
 
 
