@@ -28,4 +28,5 @@ urlpatterns = [
     url("^signup$", views.signup, name="signup"),
     url("^update$", views.profile_update, name="profile_update"),
     url("^rides$", views.rides, name="rides"),
+    url(r"^mail", views.mail_from_postmark, name="postmark"),
 ]

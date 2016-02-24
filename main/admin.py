@@ -1,6 +1,7 @@
 from django.contrib import admin
-from main.models import Driver, Ride, City, Contactus, DriverCarImage
+from main.models import Driver, Ride, City, Contactus, DriverImage
 from main.forms import RideAdminForm
+from main.models import Inboundmail
 
 class RideAdmin(admin.ModelAdmin):
 	"""docstring for RideAdmin"""
@@ -14,7 +15,7 @@ class RideInline(admin.TabularInline):
 	form = RideAdminForm
 
 class DriverCarImageInline(admin.TabularInline):
-	model=DriverCarImage
+	model=DriverImage
 	extra = 1
 	max_num = 333
 
@@ -22,6 +23,10 @@ class DriverAdmin(admin.ModelAdmin):
 	inlines=(DriverCarImageInline, RideInline, )
 
 
+class InboundmailAdmin(admin.ModelAdmin):
+        list_display=('send_date', 'subject', 'html_body', 'reply_to', 'sender', 'htmlify')
+
+admin.site.register(Inboundmail, InboundmailAdmin)
 admin.site.register(Ride, RideAdmin)
 admin.site.register(City)
 admin.site.register(Contactus)
