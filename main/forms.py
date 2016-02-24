@@ -42,7 +42,7 @@ class RideAdminForm(ModelForm):
     endtime     = forms.CharField(widget=TimeWidget())
     class Meta:
         model = Ride
-        fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'howmuch']
+        fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'price']
 	
     def clean_leavedate(self):
         leave_datetime = self.cleaned_data["leavedate"]

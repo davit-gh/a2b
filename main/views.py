@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
-from main.models import Ride, Driver, DriverCarImage
+from main.models import Ride, Driver, DriverImage
 from main.tables import RideTable
 from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarImageForm
 from django.contrib import messages
@@ -15,7 +15,11 @@ from django.contrib.auth import (authenticate, login as auth_login,
 from django.contrib.auth.decorators import login_required
 from django.forms import formset_factory, inlineformset_factory
 from django import forms
-
+from main.models import Inboundmail
+from postmark_inbound import PostmarkInbound
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files import File
+import json
 # Create your views here.
 def contactus(request):
 	if request.method == 'POST':
@@ -89,9 +93,9 @@ def signup(request, template="main/register.html"):
     Login form.
     """
     login_form = LoginForm(prefix="login")
-    DriverCarImageFormSet = formset_factory(CarImageForm, max_num=6)
+    DriverImageFormSet = formset_factory(CarImageForm, max_num=6)
     signup_form = ProfileForm()
-    formset = DriverCarImageFormSet
+    formset = DriverImageFormSet
     if request.method == "POST":
         #import pdb;pdb.set_trace()
         login_form = LoginForm(request.POST, prefix="login")
@@ -108,7 +112,7 @@ def signup(request, template="main/register.html"):
             return redirect('/')
 
         if signup_form.has_changed() and signup_form.is_valid():
-            formset = DriverCarImageFormSet(request.POST, request.FILES)
+            formset = DriverImageFormSet(request.POST, request.FILES)
             new_user = signup_form.save()
             #
             driver = Driver(user=new_user, mobile=request.POST.get('mobile',None), 
@@ -119,7 +123,7 @@ def signup(request, template="main/register.html"):
                 for form in formset: 
                     cd = form.cleaned_data
                     if cd:
-                        dci = DriverCarImage(driver=driver, image=cd.get('image'))
+                        dci = DriverImage(driver=driver, image=cd.get('image'))
                         dci.save()
             
             messages.info(request, "Successfully signed up")
@@ -137,13 +141,13 @@ def profile_update(request, template="main/pages/account_profile_update.html"):
     """
     
     profile_form = ProfileForm
-    DriverCarImageFormSet = inlineformset_factory(Driver, DriverCarImage, fields=('image',), max_num=6,
+    DriverImageFormSet = inlineformset_factory(Driver, DriverImage, fields=('image',), max_num=6,
                             widgets={'image': forms.FileInput()})
     driver = Driver.objects.get(user=request.user)
     if request.method == "POST":
         form = profile_form(request.POST, request.FILES or None,
                             instance=request.user)
-        formset = DriverCarImageFormSet(request.POST, request.FILES, instance=driver)
+        formset = DriverImageFormSet(request.POST, request.FILES, instance=driver)
         featured = request.FILES.get('featured_image', None)
         
         if form.is_valid() and formset.is_valid():
@@ -160,7 +164,7 @@ def profile_update(request, template="main/pages/account_profile_update.html"):
             return redirect("/update")
     else:
         form = profile_form(instance=request.user)#;
-        formset = DriverCarImageFormSet(instance=driver)
+        formset = DriverImageFormSet(instance=driver)
     context = {"form": form, "title": _("Update Profile"), "formset": formset}
     return render(request, template, context)
 
@@ -185,3 +189,31 @@ def rides(request, template="main/pages/ride.html"):
         form = RideAdminForm()
 
     return render(request, template, {'form': form})
+
+
+@csrf_exempt
+def mail_from_postmark(request):
+        if request.method == 'POST':
+                json_data = request.body
+                #body = json.loads(json_data)['HtmlBody']
+                inbound = PostmarkInbound(json=json_data)
+                if inbound.has_attachments():
+                    attachments = inbound.attachments()
+                    names = []
+                    #absolue_uri = "<a href='"+request.build_absolute_uri(name1)+"'>" + name + "</a>"
+                    for attachment in attachments:
+                        name = attachment.name()
+                        name1 = settings.MEDIA_URL + 'attachments/' + name
+                        name2 = settings.MEDIA_ROOT + '/attachments/' + name                        
+                        names.append(name1)
+                        with open(name2,'w') as f:
+                            myFile = File(f)
+                            myFile.write(attachment.read())
+                    mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender(), attachment=','.join(names))
+                    #pdb.set_trace()
+                else:
+                    mail = Inboundmail(html_body=inbound.text_body(), send_date=inbound.send_date(), subject=inbound.subject(), reply_to=inbound.reply_to(), sender=inbound.sender())
+                mail.save()
+                return HttpResponse('OK')
+        else:
+                return HttpResponse('not OK')
