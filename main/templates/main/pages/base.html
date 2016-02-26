@@ -13,9 +13,9 @@
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/modernizr.custom.min.js' %}"></script>
-    
+
     {% block extra_js %}{% endblock %}
-    
+
     {% searchform as searchform %}
     {{ searchform.media }}
     <!-- CSS -->
@@ -59,11 +59,11 @@
                         <p class="text-center"><a class="center-block" href="{% url "profile_update" %}">Պրոֆիլ</a></p>
                         <p class="text-center"><a class="center-block" href="{% url "logout" %}">Դուրս գալ</a></p>
                     {% else %}
-                        
+
                         <form action="{% url "signup" %}" method="post">
-                            
+
                             {% csrf_token %}
-            
+
                             {% for hidden in loginform.hidden_fields %}
                                {{hidden}}
                             {% endfor %}
@@ -81,13 +81,13 @@
                             </p>
 
                         </form>
-                        
+
                         <p class="text-center text-muted">Դեռ գրանցված չեք?</p>
                         <p class="text-center text-muted">
                             <a href="{% url "signup" %}"><strong style="color:orange;">Գրանցվեք հիմա</strong></a>
                             </strong>! Դա շատ արագ է և կկարողանաք ավելացնել հայտարարություններ։</p>
                     {% endif %}
-                    
+
 
                 </div>
             </div>
@@ -220,13 +220,16 @@
 
 </section>
 
-<section id="how-it-works">
+<section id="how-it-works" class="how-it-works">
     <div class="container">
         <h2 class="section-title">Ինչպե՞ս է աշխատում</h2>
 
         <div class="row">
             <p id="how">
-                How it works text goes here
+                A2B թիմը ընդձեռում է հնարավորություն վարորդներին տեղադրելու այլ բնակավայր մեկնելու մասին
+                հաղորդագրություն։
+                Դրա համար վարորդները պետք է գրանցվեն մեզ մոտ և ներբեռնեն իրենց նկարը և մեքենայի նկարը։ <br/>
+                Ուղևորները, որոնք գնում են նույն ուղղությամբ կարող են փնտրել իրենց երթուղուն համապատասխան վարորդ։
             </p>
         </div>
     </div>
