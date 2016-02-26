@@ -320,7 +320,7 @@ h2::after {
   z-index: -1;
   width: 100%;
   height: 2px;
-  background-color: #2ECC71; }
+}
 
 h3 {
   margin: .6667em 0 0.5em;
@@ -1836,7 +1836,7 @@ table, th, td {
 
 .a2b-background{
     padding: 1em 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(51, 51, 51, 0.98)
 }
 
 div.pager {
@@ -1870,7 +1870,15 @@ div.pager span.active {
 }
 
 .message{
-  margin-top: 5em;
+  margin: 1.5em 0;
+}
+
+.alert-info{
+    background-color: #FFDA92;
+    border: none;
+    color: #333333;
+
+
 }
 
 #how{
