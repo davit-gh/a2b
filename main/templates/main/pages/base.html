@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load render_table from django_tables2 %}
-{% load staticfiles widget_tweaks get_form %}
+{% load staticfiles widget_tweaks get_form socialaccount %}
 <html lang="en" class="ie_11_scroll">
 <head>
     <meta charset="utf-8">
@@ -45,6 +45,7 @@
         <li><a class="scroll_effect" href="#how-it-works">Ինչպե՞ս է աշխատում</a></li>
         <li><a class="scroll_effect" href="#templatemo_contact">Կապվեք Մեզ Հետ</a></li>
         <li><a rel="nofollow" href="http://www.facebook.com/a2b" target="_parent">Fan Page</a></li>
+        <li><a href="{% provider_login_url "facebook" method="oauth2" %}">Facebook OAuth2</a></li>
     </ul>
 </nav>
 {% endblock %}

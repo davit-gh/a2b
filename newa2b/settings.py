@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django_tables2',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +45,15 @@ INSTALLED_APPS = [
     'jquery',
     'djangoformsetjs',
     'template_debug',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.odnoklassniki',
+    'allauth.socialaccount.providers.vk',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,6 +117,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -179,4 +195,13 @@ POSTMARK_API_KEY = "a63bc047-16f1-448e-bdb7-0cbd6a0bd126"
 POSTMARK_API_USER = "bigelow"
 POSTMARK_API_PASSWORD = "verysecure"
 DEFAULT_FROM_EMAIL = 'admin@cpupanda.com'
-SHOP_ORDER_FROM_EMAIL  = DEFAULT_FROM_EMAIL
+
+# auth and allauth settings
+LOGIN_REDIRECT_URL = '/'
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'SCOPE': ['email', 'publish_actions'],
+        'METHOD': 'js_sdk'  # instead of 'oauth2'
+    }
+}
