@@ -1,3 +1,5 @@
 .idea
 *.pyc
 *.sqlite3
+newa2b/static/media/uploads/
+main/migrations/
