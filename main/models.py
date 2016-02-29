@@ -27,40 +27,42 @@ class Country(models.Model):
 
 
 class Image(models.Model):
-    image = models.ImageField(upload_to="uploads/cars", null=True, blank=True)
-    caption = models.CharField(max_length=50)
+    image = models.ImageField(upload_to="uploads/images", null=True, blank=True)
+    caption = models.CharField(max_length=50, blank=True)
     class Meta:
         verbose_name = "Image"
         verbose_name_plural = "Images"
         db_table = "ab_image"
     def __unicode__(self):
-            return self.name_hy
+            return self.image.name
 
 
 class Driver(models.Model):
     mobile = models.CharField(max_length=30, blank=False)
-    featured_image = models.ImageField(upload_to="uploads", null=True, blank=True)
+    featured_image = models.OneToOneField(Image, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    licence_plate = models.CharField(max_length=10, default="19oo199")
     class Meta:
         verbose_name = "Driver"
         verbose_name_plural = "Drivers"
+        db_table = "ab_driver"
     def __unicode__(self):
             return self.mobile
 
 class DriverImage(models.Model):
-    driver = models.ForeignKey(Driver, related_name="images")
-    image = models.ForeignKey(Image, related_name="imgs")
+    driver = models.ForeignKey(Driver, related_name="imgs")
+    image = models.ImageField(upload_to="uploads/images", null=True, blank=True)
     class Meta:
-        verbose_name="Driver Car Image"
-        verbose_name_plural="Driver Car Images"
+        verbose_name="Driver Image"
+        verbose_name_plural="Driver Images"
         db_table = "ab_driverimage"
 
 class Ride(models.Model):
     fromwhere = models.ForeignKey(City, related_name="rides_from")
     towhere = models.ForeignKey(City, related_name="rides_to")
-    leavedate = models.DateTimeField(blank=True)
+    leavedate = models.DateField(blank=True)
     starttime = models.TimeField(blank=True)
-    endtime = models.TimeField(blank=True)
+    endtime = models.TimeField(blank=True, null=True)
     price = models.IntegerField(blank=True)
     driver = models.ForeignKey(Driver, related_name="rides")
 
@@ -86,8 +88,8 @@ class Contactus(models.Model):
 
 
 class UserSearch(models.Model):
-    fromwhere = models.ForeignKey(City, related_name="search_rides_from")
-    towhere = models.ForeignKey(City, related_name="search_rides_to")
+    fromwhere =  models.CharField(max_length=100, blank=False)
+    towhere = models.CharField(max_length=100, blank=False)
     leavedate = models.DateField(blank=True)
 
     class Meta:

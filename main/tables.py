@@ -9,20 +9,20 @@ class DriverColumn(tables.Column):
     def render(self, record):
         return mark_safe('<img id="driver-img" width="150px" data-id=' + str(
             record.driver.id) + ' data-toggle="modal" data-target="#myModal" src="%s" />' % escape(
-            record.driver.featured_image.url))
+            record.driver.featured_image.image.url))
 
 
 class RideTable(tables.Table):
     leavedate = tables.Column(verbose_name="Ամսաթիվ")
     driver = DriverColumn(verbose_name="Վարորդ")
-    howmuch = tables.Column(verbose_name="Արժեքը")
+    price = tables.Column(verbose_name="Արժեքը")
     fromwhere = tables.Column(verbose_name="Որտեղից")
     towhere = tables.Column(verbose_name="Ուր")
 
 
 
     def render_leavedate(self, value, record):
-        return "%s - %s" % (record.leavedate.strftime('%d/%m/%Y %H:%M'), record.endtime.strftime("%H:%M"))
+        return "%s - %s" % (record.leavedate.strftime('%d/%m/%Y'), record.starttime.strftime("%H:%M"))
 
     class Meta:
         model = Ride

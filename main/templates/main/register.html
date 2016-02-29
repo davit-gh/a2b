@@ -40,8 +40,8 @@
                             {% endfor %}
                             {% for vis in signup_form.visible_fields %}
                                 <div class="form-group">
-                                    {{ vis.label_tag }}{% for error in vis.errors %} <span id=error>{{ error }}</span>{% endfor %}
-                                    {% render_field vis class="form-control" %}
+                                    {{ vis.label_tag }}{% for error in vis.errors %} <span id="error">{{ error }}</span>{% endfor %}
+                                    {% render_field vis class="form-control" required="required" %}
                                 </div>
                             {% endfor %} 
                             <div id="formset" data-formset-prefix="{{ formset.prefix }}">
@@ -68,6 +68,7 @@
                                 </script>
 
                                 <!-- This button will add a new form when clicked -->
+                                
                                 <input type="button" value="Add another" data-formset-add>
 
                                 <script>jQuery(function($) {
