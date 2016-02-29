@@ -22,7 +22,7 @@ class RideTable(tables.Table):
 
 
     def render_leavedate(self, value, record):
-        return "%s - %s" % (record.leavedate.strftime('%d/%m/%Y %H:%M'), record.endtime.strftime("%H:%M"))
+        return "%s - %s" % (record.leavedate.strftime('%d/%m/%Y'), record.starttime.strftime("%H:%M"))
 
     class Meta:
         model = Ride

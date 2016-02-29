@@ -38,16 +38,16 @@ class UserSearchForm(ModelForm):
 class RideAdminForm(ModelForm):
     fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
     towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
-    leavedate   = forms.CharField(widget=DateTimeWidget(attrs={'id':"id_source"}, options={'startDate':'+1d'}))
-    endtime     = forms.CharField(widget=TimeWidget())
+    leavedate   = forms.CharField(widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}))
+    starttime   = forms.CharField(widget=TimeWidget())
     class Meta:
         model = Ride
-        fields = ['fromwhere', 'towhere', 'leavedate', 'endtime', 'price']
+        fields = ['fromwhere', 'towhere', 'leavedate', 'starttime', 'price']
 	
     def clean_leavedate(self):
         leave_datetime = self.cleaned_data["leavedate"]
-        leave_date = datetime.strptime(leave_datetime,'%d/%m/%Y %H:%M')
-        return leave_date.strftime('%Y-%m-%d %H:%M')
+        leave_date = datetime.strptime(leave_datetime,'%d/%m/%Y')
+        return leave_date.strftime('%Y-%m-%d')
 
 class ContactusForm(ModelForm):
 	class Meta:

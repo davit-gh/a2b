@@ -60,9 +60,9 @@ class DriverImage(models.Model):
 class Ride(models.Model):
     fromwhere = models.ForeignKey(City, related_name="rides_from")
     towhere = models.ForeignKey(City, related_name="rides_to")
-    leavedate = models.DateTimeField(blank=True)
+    leavedate = models.DateField(blank=True)
     starttime = models.TimeField(blank=True)
-    endtime = models.TimeField(blank=True)
+    endtime = models.TimeField(blank=True, null=True)
     price = models.IntegerField(blank=True)
     driver = models.ForeignKey(Driver, related_name="rides")
 

@@ -70,7 +70,7 @@ def ridesearch(request):
     table = RideTable(rides)
     RequestConfig(request, paginate={"per_page": 3}).configure(table)
     loginform = LoginForm(prefix="login")
-    return render(request, 'main/pages/index.html', {'table': table, 'form':form, 'loginform':loginform})
+    return render(request, 'main/pages/search.html', {'table': table, 'form':form, 'loginform':loginform})
 
 def get_car_images(request):
 	if request.method == 'POST' and request.is_ajax():

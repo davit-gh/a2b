@@ -77,7 +77,7 @@
                             <input type="hidden" value="from_popup" name="from_popup" />
                             <p class="text-center">
                                 <button class="btn btn-primary"
-                                        style="background-color: orange; border-color: orange; font-weight: bold">>
+                                        style="background-color: orange; border-color: orange; font-weight: bold">
                                     <i class="fa fa-sign-in"></i> Մտնել</button>
                             </p>
 
@@ -122,66 +122,68 @@
 
 
 
-
-        <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
-            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
-                Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
-            </span>
-        </div>
-
+        {% block sub1 %}            
+            <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
+                <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
+                    Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
+                </span>
+            </div>
+        {% endblock sub1 %}
         <div class="templatemo_home_inner_wapper">
             <h1 class="text-center" style="margin: 0.4em 0;">
                 <i class="fa fa-car"></i>
                 <span style="color:orange">A</span>-ից
                 <span style="color:orange">B</span></h1>
         </div>
-        <div>
-            <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
-        </div>
+        {% block sub2 %}
+            <div>
+                <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
+            </div>
 
 
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="static/images/driver.png">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Վարորդներին</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol>
-                                <li>Տեղադրիր հայտարարություն</li>
-                                <li>Վերցրու ուղևոր</li>
-                                <li>Վաստակիր գումար</li>
-                            </ol>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="static/images/driver.png">
+                        </div>
+                        <div class="col-sm-12 text-center">
+                            <span class="advantage-header">Վարորդներին</span>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="advantage-list">
+                                <ol>
+                                    <li>Տեղադրիր հայտարարություն</li>
+                                    <li>Վերցրու ուղևոր</li>
+                                    <li>Վաստակիր գումար</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" src="static/images/passenger.png">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Ուղևորներին</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol class="advantage-list">
-                                <li>Պայմանավորվիր վարորդի հետ</li>
-                                <li>Ճանապարհորդիր ավելի էժան</li>
-                                <li>Ընկերակցիր</li>
-                            </ol>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <img class="advantage-graphic" src="static/images/passenger.png">
                         </div>
+                        <div class="col-sm-12 text-center">
+                            <span class="advantage-header">Ուղևորներին</span>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="advantage-list">
+                                <ol class="advantage-list">
+                                    <li>Պայմանավորվիր վարորդի հետ</li>
+                                    <li>Ճանապարհորդիր ավելի էժան</li>
+                                    <li>Ընկերակցիր</li>
+                                </ol>
+                            </div>
+                        </div>
+
+
                     </div>
-
-
                 </div>
             </div>
-        </div>
+        {% endblock sub2 %}
 
         <div class="text-center hide-sm">
             <div id="center-block searchbar">
