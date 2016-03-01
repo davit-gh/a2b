@@ -27,6 +27,7 @@ urlpatterns = [
     url("^logout$", views.logout, name="logout"),
     url("^signup$", views.signup, name="signup"),
     url("^update$", views.profile_update, name="profile_update"),
+    url("^add_info$", views.add_info, name="add_info"),
     url("^rides$", views.rides, name="rides"),
     url(r"^mail", views.mail_from_postmark, name="postmark"),
     url(r'^accounts/', include('allauth.urls')),

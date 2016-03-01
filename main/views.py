@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from main.models import Ride, Driver, DriverImage, Image, City
 from main.tables import RideTable
-from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarImageForm
+from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarImageForm, AddInfoForm
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
@@ -239,3 +239,37 @@ def mail_from_postmark(request):
                 return HttpResponse('OK')
         else:
                 return HttpResponse('not OK')
+
+
+def add_info(request, template='main/pages/add_info.html'):
+    
+    DriverImageFormSet = formset_factory(CarImageForm, max_num=6)
+    
+     
+    if request.method == "POST":
+        form = AddInfoForm(request.POST, request.FILES)
+        formset = DriverImageFormSet(request.POST, request.FILES)
+        
+        #import pdb;pdb.set_trace()
+        featured = request.FILES.get('featured_image', None)
+        if form.is_valid() and formset.is_valid():
+            #import pdb;pdb.set_trace()
+            
+            if featured:
+                img = Image.objects.create(image=featured)
+                
+            #driver.images = 
+            driver = Driver(mobile=form.cleaned_data['mobile'], featured_image=img, user=request.user)
+            driver.save()
+            for form in formset: 
+                cd = form.cleaned_data
+                if cd:
+                    dci = DriverImage(driver=driver, image=cd.get('image'))
+                    dci.save()
+            messages.info(request, _("Profile updated"))
+            return redirect("/")
+    else:
+        form = AddInfoForm()
+        formset = DriverImageFormSet()
+    context = {"form": form, "formset": formset}
+    return render(request, template, context)

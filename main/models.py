@@ -64,6 +64,7 @@ class Ride(models.Model):
     starttime = models.TimeField(blank=True)
     endtime = models.TimeField(blank=True, null=True)
     price = models.IntegerField(blank=True)
+    passenger_number = models.IntegerField(blank=False, default=2)
     driver = models.ForeignKey(Driver, related_name="rides")
 
     class Meta:

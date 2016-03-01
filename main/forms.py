@@ -42,7 +42,7 @@ class RideAdminForm(ModelForm):
     starttime   = forms.CharField(widget=TimeWidget())
     class Meta:
         model = Ride
-        fields = ['fromwhere', 'towhere', 'leavedate', 'starttime', 'price']
+        fields = ['fromwhere', 'towhere', 'leavedate', 'starttime', 'passenger_number', 'price']
 	
     def clean_leavedate(self):
         leave_datetime = self.cleaned_data["leavedate"]
@@ -90,6 +90,14 @@ class LoginForm(forms.Form):
 class CarImageForm(forms.Form):
     image = forms.ImageField(required=False)
 
+
+CHOICES=[('Կին','Կին'),
+         ('Տղամարդ','Տղամարդ')]
+
+class AddInfoForm(forms.Form):
+    mobile         = forms.CharField(label=u"Բջջային",)
+    gender         = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
+    featured_image = forms.ImageField(required=True)
 
 class ProfileForm(forms.ModelForm):
     

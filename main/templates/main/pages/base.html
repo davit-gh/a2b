@@ -56,8 +56,12 @@
             <div class="modal-content">
                 <div class="modal-body">
                     {% if request.user.is_authenticated %}
-                        <p class="text-center"><a class="center-block" href="{% url "rides" %}">Երթուղիներ</a></p>
-                        <p class="text-center"><a class="center-block" href="{% url "profile_update" %}">Պրոֆիլ</a></p>
+                        {% if request.user.driver %}
+                            <p class="text-center"><a class="center-block" href="{% url "rides" %}">Երթուղիներ</a></p>
+                            <p class="text-center"><a class="center-block" href="{% url "profile_update" %}">Պրոֆիլ</a></p>
+                        {% else %}
+                            <p class="text-center"><a class="center-block" href="{% url "add_info" %}">Ավելացնել ինֆօ</a></p>
+                        {% endif %}
                         <p class="text-center"><a class="center-block" href="{% url "logout" %}">Դուրս գալ</a></p>
                     {% else %}
 
