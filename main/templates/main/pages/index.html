@@ -51,6 +51,7 @@
 
             </div>
             <h2 class="section-title">Գրեք Ֆեյսբուքի էջին</h2>
+
             <div class="row" style="margin-bottom: 20px;">
                 <img src="static/images/facebook.png" style="width: 50px;"/>
             </div>
@@ -64,8 +65,26 @@
 {% endblock %}
 
 {% block login %}
-    <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal" data-target="#login-modal"
-            style="top: 0px;">
-        <span>{% if request.user.is_authenticated %}Բարև {{ request.user.username }}!{% else %}Մուտք գործել/գրանցվել{% endif %}</span>
-    </button>
+    {% if not request.user.is_authenticated %}
+        <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
+                data-target="#login-modal"
+                style="top: 0px;">
+            <span>{% if request.user.is_authenticated %}Բարև {{ request.user.username }}!{% else %}Մուտք
+                գործել/գրանցվել{% endif %}</span>
+        </button>
+    {% else %}
+        <div class="dropdown pull-right" style="right: 50px;">
+            <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
+                    style="top: 0px;">
+            <span>{% if request.user.is_authenticated %}Բարև {{ request.user.username }}!{% else %}Մուտք
+                գործել/գրանցվել{% endif %}</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{% url "profile_update" %}"><i class="fa fa-user"></i> Անձնական էջ</a></li>
+                <li><a href="{% url "rides" %}"><i class="fa fa-car"></i> Իմ երթուղիները</a></li>
+                <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Դուրս գալ</a></li>
+            </ul>
+        </div>
+
+    {% endif %}
 {% endblock %}
