@@ -83,6 +83,21 @@
 
                         </form>
 
+                        <a class="btn btn-primary btn-lg btn-block btn-social" href="/accounts/facebook/login"
+                           style="background-color: #3b5998;">
+                            <i class="fa fa-facebook-square"></i> Մուտք Facebook-ով
+                        </a>
+                        {% include "socialaccount/snippets/login_extra.html" %}
+
+                        <a class="btn btn-primary btn-lg btn-block btn-social" href="user/fb"
+                           style="background-color: #F6881F; display: none;">
+                            <i class="fa fa-odnoklassniki-square"></i> Մուտք OK-ով
+                        </a>
+                        <a class="btn btn-primary btn-lg btn-block btn-social" href="user/fb"
+                           style="background-color: #45668e; display: none;">
+                            <i class="fa fa-vk"></i> Մուտք VK-ով
+                        </a>
+
                         <p class="text-center text-muted">Դեռ գրանցված չեք?</p>
                         <p class="text-center text-muted">
                             <a href="{% url "signup" %}"><strong style="color:orange;">Գրանցվեք հիմա</strong></a>
