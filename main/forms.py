@@ -61,8 +61,8 @@ class LoginForm(forms.Form):
     """
     Fields for login.
     """
-    username = forms.CharField(label="Login")
-    password = forms.CharField(label="Password",
+    username = forms.CharField(label=u"Մուտքանուն")
+    password = forms.CharField(label=u"Գաղտնաբառ",
                                widget=forms.PasswordInput(render_value=False))
 
     def clean(self):
@@ -75,7 +75,7 @@ class LoginForm(forms.Form):
         self._user = authenticate(username=username, password=password)
         if self._user is None:
             raise forms.ValidationError(
-                             ugettext("Invalid username/email and password"))
+                             ugettext(u"Սխալ Էլ․ հասցե/մուտքանուն կամ գաղտնաբառ"))
         elif not self._user.is_active:
             raise forms.ValidationError(ugettext("Your account is inactive"))
         return self.cleaned_data
@@ -98,16 +98,22 @@ class ProfileForm(forms.ModelForm):
     If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
     fields are injected into the form.
     """
-    mobile          = forms.CharField()
-    featured_image  = forms.ImageField(required=True, widget=forms.FileInput)
-    password1       = forms.CharField(label="Password",
+    mobile          = forms.CharField(label=u"Բջջային",)
+    featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
+    password1       = forms.CharField(label=u"Գաղտնաբառ",
                                 widget=forms.PasswordInput(render_value=False))
-    password2       = forms.CharField(label="Password (again)",
+    password2       = forms.CharField(label=u"Գաղտնաբառ (Կրկնել)",
                                 widget=forms.PasswordInput(render_value=False))
     
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email", "username")
+        labels = {
+            'first_name': u'Անուն',
+            'last_name': u'Ազգանուն',
+            'email': u'Էլեկտրոնային հասցե',
+            'username': u'Մուտքանուն',
+        }
         
 
     def __init__(self, *args, **kwargs):
