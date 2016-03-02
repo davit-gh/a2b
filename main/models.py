@@ -42,6 +42,7 @@ class Driver(models.Model):
     featured_image = models.OneToOneField(Image, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     licence_plate = models.CharField(max_length=10, default="19oo199")
+    sex = models.CharField(max_length=10, default="Արական")
     class Meta:
         verbose_name = "Driver"
         verbose_name_plural = "Drivers"
@@ -72,7 +73,7 @@ class Ride(models.Model):
         verbose_name_plural = "Rides"
         db_table = "ab_ride"
     def __unicode__(self):
-            return self.fromwhere
+            return "%s - %s" % (self.fromwhere.name_en, self.towhere.name_en)
 
 class Contactus(models.Model):
     name = models.CharField("Անուն", max_length=100, blank=False)

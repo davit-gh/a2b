@@ -1957,9 +1957,18 @@ padding-right: 35px;
   color: red;
 }
 
+#car-images{
+  margin: 35px 0px 15px;
+}
 
+.fa-3x{
+  cursor: pointer;
+  margin-left: 100px;
+}
 
-
+#id_gender > li {
+  display: inline;
+}
 
 
 
