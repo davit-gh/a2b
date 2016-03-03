@@ -108,7 +108,7 @@ class ProfileForm(forms.ModelForm):
     """
     mobile          = forms.CharField(label=u"Բջջային",)
     featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
-    gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect())
+    gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
     password1       = forms.CharField(label=u"Գաղտնաբառ",
                                 widget=forms.PasswordInput(render_value=False))
     password2       = forms.CharField(label=u"Գաղտնաբառ (Կրկնել)",

@@ -86,7 +86,7 @@ def logout(request):
     Log the user out.
     """
     auth_logout(request)
-    messages.info(request, "Successfully logged out")
+    messages.info(request, "Հաջողությամբ դուրս եկաք Ձեր հաշվից։")
     return redirect('/')
 
 def signup(request, template="main/register.html"):
@@ -110,14 +110,18 @@ def signup(request, template="main/register.html"):
         
         if login_form.is_valid():
             authenticated_user = login_form.save()
-            messages.info(request, "Successfully logged in")
+            messages.info(request, "Հաջողությամբ մուտք գործեցիք։")
             auth_login(request, authenticated_user)
             
             return redirect('/')
 
         if signup_form.has_changed() and signup_form.is_valid():
             formset = DriverImageFormSet(request.POST, request.FILES)
-            new_user = signup_form.save()
+            new_user = signup_form.save(commit=False)
+            new_user.is_active = False
+            #import pdb;pdb.set_trace()
+            new_user.save()
+            
             data = signup_form.cleaned_data
             #import pdb;pdb.set_trace()
             f_img = Image.objects.create(image=request.FILES.get('featured_image'))
@@ -132,8 +136,8 @@ def signup(request, template="main/register.html"):
                         dci.save()
 
             
-            messages.info(request, "Successfully signed up")
-            auth_login(request, new_user)
+            messages.info(request, "Հաջողությամբ գրանցվեցիք։ Հաստատումից հետո կակտիվանա Ձեր հաշիվը։")
+            #auth_login(request, new_user)
             return redirect("/")
     #import pdb;pdb.set_trace()
     context = {"login_form": login_form, "signup_form": signup_form, "formset": formset}
