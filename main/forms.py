@@ -91,13 +91,13 @@ class CarImageForm(forms.Form):
     image = forms.ImageField(required=False)
 
 
-CHOICES=[('Կին','Կին'),
-         ('Տղամարդ','Տղամարդ')]
+CHOICES=[('Արական','Արական'),
+         ('Իգական','Իգական')]
 
 class AddInfoForm(forms.Form):
     mobile         = forms.CharField(label=u"Բջջային",)
-    gender         = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
-    featured_image = forms.ImageField(required=True)
+    gender         = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect())
+    featured_image = forms.ImageField(label=u"Ձեր նկարը", required=True)
 
 class ProfileForm(forms.ModelForm):
     
@@ -108,6 +108,7 @@ class ProfileForm(forms.ModelForm):
     """
     mobile          = forms.CharField(label=u"Բջջային",)
     featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
+    gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect())
     password1       = forms.CharField(label=u"Գաղտնաբառ",
                                 widget=forms.PasswordInput(render_value=False))
     password2       = forms.CharField(label=u"Գաղտնաբառ (Կրկնել)",

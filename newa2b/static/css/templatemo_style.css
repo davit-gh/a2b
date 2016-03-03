@@ -41,7 +41,6 @@ html {
     overflow: hidden;
 }
 body {
-    background: #455a64;
     overflow: auto;
     height: 100vh;
 }
@@ -165,7 +164,7 @@ nav.main-menu a:link, nav.main-menu a:hover, nav.main-menu a:focus, nav.main-men
     /*background:  url(../images/.jpg) fixed;*/
     background-size: cover;
     min-height: 100vh;
-    padding-bottom: 130px;
+    padding-bottom: 70px;
     color: #fff;
 }
 #templatemo_home .templatemo_home_inner_wapper {
@@ -435,4 +434,13 @@ color: #565a5c;
 
 #shuffle-controls{
     margin-top: 45px;
+}
+
+/***** How it works *****/
+.how-it-works {
+    background: #154558 url(../images/aboutUsBackground.jpg) fixed;
+    background-size: cover;
+    min-height: 30vh;
+    padding-bottom: 50px;
+    color: #fff;
 }

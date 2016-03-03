@@ -6,34 +6,21 @@
 	<script src="{% static 'js/jquery.formset.js' %}"></script>
 {% endblock %}
 {% block content %}
+        <div class="templatemo_home_inner_wapper">
+            <h1 class="text-center" style="margin: 0.4em 0;">
+                <i class="fa fa-car"></i>
+                <span style="color:orange">A</span>-ից
+                <span style="color:orange">B</span></h1>
+        </div>
 {% errors_for form %}
-	<div class="box clearfix">
-	    <h3>Personal details</h3>
+	<div class="container">
+	    <h3>Լրացուցիչ Տվյալներ</h3>
 	</div>
 	<form method="post" enctype="multipart/form-data">
-
-		        
-		        {% csrf_token %}
-		        
-		        {% for hidden in form.hidden_fields %}
-			       {{hidden}}
-			    {% endfor %}
-			    <div class="row">
-				    {% for vis in form.visible_fields %}
-				    	
-		                <div class="col-sm-6">
-		                    <div class="form-group">
-		                        {{ vis.label_tag }}{{ vis.errors }}
-		                        {% if vis.html_name != 'featured_image' %}
-		                        	{% render_field vis class="form-control"> %}
-		                        {% else %}
-		                        	{{ vis }}
-		                        {% endif %}
-		                    </div>
-		                </div>
-		                
-		            {% endfor %}
-			    </div>
+			<table>
+				{{ form.as_table }}
+			</table>
+			<h4 id="car-images">Մեքենայի նկարները</h4>
 			<div id="formset" data-formset-prefix="{{ formset.prefix }}">
 			    {{ formset.management_form }}
 			    <div data-formset-body>
@@ -64,8 +51,8 @@
 			    </script>
 
 			    <!-- This button will add a new form when clicked -->
-			    <input type="button" value="Add another" data-formset-add>
-
+			    
+			    <div id="make-hand"><i class="fa fa-plus-circle fa-3x" data-formset-add></i></div>
 			    <script>jQuery(function($) {
 			        $("#formset").formset({
 			            animateForms: true,

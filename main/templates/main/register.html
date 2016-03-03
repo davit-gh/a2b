@@ -39,10 +39,14 @@
                                {{hidden}}
                             {% endfor %}
                             {% for vis in signup_form.visible_fields %}
-                                <div class="form-group">
-                                    {{ vis.label_tag }}{% for error in vis.errors %} <span id="error">{{ error }}</span>{% endfor %}
-                                    {% render_field vis class="form-control" required="required" %}
-                                </div>
+                                {% if vis.name != "gender" %}
+                                    <div class="form-group">
+                                        {{ vis.label_tag }}{% for error in vis.errors %} <span id="error">{{ error }}</span>{% endfor %}
+                                        {% render_field vis class="form-control" required="required" %}
+                                    </div>
+                                {% else %}
+                                    {{ vis.label_tag }}{{ vis }}
+                                {% endif %}
                             {% endfor %} 
                             <div id="formset" data-formset-prefix="{{ formset.prefix }}">
                                 {{ formset.management_form }}
@@ -69,7 +73,7 @@
 
                                 <!-- This button will add a new form when clicked -->
                                 
-                                <input type="button" value="Add another" data-formset-add>
+                                <div id="make-hand"><i class="fa fa-plus-circle fa-3x" data-formset-add></i></div>
 
                                 <script>jQuery(function($) {
                                     $("#formset").formset({

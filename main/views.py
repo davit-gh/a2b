@@ -118,9 +118,10 @@ def signup(request, template="main/register.html"):
         if signup_form.has_changed() and signup_form.is_valid():
             formset = DriverImageFormSet(request.POST, request.FILES)
             new_user = signup_form.save()
+            data = signup_form.cleaned_data
             #import pdb;pdb.set_trace()
             f_img = Image.objects.create(image=request.FILES.get('featured_image'))
-            driver = Driver.objects.create(user=new_user, mobile=request.POST.get('mobile',None), featured_image=f_img)#set mobile and featured image
+            driver = Driver.objects.create(user=new_user, mobile=data.get('mobile',None), featured_image=f_img, sex=data.get('gender'))#set mobile and featured image
             
             
             if formset.is_valid():
