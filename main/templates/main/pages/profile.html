@@ -27,6 +27,8 @@
 	<link rel="stylesheet" href="{% static 'main/css/resp_tab/easy-responsive-tabs.css' %}"/>
 {% endblock %}
 
+{% block section-id %}{% endblock %}
+
 {% block content %}
         <div class="templatemo_home_inner_wapper">
             <h1 class="text-center" style="margin: 0.4em 0;">
@@ -150,12 +152,12 @@
 		            	<table>
 		            		{{ rideform.as_table }}
 		            	</table>
-		            	<table>
-		            		<th>
+		            	<table class="table-bordered">
+		            		
 		            			<tr>
-		            				<td>Որտեղից</td><td>Ուր</td><td>Ամսաթիվ</td><td>Ազատ տեղերի քանակ</td><td>Գին</td><td>Գործողություն</td>
+		            				<th>Որտեղից</th><th>Ուր</th><th>Ամսաթիվ</th><th>Ազատ տեղերի քանակ</th><th>Գին</th><th>Գործողություն</th>
 		            			</tr>
-		            		</th>
+		            		
 		            		{% for ride in request.user.driver.rides.all %}
 		            			<tr id="{{ ride.id }}">
 		            				<td>{{ ride.fromwhere }}</td>

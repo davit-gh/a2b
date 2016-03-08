@@ -288,6 +288,7 @@ def profile(request, template='main/pages/profile.html'):
                 rf = rideform.save(commit=False)
                 rf.driver = request.user.driver
                 rf.save()
+                rideform  = RideAdminForm(prefix='ride', user=request.user)
             else:
                 #import pdb;pdb.set_trace()
                 #if rideform.is_bound:

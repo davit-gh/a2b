@@ -107,13 +107,11 @@
     </div>
 <!-- Home -->
 
-{% block content %}
-<section id="templatemo_home">
+
+
+<section {% block section-id %}id="templatemo_home"{% endblock %}>
     <div class="container a2b-background">
-
-
-
-    {% block message %}
+{% block message %}
         {% if messages %}
             <div class="container message">
                 {% for message in messages %}
@@ -125,6 +123,9 @@
             </div>
         {% endif %}
     {% endblock %}
+
+{% block content %}
+    
 
     {% block sub1 %}            
         <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
@@ -242,9 +243,10 @@
                 Ուղևորները, որոնք գնում են նույն ուղղությամբ կարող են փնտրել իրենց երթուղուն համապատասխան վարորդ։
             </p>
         </div>
+        {% endblock %}
     </div>
 </section>
-{% endblock %}
+
 <!-- Contact -->
 {% block contact %}{% endblock %}
 <!-- Footer -->

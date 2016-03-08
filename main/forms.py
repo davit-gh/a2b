@@ -91,7 +91,10 @@ class LoginForm(forms.Form):
         Authenticate the given username/email and password. If the fields
         are valid, store the authenticated user for returning via save().
         """
+        
         username = self.cleaned_data.get("username")
+        u = User.objects.get(email=username)
+        username = u.username
         password = self.cleaned_data.get("password")
         self._user = authenticate(username=username, password=password)
         if self._user is None:
@@ -192,7 +195,7 @@ class ProfileForm(forms.ModelForm):
                     self.fields[field].required = False
                     if field == "password1":
                         self.fields[field].help_text = ugettext(
-                        "Leave blank unless you want to change your password")
+                        u"Թողեք դատարկ, եթե չեք ուզում փոխել ծածկագիրը։")
         
 
     

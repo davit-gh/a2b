@@ -63,7 +63,7 @@ form textarea.form-control ,
 form select.form-control {
     border: 0px;
     background-color: transparent;
-    border-bottom: 3px solid #233842;
+    border-bottom: 3px solid #C2E3F3;
     border-radius: 0px;
     height: 45px;
 }
@@ -413,6 +413,10 @@ border: 1px solid #c4c4c4;
 border-radius: 2px;
 background-color: #fff;
 color: #565a5c;
+}
+
+#register-form input[type="text"]{
+  color: #fff;
 }
 
 #sort{
