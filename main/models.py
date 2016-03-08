@@ -119,3 +119,5 @@ class Inboundmail(models.Model):
         attachment_array = self.attachment.split(',')
         return  ' '.join([format_html('<a href="{}">{}</a>', att, att.split('/')[-1]) for att in attachment_array])
     htmlify.allow_tags = True
+
+    
