@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'datetimewidget',
     'main',
     'newa2b',
     'widget_tweaks',
@@ -188,7 +189,7 @@ LOCALE_PATHS = (
 FORMS_USE_HTML5 = True
 ACCOUNTS_MIN_PASSWORD_LENGTH = 6
 ACCOUNTS_VERIFICATION_REQUIRED = False
-ACCOUNTS_APPROVAL_REQUIRED = False
+ACCOUNTS_APPROVAL_REQUIRED = True
 
 EMAIL_BACKEND = "postmark.backends.PostmarkBackend"
 POSTMARK_API_KEY = "a63bc047-16f1-448e-bdb7-0cbd6a0bd126"

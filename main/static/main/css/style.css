@@ -1966,9 +1966,28 @@ padding-right: 35px;
   margin-left: 100px;
 }
 
-#id_gender > li {
+#id_driver-sex > li {
   display: inline;
 }
 
+.fa-times:hover{
+  cursor: pointer;
+}
 
+ul.errorlist.nonfield > li{
+  color: #A94442;
+  background-color: #F2DEDE;
+  border-color: #EBCCD1;
+  padding: 5px;
+  margin-bottom: 0px;
+  display: inline;
+}
 
+ul.errorlist > li{
+  color: #A94442;
+  background-color: #F2DEDE;
+  border-color: #EBCCD1;
+  padding: 5px;
+  margin-bottom: 0px;
+  display: inline;
+}

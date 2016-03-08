@@ -14,7 +14,7 @@ class DriverColumn(tables.Column):
 
 class RideTable(tables.Table):
     leavedate = tables.Column(verbose_name="Ամսաթիվ")
-    driver = DriverColumn(verbose_name="Վարորդ")
+    starttime = tables.Column(verbose_name="Ժամ")
     price = tables.Column(verbose_name="Արժեքը")
     fromwhere = tables.Column(verbose_name="Որտեղից")
     towhere = tables.Column(verbose_name="Ուր")
@@ -22,10 +22,10 @@ class RideTable(tables.Table):
 
 
     def render_leavedate(self, value, record):
-        return "%s - %s" % (record.leavedate.strftime('%d/%m/%Y'), record.starttime.strftime("%H:%M"))
+        return record.leavedate.strftime('%d - %m - %Y')
 
     class Meta:
         model = Ride
         attrs = {"class": "table table-hover"}
-        exclude = ("id", "endtime",)
+        exclude = ("id", "endtime", "driver", "passenger_number")
         empty_text = "Ներկայումս մենք չունենք Ձեր ուղղությամբ երթուղիներ, այցելեք մեզ ավելի ուշ։"

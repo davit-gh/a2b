@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from main.models import City, Ride, Contactus, UserSearch, Driver
+from main.models import City, Ride, Contactus, UserSearch, Driver, Image
 from django.forms import ModelForm, Textarea
 from django import forms
 from django.utils.translation import ugettext as _
@@ -16,13 +16,15 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import ugettext
 from django.contrib.auth import authenticate
-
+from django.utils.encoding import smart_text
+from django.core.exceptions import ObjectDoesNotExist
+import unicodedata, re
 
 class UserSearchForm(ModelForm):
 	
      
-	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'sourcefilter(this)'}))
-	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", widget=forms.Select(attrs={"onChange":'destfilter(this)'}))
+	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy")
+	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy")
 	leavedate   = forms.CharField(widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}))
 	class Meta:
  		model = UserSearch
@@ -36,19 +38,38 @@ class UserSearchForm(ModelForm):
 		return leave_date.strftime('%Y-%m-%d')
 		
 class RideAdminForm(ModelForm):
-    fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
-    towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), to_field_name="name_hy")
-    leavedate   = forms.CharField(widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}))
-    starttime   = forms.CharField(widget=TimeWidget())
+    fromwhere   = forms.ModelChoiceField(label=u"Որտեղի՞ց", queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    towhere 	= forms.ModelChoiceField(label=u"Ու՞ր", queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    leavedate   = forms.CharField(label=u"Ամսաթիվ", widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}), required=True)
+    starttime   = forms.CharField(label=u"Ժամ", widget=TimeWidget(), required=True)
     class Meta:
         model = Ride
         fields = ['fromwhere', 'towhere', 'leavedate', 'starttime', 'passenger_number', 'price']
-	
-    def clean_leavedate(self):
-        leave_datetime = self.cleaned_data["leavedate"]
-        leave_date = datetime.strptime(leave_datetime,'%d/%m/%Y')
-        return leave_date.strftime('%Y-%m-%d')
+        labels = {
+            'passenger_number': u"Ազատ տեղերի քանակ", 
+            'price': u"Գին"
+        }
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(RideAdminForm, self).__init__(*args, **kwargs)
+        
+        #import pdb;pdb.set_trace()
+    def clean_starttime(self):
+        st = self.cleaned_data['starttime']
+        if not st:
+            raise forms.ValidationError('Նշեք ժամը, խնդրեմ')
+        return st
 
+    def clean_leavedate(self):
+        leave_date = datetime.strptime(self.cleaned_data["leavedate"],'%d/%m/%Y')
+        return leave_date
+
+    def clean(self):
+        if not hasattr(self.user, 'driver'):
+            raise forms.ValidationError("Սկզբում լրացրեք, խնդրեմ, ՛Իմ էջը > Լրացուցիչ տվյալներ՛ դաշտերը")
+        return self.cleaned_data
+
+    
 class ContactusForm(ModelForm):
 	class Meta:
 		model = Contactus
@@ -77,7 +98,7 @@ class LoginForm(forms.Form):
             raise forms.ValidationError(
                              ugettext(u"Սխալ Էլ․ հասցե/մուտքանուն կամ գաղտնաբառ"))
         elif not self._user.is_active:
-            raise forms.ValidationError(ugettext("Your account is inactive"))
+            raise forms.ValidationError(ugettext(u"Ձեր անձնական էջն ակտիվ չէ։"), code='inactive')
         return self.cleaned_data
 
     def save(self):
@@ -94,10 +115,32 @@ class CarImageForm(forms.Form):
 CHOICES=[('Արական','Արական'),
          ('Իգական','Իգական')]
 
-class AddInfoForm(forms.Form):
+BIRTH_YEAR_CHOICES = map(lambda x: (str(x),str(x)), range(1970,1992))
+MOBILE_PREFIXES = [('055', '055'), ('095', '095'), ('043', '043'), ('077', '077'), ('093', '093'), ('094', '094'), ('098', '098'), ('091', '091'), ('099', '099')]
+
+class DriverForm(forms.ModelForm):
+    mobile_prefix  = forms.ChoiceField(choices=MOBILE_PREFIXES)
     mobile         = forms.CharField(label=u"Բջջային",)
-    gender         = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect())
-    featured_image = forms.ImageField(label=u"Ձեր նկարը", required=True)
+    sex            = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
+    featured_image = forms.ImageField(label=u"Իմ նկարը", required=False)
+    dob            = forms.ChoiceField(label=u"Ծննդյան տարեթիվ", choices=BIRTH_YEAR_CHOICES, initial='1980')
+
+    class Meta:
+        model = Driver
+        exclude = ['user', 'licence_plate' ]
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        #u = User.objects.get(id=self.user.id)
+        super(DriverForm, self).__init__(*args, **kwargs)
+        if hasattr(self.user, 'driver'):
+            self.initial['mobile_prefix'] = self.user.driver.mobile_prefix
+            self.initial['mobile'] = self.user.driver.mobile
+            self.initial['dob'] = self.user.driver.dob
+            self.initial['sex'] = self.user.driver.sex
+        
+
+    
 
 class ProfileForm(forms.ModelForm):
     
@@ -106,9 +149,9 @@ class ProfileForm(forms.ModelForm):
     If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
     fields are injected into the form.
     """
-    mobile          = forms.CharField(label=u"Բջջային",)
-    featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
-    gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
+    #mobile          = forms.CharField(label=u"Բջջային",)
+    #featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
+    #gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
     password1       = forms.CharField(label=u"Գաղտնաբառ",
                                 widget=forms.PasswordInput(render_value=False))
     password2       = forms.CharField(label=u"Գաղտնաբառ (Կրկնել)",
@@ -116,12 +159,11 @@ class ProfileForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email", "username")
+        fields = ("first_name", "last_name", "email")
         labels = {
             'first_name': u'Անուն',
             'last_name': u'Ազգանուն',
             'email': u'Էլեկտրոնային հասցե',
-            'username': u'Մուտքանուն',
         }
         
 
@@ -129,18 +171,14 @@ class ProfileForm(forms.ModelForm):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self._signup = self.instance.id is None
         user_fields = User._meta.get_fields()
-        user = kwargs.pop('instance', None)
-        if user:
-            self.fields['mobile'].initial = user.driver.mobile
+        #self.fields.pop('username')
+        #user = kwargs.pop('instance', None)
+        #if user:
+        #    self.fields['mobile'].initial = user.driver.mobile
             #import pdb;pdb.set_trace()
-            self.fields['featured_image'].initial = user.driver.featured_image
+        #    self.fields['featured_image'].initial = user.driver.featured_image
         
-        try:
-            self.fields["username"].help_text = ugettext(
-                        "Only letters, numbers, dashes or underscores please")
-            
-        except KeyError:
-            pass
+        
         for field in self.fields:
             # Make user fields required.
             if field in user_fields:
@@ -157,21 +195,7 @@ class ProfileForm(forms.ModelForm):
                         "Leave blank unless you want to change your password")
         
 
-    def clean_username(self):
-        """
-        Ensure the username doesn't exist or contain invalid chars.
-        We limit it to slugifiable chars since it's used as the slug
-        for the user's profile view.
-        """
-        username = self.cleaned_data.get("username")
-        
-        lookup = {"username__iexact": username}
-        try:
-            User.objects.exclude(id=self.instance.id).get(**lookup)
-        except User.DoesNotExist:
-            return username
-        raise forms.ValidationError(
-                            ugettext("This username is already registered"))
+    
 
     def clean_password2(self):
         """
@@ -202,7 +226,8 @@ class ProfileForm(forms.ModelForm):
         if len(qs) == 0:
             return email
         raise forms.ValidationError(
-                                ugettext("This email is already registered"))
+                                ugettext(u"Այս էլ․ հասցեն արդեն գրանցված է։"))
+
 
     def save(self, *args, **kwargs):
         """
@@ -212,7 +237,7 @@ class ProfileForm(forms.ModelForm):
         that if profile pages are enabled, we still have something to
         use as the profile's slug.
         """
-
+        #import pdb;pdb.set_trace()
         kwargs["commit"] = False
         user = super(ProfileForm, self).save(*args, **kwargs)
         try:
@@ -221,7 +246,7 @@ class ProfileForm(forms.ModelForm):
             if not self.instance.username:
                 username = self.cleaned_data["email"].split("@")[0]
                 qs = User.objects.exclude(id=self.instance.id)
-                user.username = unique_slug(qs, "username", slugify(username))
+                user.username = unique_slug(qs, "username", slugify_unicode(username))
         password = self.cleaned_data.get("password1")
         if password:
             user.set_password(password)
@@ -234,16 +259,42 @@ class ProfileForm(forms.ModelForm):
                 pass
         user.save()
 
-        
-        if self._signup:
-            if (settings.ACCOUNTS_VERIFICATION_REQUIRED or
-                settings.ACCOUNTS_APPROVAL_REQUIRED):
-                user.is_active = False
-                user.save()
-            else:
-                
-                user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
         return user
 
     def get_profile_fields_form(self):
         return ProfileFieldsForm
+
+def unique_slug(queryset, slug_field, slug):
+    """
+    Ensures a slug is unique for the given queryset, appending
+    an integer to its end until the slug is unique.
+    """
+    i = 0
+    while True:
+        if i > 0:
+            if i > 1:
+                slug = slug.rsplit("-", 1)[0]
+            slug = "%s-%s" % (slug, i)
+        try:
+            queryset.get(**{slug_field: slug})
+        except ObjectDoesNotExist:
+            break
+        i += 1
+    return slug
+
+
+def slugify_unicode(s):
+    """
+    Replacement for Django's slugify which allows unicode chars in
+    slugs, for URLs in Chinese, Russian, etc.
+    Adopted from https://github.com/mozilla/unicode-slugify/
+    """
+    chars = []
+    for char in smart_text(s):
+        cat = unicodedata.category(char)[0]
+        if cat in "LN" or char in "-_~":
+            chars.append(char)
+        elif cat == "Z":
+            chars.append(" ")
+    return re.sub("[-\s]+", "-", "".join(chars).strip()).lower()

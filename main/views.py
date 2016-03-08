@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from main.models import Ride, Driver, DriverImage, Image, City
 from main.tables import RideTable
-from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarImageForm, AddInfoForm
+from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarImageForm, DriverForm
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
@@ -20,6 +20,7 @@ from main.models import Inboundmail
 from postmark_inbound import PostmarkInbound
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
+from django.http import JsonResponse
 import json
 # Create your views here.
 def contactus(request):
@@ -86,7 +87,7 @@ def logout(request):
     Log the user out.
     """
     auth_logout(request)
-    messages.info(request, "Հաջողությամբ դուրս եկաք Ձեր հաշվից։")
+    messages.info(request, "Հաջողությամբ դուրս եկաք Ձեր անձնական էջից։")
     return redirect('/')
 
 def signup(request, template="main/register.html"):
@@ -97,14 +98,17 @@ def signup(request, template="main/register.html"):
     Login form.
     """
     login_form = LoginForm(prefix="login")
-    DriverImageFormSet = formset_factory(CarImageForm, max_num=6)
+    #DriverImageFormSet = formset_factory(CarImageForm, max_num=6)
     signup_form = ProfileForm()
-    formset = DriverImageFormSet
+    #formset = DriverImageFormSet
     if request.method == "POST":
         #import pdb;pdb.set_trace()
+
         login_form = LoginForm(request.POST, prefix="login")
         signup_form = ProfileForm(request.POST, request.FILES)
+        #import pdb;pdb.set_trace()
         
+
         if not login_form.has_changed() and not request.POST.get("from_popup",False): login_form = LoginForm(prefix="login")
         if not signup_form.has_changed(): signup_form = ProfileForm()
         
@@ -116,31 +120,29 @@ def signup(request, template="main/register.html"):
             return redirect('/')
 
         if signup_form.has_changed() and signup_form.is_valid():
-            formset = DriverImageFormSet(request.POST, request.FILES)
-            new_user = signup_form.save(commit=False)
-            new_user.is_active = False
+            #formset = DriverImageFormSet(request.POST, request.FILES)
+            new_user = signup_form.save()
             #import pdb;pdb.set_trace()
-            new_user.save()
-            
-            data = signup_form.cleaned_data
+            #
+            #data = signup_form.cleaned_data
             #import pdb;pdb.set_trace()
-            f_img = Image.objects.create(image=request.FILES.get('featured_image'))
-            driver = Driver.objects.create(user=new_user, mobile=data.get('mobile',None), featured_image=f_img, sex=data.get('gender'))#set mobile and featured image
+#            f_img = Image.objects.create(image=request.FILES.get('featured_image'))
+#            driver = Driver.objects.create(user=new_user, mobile=data.get('mobile',None), featured_image=f_img, sex=data.get('gender'))#set mobile and featured image
             
             
-            if formset.is_valid():
-                for form in formset: 
-                    cd = form.cleaned_data
-                    if cd:
-                        dci = DriverImage(driver=driver, image=cd.get('image'))
-                        dci.save()
+#            if formset.is_valid():
+#                for form in formset: 
+#                    cd = form.cleaned_data
+#                    if cd:
+#                        dci = DriverImage(driver=driver, image=cd.get('image'))
+#                        dci.save()
 
             
-            messages.info(request, "Հաջողությամբ գրանցվեցիք։ Հաստատումից հետո կակտիվանա Ձեր հաշիվը։")
-            #auth_login(request, new_user)
+            messages.info(request, "Հաջողությամբ գրանցվեցիք!")
+            auth_login(request, new_user)
             return redirect("/")
     #import pdb;pdb.set_trace()
-    context = {"login_form": login_form, "signup_form": signup_form, "formset": formset}
+    context = {"login_form": login_form, "signup_form": signup_form}
     return render(request, template, context)
 
 from django.forms import BaseInlineFormSet
@@ -162,36 +164,36 @@ def profile_update(request, template="main/pages/account_profile_update.html"):
     """
     
     profile_form = ProfileForm
-    DriverImageFormSet = inlineformset_factory(Driver, DriverImage, fields=('image',), max_num=6, extra=0,
-                            widgets={'image': forms.FileInput()})
+    #DriverImageFormSet = inlineformset_factory(Driver, DriverImage, fields=('image',), max_num=6, extra=0,
+    #                        widgets={'image': forms.FileInput()})
     
-    driver = Driver.objects.get(user=request.user)
+    #driver = Driver.objects.get(user=request.user)
    
     if request.method == "POST":
-        form = profile_form(request.POST, request.FILES or None,
+        form = profile_form(request.POST,
                             instance=request.user)
-        formset = DriverImageFormSet(request.POST, request.FILES, instance=driver)
+        #formset = DriverImageFormSet(request.POST, request.FILES, instance=driver)
         
         #import pdb;pdb.set_trace()
-        featured = request.FILES.get('featured_image', None)
+        #featured = request.FILES.get('featured_image', None)
         if form.is_valid() and formset.is_valid():
             #import pdb;pdb.set_trace()
-            driver.mobile = request.POST.get('mobile', None)
-            if featured:
-                img = Image.objects.get(id=driver.featured_image.id)
-                img.image = featured
-                img.save()
+            #driver.mobile = request.POST.get('mobile', None)
+            #if featured:
+            #    img = Image.objects.get(id=driver.featured_image.id)
+            #    img.image = featured
+            #    img.save()
             #driver.images = 
-            driver.save()
+            #driver.save()
             form.save()
-            if formset.has_changed(): 
-                formset.save()
+            #if formset.has_changed(): 
+            #    formset.save()
             messages.info(request, _("Profile updated"))
             return redirect("/")
     else:
         form = profile_form(instance=request.user)#;
-        formset = DriverImageFormSet(instance=driver)
-    context = {"form": form, "title": _("Update Profile"), "formset": formset}
+        #formset = DriverImageFormSet(instance=driver)
+    context = {"form": form}
     return render(request, template, context)
 
 
@@ -246,35 +248,68 @@ def mail_from_postmark(request):
                 return HttpResponse('not OK')
 
 
-def add_info(request, template='main/pages/add_info.html'):
+def profile(request, template='main/pages/profile.html'):
     
     DriverImageFormSet = formset_factory(CarImageForm, max_num=6)
-    
-     
+    inst       = request.user.driver if hasattr(request.user, 'driver') else None
+    driverform = DriverForm(request.POST or None, prefix='driver', user=request.user, instance=inst)
+    userform   = ProfileForm(request.POST or None, prefix='user', instance=request.user)
+    formset    = DriverImageFormSet(request.POST or None, request.FILES or None)
+    rideform   = RideAdminForm(request.POST or None, prefix='ride', user=request.user)
+
     if request.method == "POST":
-        form = AddInfoForm(request.POST, request.FILES)
-        formset = DriverImageFormSet(request.POST, request.FILES)
-        
         #import pdb;pdb.set_trace()
-        featured = request.FILES.get('featured_image', None)
-        if form.is_valid() and formset.is_valid():
+        
+        
+        featured = request.FILES.get('driver-featured_image', None)
+        #import pdb;pdb.set_trace()
+        if userform.has_changed() and userform.is_valid():
+            user = userform.save()
+
+        if driverform.has_changed() and driverform.is_valid():
+
+            driver = driverform.save(commit=False)
+            driver.user = request.user
             #import pdb;pdb.set_trace()
-            
             if featured:
-                img = Image.objects.create(image=featured)
-                
+                image = Image.objects.create(image=featured)
+                driver.featured_image = image
             #driver.images = 
-            driver = Driver(mobile=form.cleaned_data['mobile'], featured_image=img, user=request.user)
+            #driver = Driver(mobile=form.cleaned_data['mobile'], featured_image=img, user=request.user)
+            
             driver.save()
+        else:
+
+            context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
+            return render(request, template, context)
+
+        if rideform.has_changed():       
+            if rideform.is_valid() and inst:
+                rf = rideform.save(commit=False)
+                rf.driver = request.user.driver
+                rf.save()
+            else:
+                #import pdb;pdb.set_trace()
+                #if rideform.is_bound:
+                #    rideform = RideAdminForm(prefix='ride', user=request.user)
+                context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
+                return render(request, template, context)
+
+        if formset.has_changed():
             for form in formset: 
                 cd = form.cleaned_data
                 if cd:
                     dci = DriverImage(driver=driver, image=cd.get('image'))
                     dci.save()
-            messages.info(request, _("Profile updated"))
-            return redirect("/")
-    else:
-        form = AddInfoForm()
-        formset = DriverImageFormSet()
-    context = {"form": form, "formset": formset}
+        messages.info(request, "Ձեր անձնական էջը թարմացվեց։")
+        context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
+        return render(request, template, context)
+
+    context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
     return render(request, template, context)
+
+def ajax_delete(request):
+    if request.POST and request.is_ajax():
+        Ride.objects.get(id=request.POST.get('id')).delete()
+        return JsonResponse({'success': 1})
+    return JsonResponse({'success': 0})

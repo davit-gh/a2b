@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "2d1484bc-aaa2-4bd4-b0b3-f4e0ddcffb35a9491e47-b954-4db5-95b9-785e3fbfb4dfa4c472eb-f860-435d-befc-a89fef91bd2a"
 NEVERCACHE_KEY = "b684ed01-74f6-4d90-8162-9d21df32b7d626a180f0-b9fd-4de1-98e5-18166c6f9dec27faf333-53cd-4931-a14e-06ca6080f8de"
-ALLOWED_HOSTS = ["a2b.am"]
+ALLOWED_HOSTS = ["www.a2b.am", "a2b.am"]
 
 # DATABASES = {
 #     'default': {
