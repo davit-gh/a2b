@@ -38,11 +38,13 @@ class Image(models.Model):
 
 
 class Driver(models.Model):
-    mobile = models.CharField(max_length=30, blank=False)
-    featured_image = models.OneToOneField(Image, on_delete=models.CASCADE)
+    mobile = models.IntegerField(blank=False)
+    mobile_prefix = models.IntegerField(default=055, blank=False)
+    featured_image = models.OneToOneField(Image, on_delete=models.CASCADE, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     licence_plate = models.CharField(max_length=10, default="19oo199")
     sex = models.CharField(max_length=10, default="Արական")
+    dob = models.IntegerField(default=1985)
     class Meta:
         verbose_name = "Driver"
         verbose_name_plural = "Drivers"
@@ -59,13 +61,13 @@ class DriverImage(models.Model):
         db_table = "ab_driverimage"
 
 class Ride(models.Model):
-    fromwhere = models.ForeignKey(City, related_name="rides_from")
-    towhere = models.ForeignKey(City, related_name="rides_to")
+    fromwhere = models.ForeignKey(City, related_name="rides_from", blank=True)
+    towhere = models.ForeignKey(City, related_name="rides_to", blank=True)
     leavedate = models.DateField(blank=True)
     starttime = models.TimeField(blank=True)
     endtime = models.TimeField(blank=True, null=True)
     price = models.IntegerField(blank=True)
-    passenger_number = models.IntegerField(blank=False, default=2)
+    passenger_number = models.IntegerField(blank=True, default=2)
     driver = models.ForeignKey(Driver, related_name="rides")
 
     class Meta:
