@@ -38,9 +38,10 @@ class Image(models.Model):
 
 
 class Driver(models.Model):
-    mobile = models.IntegerField(blank=False)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    mobile = models.IntegerField(blank=False, null=True)
     mobile_prefix = models.IntegerField(default=055, blank=False)
-    featured_image = models.OneToOneField(Image, on_delete=models.CASCADE, null=True)
+    featured_image = models.ImageField(upload_to="uploads/images/", null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     licence_plate = models.CharField(max_length=10, default="19oo199")
     sex = models.CharField(max_length=10, default="Արական")
@@ -49,8 +50,10 @@ class Driver(models.Model):
         verbose_name = "Driver"
         verbose_name_plural = "Drivers"
         db_table = "ab_driver"
+
     def __unicode__(self):
-            return self.mobile
+            return "%s %s" % (self.user.first_name, self.user.last_name)
+            
 
 class DriverImage(models.Model):
     driver = models.ForeignKey(Driver, related_name="imgs")
@@ -120,4 +123,3 @@ class Inboundmail(models.Model):
         return  ' '.join([format_html('<a href="{}">{}</a>', att, att.split('/')[-1]) for att in attachment_array])
     htmlify.allow_tags = True
 
-    

@@ -1,0 +1,109 @@
+{% extends "main/pages/base.html" %}
+{% load widget_tweaks tags staticfiles formset_tags debug_tags %}
+
+{% block menu %}{% endblock %}
+
+{% block extra_js %}
+	
+{% endblock %}
+
+
+{% block extra_jquery %}
+	
+{% endblock %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+{% block section-id %}{% endblock %}
+
+{% block content %}
+        <div class="templatemo_home_inner_wapper">
+            <h1 class="text-center" style="margin: 0.4em 0;">
+                <i class="fa fa-car"></i>
+                <span style="color:orange">A</span>-ից
+                <span style="color:orange">B</span></h1>
+        </div>
+{% errors_for form %}
+	<div class="container text-center">
+	    <h3>Իմ էջը</h3>
+	</div>
+	<div class="col-md-12">          
+	    <div class="col-md-3"> 
+	    	
+	        <form method="post" id="img_upload_form" action="" enctype="multipart/form-data">
+				
+					{{ driverform.featured_image.errors }}
+					{{ driverform.featured_image.label_tag }}
+					
+					{{ driverform.featured_image }}
+					
+			</form>
+			<ul>
+	            <li><a href="{% url 'profile' %}"> Իմ Էջը </a></li>
+	            <li><a href="{% url 'cars' %}"> Իմ Մեքենան </a></li>
+	            <li><a href=""> Իմ Հաշիվը </a></li>
+	            <li><a href="{% url 'rides' %}"> Իմ Երթուղիները </a></li>
+	        </ul> 
+
+	    </div>
+	    <div class="col-md-9"> 
+	    {% block right %}
+	    	<form method="post" action="{% url 'profile' %}">
+			    <table>
+					{% csrf_token %}
+					{{ userform.as_table }}				
+				</table>
+				<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
+			</form>
+			
+			<form method="post" action="{% url 'info' %}">
+				{% csrf_token %}
+				<h3>Լրացուցիչ տվյալներ</h3>
+				
+				<table>
+					<tr>
+						<td>
+							{{ driverform.mobile.label_tag }}
+						</td>
+						<td>
+							{{ driverform.mobile.errors }}
+							{{ driverform.mobile_prefix }}{{ driverform.mobile }}
+							
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+							{{ driverform.sex.label_tag }}
+						</td>
+						<td>
+							{{ driverform.sex.errors }}
+							{{ driverform.sex }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+
+							{{ driverform.dob.label_tag }}
+						</td>
+						<td>
+							{{ driverform.dob.errors }}
+							{{ driverform.dob }}
+						</td>
+					</tr>
+				
+				</table>
+				
+	            <button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
+		        
+		    </form>
+		{% endblock %}
+	    </div>
+	    
+	</div>
+	
+
+    
+{% endblock %}

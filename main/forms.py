@@ -6,7 +6,6 @@ from django.forms import ModelForm, Textarea
 from django import forms
 from django.utils.translation import ugettext as _
 from functools import partial
-DateInput = partial(forms.DateInput, )
 
 # Form Fields
 from django.utils import timezone
@@ -18,7 +17,8 @@ from django.utils.translation import ugettext
 from django.contrib.auth import authenticate
 from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist
-import unicodedata, re
+import unicodedata, re, uuid
+from ajax_upload.widgets import AjaxClearableFileInput
 
 class UserSearchForm(ModelForm):
 	
@@ -49,11 +49,11 @@ class RideAdminForm(ModelForm):
             'passenger_number': u"Ազատ տեղերի քանակ", 
             'price': u"Գին"
         }
+    
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(RideAdminForm, self).__init__(*args, **kwargs)
-        
-        #import pdb;pdb.set_trace()
+
     def clean_starttime(self):
         st = self.cleaned_data['starttime']
         if not st:
@@ -65,10 +65,8 @@ class RideAdminForm(ModelForm):
         return leave_date
 
     def clean(self):
-        if not hasattr(self.user, 'driver'):
-            raise forms.ValidationError("Սկզբում լրացրեք, խնդրեմ, ՛Իմ էջը > Լրացուցիչ տվյալներ՛ դաշտերը")
-        return self.cleaned_data
-
+        if not self.user.driver.mobile:
+            raise forms.ValidationError('mobile', code='mobile_error')
     
 class ContactusForm(ModelForm):
 	class Meta:
@@ -114,7 +112,6 @@ class LoginForm(forms.Form):
 class CarImageForm(forms.Form):
     image = forms.ImageField(required=False)
 
-
 CHOICES=[('Արական','Արական'),
          ('Իգական','Իգական')]
 
@@ -122,25 +119,36 @@ BIRTH_YEAR_CHOICES = map(lambda x: (str(x),str(x)), range(1970,1992))
 MOBILE_PREFIXES = [('055', '055'), ('095', '095'), ('043', '043'), ('077', '077'), ('093', '093'), ('094', '094'), ('098', '098'), ('091', '091'), ('099', '099')]
 
 class DriverForm(forms.ModelForm):
-    mobile_prefix  = forms.ChoiceField(choices=MOBILE_PREFIXES)
-    mobile         = forms.CharField(label=u"Բջջային",)
-    sex            = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
-    featured_image = forms.ImageField(label=u"Իմ նկարը", required=False)
-    dob            = forms.ChoiceField(label=u"Ծննդյան տարեթիվ", choices=BIRTH_YEAR_CHOICES, initial='1980')
+    mobile_prefix  = forms.ChoiceField(choices=MOBILE_PREFIXES, required=False)
+    mobile         = forms.CharField(label=u"Բջջային", required=False)
+    sex            = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական', required=False)
+    featured_image = forms.ImageField(label=u"Իմ նկարը", widget=AjaxClearableFileInput(), required=False)
+    dob            = forms.ChoiceField(label=u"Ծննդյան տարեթիվ", choices=BIRTH_YEAR_CHOICES, initial='1980', required=False)
+    image_path     = forms.CharField(max_length=255, widget=forms.HiddenInput(), required=False)
+    delete_image   = forms.BooleanField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Driver
         exclude = ['user', 'licence_plate' ]
 
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
+    def clean_featured_image(self):
+        pass
+        #import pdb; pdb.set_trace()
+        #img = Image.objects.create(image=self.files['file'])
+        #data = self.cleaned_data['featured_image']
+        # Change the name of the file to something unguessable
+        # Construct the new name as <unique-hex>-<original>.<ext>
+        #data.name = u'%s-%s' % (uuid.uuid4().hex, data.name)
+        #return img
+    #def __init__(self, *args, **kwargs):
+        #self.user = kwargs.pop('user')
         #u = User.objects.get(id=self.user.id)
-        super(DriverForm, self).__init__(*args, **kwargs)
-        if hasattr(self.user, 'driver'):
-            self.initial['mobile_prefix'] = self.user.driver.mobile_prefix
-            self.initial['mobile'] = self.user.driver.mobile
-            self.initial['dob'] = self.user.driver.dob
-            self.initial['sex'] = self.user.driver.sex
+    #    super(DriverForm, self).__init__(*args, **kwargs)
+    #    if hasattr(self.user, 'driver'):
+    #        self.initial['mobile_prefix'] = self.user.driver.mobile_prefix
+    #        self.initial['mobile'] = self.user.driver.mobile
+    #        self.initial['dob'] = self.user.driver.dob
+    #        self.initial['sex'] = self.user.driver.sex
         
 
     

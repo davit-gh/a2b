@@ -1,0 +1,63 @@
+{% extends "main/account/profile.html" %}
+{% load render_table from django_tables2 %}
+{% load widget_tweaks tags staticfiles %}
+
+{% block menu %}{% endblock %}
+
+{% block extra_js %}
+	{{ rideform.media }}
+	
+{% endblock %}
+
+{% block extra_jquery %}
+	    $('#confirm').on('show.bs.modal', function (event) {
+		  var id = $(event.relatedTarget).attr('id');
+		  var target = $(event.relatedTarget.parentElement.parentElement);
+		  var modal = $(this);
+		  var b = modal.find('#del');
+		  $(b).click(function(){
+		  	$.post("{% url 'del-ride' %}", {'id': id, csrfmiddlewaretoken: '{{ csrf_token  }}'}, function(data){});
+			target.fadeOut('slow');
+			modal.modal('hide');
+		  })
+		  
+		});
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block section-id %}{% endblock %}
+
+{% block right %}
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+        	    
+    	<table>
+    		{{ rideform.as_table }}
+    	</table>
+
+    	<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
+	  		
+    </form>
+    <div class="container-fluid">
+    	{% render_table table %}
+    </div>
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Հաստատում</h4>
+	      </div>
+	      <div class="modal-body">
+	        Համոզվա՞ծ եք, որ ուզում եք ջնջել
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Փակել</button>
+	        <button id="del" type="button" class="btn btn-primary">Ջնջել</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+{% endblock %}
