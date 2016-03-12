@@ -28,8 +28,11 @@ urlpatterns = [
     url("^signup$", views.signup, name="signup"),
     url("^update$", views.profile_update, name="profile_update"),
     url("^profile/home$", views.profile, name="profile"),
-    url("^rides$", views.rides, name="rides"),
+    url("^profile/info$", views.additional_info, name="info"),
+    url("^profile/cars$", views.cars, name="cars"),
+    url("^profile/rides$", views.rides, name="rides"),
     url(r"^mail", views.mail_from_postmark, name="postmark"),
     url(r'^accounts/', include('allauth.urls')),
     url("^ajax_delete$", views.ajax_delete, name="del-ride"),
+    url(r'^ajax$', views.upd_pic, name='ajax-upload'),
 ]
