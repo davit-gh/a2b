@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
 from main.models import Ride, Driver, DriverImage, Image, City
-from main.tables import RideTable
+from main.tables import RideTable, DriverRideTable
 from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarImageForm, DriverForm
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
@@ -21,7 +21,10 @@ from postmark_inbound import PostmarkInbound
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
 from django.http import JsonResponse
-import json
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse, HttpResponseBadRequest
+
 # Create your views here.
 def contactus(request):
 	if request.method == 'POST':
@@ -122,6 +125,8 @@ def signup(request, template="main/register.html"):
         if signup_form.has_changed() and signup_form.is_valid():
             #formset = DriverImageFormSet(request.POST, request.FILES)
             new_user = signup_form.save()
+            Driver(user=new_user).save()
+            
             #import pdb;pdb.set_trace()
             #
             #data = signup_form.cleaned_data
@@ -198,26 +203,34 @@ def profile_update(request, template="main/pages/account_profile_update.html"):
 
 
 @login_required
-def rides(request, template="main/pages/ride.html"):
+def rides(request, template="main/account/rides.html"):
     # if this is a POST request we need to process the form data
+    #import pdb;pdb.set_trace()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = RideAdminForm(request.POST)
+        rideform = RideAdminForm(request.POST, user=request.user)
+        #import pdb;pdb.set_trace()
         # check whether it's valid:
-        if form.is_valid():
+        if rideform.is_valid():
             # process the data in form.cleaned_data as required
-            ride = form.save(commit=False)
+            ride = rideform.save(commit=False)
             ride.driver = request.user.driver
             ride.starttime = datetime.datetime.now()
             ride.save()
             messages.info(request, "Երթուղին ավելացված է")
-            return redirect('/')
-
+            return redirect('rides')
+        else:
+            if rideform.errors['__all__'][0] == 'mobile':
+                messages.info(request, "Սկզբում լրացրեք ՛Լրացուցրչ տվյալներ՛ բաժինը, խնդրեմ")
+                return redirect('profile')
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = RideAdminForm()
-
-    return render(request, template, {'form': form})
+        rideform = RideAdminForm(user=request.user)
+    rides = request.user.driver.rides.all()
+        #items = PortfolioItem.objects.all()
+    table = DriverRideTable(rides)
+    RequestConfig(request, paginate={"per_page": 3}).configure(table)
+    return render(request, template, {'rideform': rideform, 'table': table})
 
 
 @csrf_exempt
@@ -248,69 +261,87 @@ def mail_from_postmark(request):
                 return HttpResponse('not OK')
 
 
-def profile(request, template='main/pages/profile.html'):
+def profile(request, template='main/account/profile.html'):
     
-    DriverImageFormSet = formset_factory(CarImageForm, max_num=6)
-    inst       = request.user.driver if hasattr(request.user, 'driver') else None
-    driverform = DriverForm(request.POST or None, prefix='driver', user=request.user, instance=inst)
-    userform   = ProfileForm(request.POST or None, prefix='user', instance=request.user)
-    formset    = DriverImageFormSet(request.POST or None, request.FILES or None)
-    rideform   = RideAdminForm(request.POST or None, prefix='ride', user=request.user)
-
+    
+    
     if request.method == "POST":
-        #import pdb;pdb.set_trace()
         
-        
-        featured = request.FILES.get('driver-featured_image', None)
-        #import pdb;pdb.set_trace()
-        if userform.has_changed() and userform.is_valid():
+        userform   = ProfileForm(request.POST, prefix='user', instance=request.user)
+        if userform.is_valid():
             user = userform.save()
 
-        if driverform.has_changed() and driverform.is_valid():
-
-            driver = driverform.save(commit=False)
-            driver.user = request.user
-            #import pdb;pdb.set_trace()
-            if featured:
-                image = Image.objects.create(image=featured)
-                driver.featured_image = image
-            #driver.images = 
-            #driver = Driver(mobile=form.cleaned_data['mobile'], featured_image=img, user=request.user)
-            
-            driver.save()
-        else:
-
-            context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
-            return render(request, template, context)
-
-        if rideform.has_changed():       
-            if rideform.is_valid() and inst:
-                rf = rideform.save(commit=False)
-                rf.driver = request.user.driver
-                rf.save()
-                rideform  = RideAdminForm(prefix='ride', user=request.user)
-            else:
-                #import pdb;pdb.set_trace()
-                #if rideform.is_bound:
-                #    rideform = RideAdminForm(prefix='ride', user=request.user)
-                context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
-                return render(request, template, context)
-
-        if formset.has_changed():
-            for form in formset: 
-                cd = form.cleaned_data
-                if cd:
-                    dci = DriverImage(driver=driver, image=cd.get('image'))
-                    dci.save()
         messages.info(request, "Ձեր անձնական էջը թարմացվեց։")
-        context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
-        return render(request, template, context)
-
-    context = {"driverform": driverform, "userform": userform, "formset": formset, 'rideform': rideform}
+    else:
+        userform   = ProfileForm(prefix='user', instance=request.user)
+    context = {"userform": userform}
     return render(request, template, context)
 
+
+def cars(request):
+    DriverImageFormSet = inlineformset_factory(Driver, DriverImage, fields=('image',), max_num=6, extra=0,
+                            widgets={'image': forms.FileInput()})
+    if request.method == 'POST':
+        formset       = DriverImageFormSet(request.POST, request.FILES, instance=request.user.driver)
+        #import pdb;pdb.set_trace()
+        if formset.is_valid():
+            formset.save()
+            messages.info(request, "Հաջողությամբ փոխեցիք մեքենայի նկարները։")
+            return redirect('cars')
+    else:
+        formset = DriverImageFormSet(instance=request.user.driver)
+    return render(request, 'main/account/cars.html', {'formset': formset})
+
+def additional_info(request, template='main/account/profile.html'):
+    # if this is a POST request we need to process the form data
+    #featured = request.FILES.get('driver-featured_image', None)
+    #inst = request.user.driver if hasattr(request.user, 'driver') else None
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        
+        driverform = DriverForm(request.POST, request.FILES, prefix='driver', instance=request.user.driver)
+
+        # check whether it's valid:
+        if driverform.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            #data = driverform.cleaned_data
+            #featured = data.get('featured_image')
+            driver = driverform.save(commit=False)
+            driver.user = request.user
+            
+            driver.save()
+            messages.info(request, "Ձեր լրացուցիչ տվյալները պահպանվեցին։")
+            return redirect('profile')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        driverform = DriverForm(prefix='driver', instance=request.user.driver)
+
+    return render(request, template, {'driverform': driverform})
+
+    
 def ajax_delete(request):
     if request.POST and request.is_ajax():
         Ride.objects.get(id=request.POST.get('id')).delete()
         return JsonResponse({'success': 1})
     return JsonResponse({'success': 0})
+
+
+@csrf_exempt
+@require_POST
+def upd_pic(request, template='main/account/profile.html'):
+    form = DriverForm(data=request.POST, files=request.FILES, instance=request.user.driver)
+    #userform   = ProfileForm(prefix='user', instance=request.user)
+    
+    if form.is_valid():
+        uploaded_file = form.save(commit=False)
+        uploaded_file.featured_image=request.FILES.get('file')
+        uploaded_file.save()
+        #import pdb; pdb.set_trace()
+        data = {
+            'path': uploaded_file.featured_image.url,
+        }
+        return HttpResponse(json.dumps(data))
+    return HttpResponseBadRequest(json.dumps({'errors': form.errors}))

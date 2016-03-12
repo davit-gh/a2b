@@ -13,9 +13,14 @@
     <script src="{% static 'main/js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'main/js/resp_tab/easyResponsiveTabs.js' %}"></script>
+    <script src="{% static 'ajax_upload/js/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'ajax_upload/js/ajax-upload-widget.js' %}"></script>
     <script type="text/javascript">
     $(function(){
         $('#accountTab').easyResponsiveTabs({type: 'vertical'});
+        AjaxUploadWidget.autoDiscover({
+            changeButtonText: 'Փոխել նկարս',
+        });      
     });
     </script>
     {% block extra_js %}{% endblock %}

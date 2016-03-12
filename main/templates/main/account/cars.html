@@ -1,0 +1,84 @@
+{% extends "main/account/profile.html" %}
+{% load staticfiles formset_tags tags debug_tags %}
+
+
+{% block extra_js %}
+	 <script src="{% static 'js/jquery.formset.min.js' %}"></script>
+{% endblock %}
+
+{% block extra_jquery %}
+	$('#confirm').on('show.bs.modal', function (event) {
+	  var id = $(event.relatedTarget).attr('id');
+	  var modal = $(this);
+	  var b = modal.find('#del');
+	  $(b).click(function(){
+	  	$.post("{% url 'del-ride' %}", {'id': id, csrfmiddlewaretoken: '{{ csrf_token  }}'}, function(data){});
+		$('tr#'+id).fadeOut('slow');
+		modal.modal('hide');
+	  })
+	  
+	});
+	
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block section-id %}{% endblock %}
+
+{% block right %}
+	<form method="post" enctype="multipart/form-data">
+			    		{% csrf_token %}
+	            		<h4 id="car-images">Մեքենայի նկարները</h4>
+						<div id="formset" data-formset-prefix="{{ formset.prefix }}">
+						    {{ formset.management_form }}
+						    <div data-formset-body>
+						
+								{% for form in formset %}
+									<div data-formset-form>
+										{{ form.id }}
+										<div id="image-div" class="col-sm-6">
+											
+									        {% if form.instance.image %} 
+									        	<img width="100px" src="{{ form.instance.image.url }}">
+									        	<div class="hidden">{{ form.DELETE }}</div>
+									        	<button type="button" data-formset-delete-button>Ջնջել նկարը</button>
+									        {% endif %}
+											{{ form.image }}
+								        </div>
+								    </div>
+							    {% endfor %}
+							</div>
+							<script type="form-template" data-formset-empty-form>
+						        {% escapescript %}
+						            <div data-formset-form>
+						                {{ formset.empty_form.id }}
+										<div id="image-div" class="col-sm-6">
+									        {{ formset.empty_form.image }}
+								        </div>
+						            </div>
+						        {% endescapescript %}
+						    </script>
+
+						    <!-- This button will add a new form when clicked -->
+						    
+						    <div id="make-hand"><i class="fa fa-plus-circle fa-3x" data-formset-add></i></div>
+						    <script>jQuery(function($) {
+						        $("#formset").formset({
+						            animateForms: true,
+						            hasMaxFormsClass: true
+						        });
+						        
+						    });
+						    </script>
+
+						</div>
+	            
+			
+		<div class="col-sm-12 text-center">
+            <button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save changes
+            </button>
+        </div>
+    </form>
+{% endblock %}
+    

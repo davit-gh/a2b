@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'datetimewidget',
+    'ajax_upload',
     'main',
     'newa2b',
     'widget_tweaks',
