@@ -92,7 +92,7 @@ class LoginForm(forms.Form):
         self._user = authenticate(username=username, password=password)
         if self._user is None:
             raise forms.ValidationError(
-                             ugettext(u"Սխալ Էլ․ հասցե/մուտքանուն կամ գաղտնաբառ"))
+                             ugettext(u"Սխալ Էլ․ հասցե կամ գաղտնաբառ"))
         elif not self._user.is_active:
             raise forms.ValidationError(ugettext(u"Ձեր անձնական էջն ակտիվ չէ։"), code='inactive')
         return self.cleaned_data

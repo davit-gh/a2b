@@ -28,9 +28,9 @@ from django.http import HttpResponse, HttpResponseBadRequest
 # Create your views here.
 def contactus(request, template='main/pages/base.html'):
     
-
+    form = UserSearchForm()
     loginform = LoginForm(prefix="login")
-    return render(request, template, {'loginform': loginform})
+    return render(request, template, {'loginform': loginform, 'form': form})
 		
 	
 def index(request):
