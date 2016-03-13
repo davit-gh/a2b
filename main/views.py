@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django_tables2   import RequestConfig
-import json, pdb, datetime
+import json, pdb, datetime, uuid
 from django.contrib import messages
 from django.contrib.auth import (authenticate, login as auth_login,
                                                logout as auth_logout)
@@ -205,6 +205,7 @@ def rides(request, template="main/account/rides.html"):
             ride = rideform.save(commit=False)
             ride.driver = request.user.driver
             ride.starttime = datetime.datetime.now()
+            ride.uuid = uuid.uuid4().hex
             ride.save()
             messages.info(request, "Երթուղին ավելացված է")
             return redirect('rides')
@@ -220,6 +221,10 @@ def rides(request, template="main/account/rides.html"):
     table = DriverRideTable(rides)
     RequestConfig(request, paginate={"per_page": 3}).configure(table)
     return render(request, template, {'rideform': rideform, 'table': table})
+
+def ride_unique(request, unique_hash, template='main/account/quick_ride_view.html'):
+    ride = get_object_or_404(Ride, uuid=unique_hash)
+    return render(request, template, {'ride': ride})
 
 
 @csrf_exempt

@@ -1,0 +1,46 @@
+{% extends 'main/pages/base.html' %}
+
+{% block content %}
+	<table class="table">
+		<tr>
+			<th>
+				Որտեղից
+			</th>
+			<th>
+				Ուր
+			</th>
+			<th>
+				Ամսաթիվ
+			</th>
+			<th>
+				Ժամ
+			</th>
+			<th>
+				Տեղերի քանակ
+			</th>
+			<th>
+				Գին
+			</th>
+		</tr>
+		<tr>
+			<td>
+				{{ ride.fromwhere }}
+			</td>
+			<td>
+				{{ ride.towhere }}
+			</td>
+			<td>
+				{{ ride.leavedate }}
+			</td>
+			<td>
+				{{ ride.starttime }}
+			</td>
+			<td>
+				{{ ride.passenger_number }}
+			</td>
+			<td>
+				{{ ride.price }}
+			</td>
+		</tr>
+	</table>
+{% endblock %}
