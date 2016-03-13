@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-{% load render_table from django_tables2 %}
-{% load staticfiles widget_tweaks get_form socialaccount %}
+{% load staticfiles widget_tweaks tags get_form socialaccount %}
 <html lang="en" class="ie_11_scroll">
 <head>
     <meta charset="utf-8">
@@ -44,21 +43,29 @@
 
 <body>
 
-{% block menu %}
-<div class="show-menu">
-    <a href="#" class="shadow-top-down">+</a>
-</div>
-<nav class="main-menu shadow-top-down">
-    <ul class="nav nav-pills nav-stacked">
-        <li><a class="scroll_effect" href="#templatemo_home">Սկիզբ</a></li>
-        <li><a class="scroll_effect" href="#how-it-works">Ինչպե՞ս է աշխատում</a></li>
-        <li><a class="scroll_effect" href="#templatemo_contact">Կապվեք Մեզ Հետ</a></li>
-        <li><a rel="nofollow" href="http://www.facebook.com/a2b" target="_parent">Fan Page</a></li>
-        <li><a href="{% provider_login_url "facebook" method="oauth2" %}">Facebook OAuth2</a></li>
-    </ul>
-</nav>
+{% block login %}
+    {% if not request.user.is_authenticated %}
+        <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
+                data-target="#login-modal"
+                style="top: 0px;">
+            <span>Մուտք գործել/գրանցվել</span>
+        </button>
+    {% else %}
+        <div class="dropdown pull-right" style="right: 50px;">
+            <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
+                    style="top: 0px;">
+            <span>Բարև {{ request.user.first_name }}!</span>
+            </button>
+
+            <ul class="dropdown-menu">
+                <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> Անձնական էջ</a></li>
+                <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Դուրս գալ</a></li>
+            </ul>
+        </div>
+
+    {% endif %}
 {% endblock %}
-{% block login %}{% endblock %}
+
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
         <div class="modal-dialog modal-sm">
 
@@ -116,7 +123,7 @@
 
 <section {% block section-id %}id="templatemo_home"{% endblock %}>
     <div class="container a2b-background">
-{% block message %}
+    {% block message %}
         {% if messages %}
             <div class="container message">
                 {% for message in messages %}
@@ -129,16 +136,10 @@
         {% endif %}
     {% endblock %}
 
-{% block content %}
-    
-
-    {% block sub1 %}            
-        <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
-            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
-                Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
-            </span>
-        </div>
-    {% endblock sub1 %}
+    <ul>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
     
     
         <div class="templatemo_home_inner_wapper">
@@ -148,72 +149,25 @@
                 <span style="color:orange">B</span></h1>
         </div>
     
-    {% block sub2 %}
-        <div>
-            <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="{% static 'main/images/driver.png' %}">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Վարորդներին</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol>
-                                <li>Տեղադրիր հայտարարություն</li>
-                                <li>Վերցրու ուղևոր</li>
-                                <li>Վաստակիր գումար</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" src="{% static 'main/images/passenger.png' %}">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Ուղևորներին</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol class="advantage-list">
-                                <li>Պայմանավորվիր վարորդի հետ</li>
-                                <li>Ճանապարհորդիր ավելի էժան</li>
-                                <li>Ընկերակցիր</li>
-                            </ol>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    {% endblock sub2 %}
-
+{% block content %}
+ 
             <div class="text-center hide-sm">
                 <div id="center-block searchbar">
+                {% errors_for form %}
                     <div class="searchbar">
-                        <form id="searchbar-form" action="{% url 'ridesearch' %}" method="post">
+                        <form id="searchbar-form" action="{% url 'index' %}" method="post">                            
                             <div>
                                 {% csrf_token %}
-                                {% for hidden in searchform.hidden_fields %}
+                                {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
 
                                 <div class="searchbar__input-wrapper">
 
-                                    {% for field in searchform.visible_fields %}
+                                    {% for field in form.visible_fields %}
+                                        {{ field.errors }}
                                         <label style="vertical-align: top">
-
-                                            {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" required='required' %}
+                                            {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" %}
                                         </label>
                                     {% endfor %}
                                     <button class="btn btn-primary"
@@ -225,35 +179,13 @@
                 </div>
             </div>
 
-    </div>
 
-    <div class="container-fluid">
-        <div class="a2b-ride-table table-responsive">
-            {% render_table table %}
-        </div>
-    </div>
-
-
+    
+{% endblock %}
+</div>
 </section>
 
-<section id="how-it-works" class="how-it-works">
-    <div class="container">
-        <h2 class="section-title">Ինչպե՞ս է աշխատում</h2>
 
-        <div class="row">
-            <p id="how">
-                A2B թիմը ընդձեռում է հնարավորություն վարորդներին տեղադրելու այլ բնակավայր մեկնելու մասին
-                հաղորդագրություն։
-                Դրա համար վարորդները պետք է գրանցվեն մեզ մոտ և ներբեռնեն իրենց նկարը և մեքենայի նկարը։ <br/>
-                Ուղևորները, որոնք գնում են նույն ուղղությամբ կարող են փնտրել իրենց երթուղուն համապատասխան վարորդ։
-            </p>
-        </div>
-        {% endblock %}
-    </div>
-</section>
-
-<!-- Contact -->
-{% block contact %}{% endblock %}
 <!-- Footer -->
 <footer>
     <div class="container">

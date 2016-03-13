@@ -26,55 +26,44 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseBadRequest
 
 # Create your views here.
-def contactus(request):
-	if request.method == 'POST':
-        	form = ContactusForm(request.POST)
-        # check whether it's valid:
-        	if form.is_valid():
-            	# process the data in form.cleaned_data as required
-            		form.save()
-            		form = ContactusForm()
-            	# redirect to a new URL:
-			messages.info(request, "Մենք ստացանք Ձեր նամակը և շուտով կպատասխանենք։ Շնորհակալություն։")
-		else:
-			messages.error(request, _("Your message has not been sent. Please fill in all the fields."))
-    	# if a GET (or any other method) we'll create a blank form
-    	else:
-        	form = ContactusForm()
-	rides = Ride.objects.all()
-	loginform = LoginForm(prefix="login")
-	table = RideTable(rides)
-	RequestConfig(request, paginate={"per_page": 3}).configure(table)
-	return render(request,'main/pages/index.html',{'form':form, 'table': table, 'loginform': loginform})
-	
-def ridesearch(request):
-    if request.method == 'POST':
-        form = ContactusForm(request.POST)
-        if not form.has_changed(): form = ContactusForm()
-        if form.is_valid():
-	    form.save()
-	    form = ContactusForm()
-        post_dict = request.POST
-        if not post_dict.get('fromwhere') and not post_dict.get('towhere'):
-            rides = Ride.objects.all()
-        else: 
-            if post_dict.get('leavedate', None):
-                fromwhere = City.objects.get(name_en=post_dict['fromwhere'])
-                towhere   = City.objects.get(name_en=post_dict['towhere'])
-                d = datetime.datetime.strptime(post_dict['leavedate'], '%d/%m/%Y')
-                rides = Ride.objects.filter(fromwhere=fromwhere, towhere=towhere, 
-                                            leavedate__year=d.year, leavedate__month=d.month, leavedate__day=d.day)
-            else:
-                rides = Ride.objects.filter(fromwhere=post_dict['fromwhere'], towhere=post_dict['towhere'])
+def contactus(request, template='main/pages/base.html'):
+    
 
+    loginform = LoginForm(prefix="login")
+    return render(request, template, {'loginform': loginform})
+		
+	
+def index(request):
+    
+    
+    #table = RideTable(rides)
+    #RequestConfig(request, paginate={"per_page": 3}).configure(table)
+
+    if request.method == "POST":
+        form = UserSearchForm(request.POST)
+        
+        if form.is_valid():
+            kwargs = {}
+            data = form.cleaned_data
+            if not form.has_changed():
+                rides = Ride.objects.all()
+                
+            else:
+                
+                for k,v in data.items():
+                    if v:
+                        kwargs[k] = v
+                rides = Ride.objects.filter(**kwargs)
+            form.save()
+            table = RideTable(rides)
+            RequestConfig(request, paginate={"per_page": 3}).configure(table)
+            return render(request, 'main/pages/index.html', {'form': form, 'table': table})
     else:
-	form = ContactusForm(request.POST)
-	rides = Ride.objects.all()
-		#items = PortfolioItem.objects.all()
+        form = UserSearchForm()
+    rides = Ride.objects.all()
     table = RideTable(rides)
     RequestConfig(request, paginate={"per_page": 3}).configure(table)
-    loginform = LoginForm(prefix="login")
-    return render(request, 'main/pages/search.html', {'table': table, 'form':form, 'loginform':loginform})
+    return render(request, 'main/pages/index.html', {'table': table, 'form':form})
 
 def get_car_images(request):
 	if request.method == 'POST' and request.is_ajax():
@@ -345,3 +334,15 @@ def upd_pic(request, template='main/account/profile.html'):
         }
         return HttpResponse(json.dumps(data))
     return HttpResponseBadRequest(json.dumps({'errors': form.errors}))
+
+def contact(request, template='main/pages/contact.html'):
+    if request.method == "POST":
+        
+        form = ContactusForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, "Մենք ստացանք Ձեր նամակը, կպատասխանենք հնարավորինս շուտ։ Շնորհակալություն։")
+            return redirect('home')
+    else:
+        form = ContactusForm()
+    return render(request, template, {'form': form})

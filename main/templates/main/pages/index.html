@@ -1,88 +1,76 @@
 {% extends "main/pages/base.html" %}
-{% load i18n staticfiles widget_tweaks %}
+{% load render_table from django_tables2 %}
+{% load staticfiles widget_tweaks %}
 
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
 
-
-{% block contact %}
-
-
-
-    <section id="templatemo_contact" class="section text-center">
-        <div class="container">
-            <h2 class="section-title">Կապվեք Մեզ Հետ</h2>
-
-            <div class="row">
-
-                <!-- CONTACT FORM -->
-                <div class="col-md-8 col-md-offset-2 text-left wow fadeInLeft" data-wow-duration="1s">
-                    <form role="form" action="{% url 'home' %}" method="post">
-                        {% csrf_token %}
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-
-                        {% for vis in form.visible_fields %}
-
-
-                            {% for err in vis.errors %}<span style="color:red">{{ err }}</span>{% endfor %}
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
-
-                                    {% render_field vis class="form-control" placeholder=vis.label required="required" %}
-                                </div>
-                            </div>
-
-                        {% endfor %}
-
-                        <div class="form-group row">
-                            <div class="col-xs-6 col-xs-offset-6">
-                                <button type="submit" class="form-control">Send</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- END CONTACT FORM -->
-
-
-            </div>
-            <h2 class="section-title">Գրեք Ֆեյսբուքի էջին</h2>
-
-            <div class="row" style="margin-bottom: 20px;">
-                <img src="static/images/facebook.png" style="width: 50px;"/>
-            </div>
+    {% block sub1 %}            
+        <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
+            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
+                Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
+            </span>
         </div>
+    {% endblock sub1 %}
+    
+    
 
+
+{% block content %}
+    {{ block.super }}
+     <div class="container-fluid">
+        <div class="a2b-ride-table table-responsive">
+            {% render_table table %}
         </div>
-    </section>
-
     </div>
-
 {% endblock %}
 
-{% block login %}
-    {% if not request.user.is_authenticated %}
-        <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
-                data-target="#login-modal"
-                style="top: 0px;">
-            <span>Մուտք գործել/գրանցվել</span>
-        </button>
-    {% else %}
-        <div class="dropdown pull-right" style="right: 50px;">
-            <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
-                    style="top: 0px;">
-            <span>{% if request.user.is_authenticated %}Բարև {{ request.user.first_name }}!{% else %}Մուտք
-                գործել/գրանցվել{% endif %}</span>
-            </button>
-
-            <ul class="dropdown-menu">
-                <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> Անձնական էջ</a></li>
-                <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Դուրս գալ</a></li>
-            </ul>
+    {% block sub2 %}
+        <div>
+            <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
         </div>
 
-    {% endif %}
-{% endblock %}
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="{% static 'main/images/driver.png' %}">
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <span class="advantage-header">Վարորդներին</span>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="advantage-list">
+                            <ol>
+                                <li>Տեղադրիր հայտարարություն</li>
+                                <li>Վերցրու ուղևոր</li>
+                                <li>Վաստակիր գումար</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <img class="advantage-graphic" src="{% static 'main/images/passenger.png' %}">
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <span class="advantage-header">Ուղևորներին</span>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="advantage-list">
+                            <ol class="advantage-list">
+                                <li>Պայմանավորվիր վարորդի հետ</li>
+                                <li>Ճանապարհորդիր ավելի էժան</li>
+                                <li>Ընկերակցիր</li>
+                            </ol>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    {% endblock sub2 %}
