@@ -1,0 +1,56 @@
+{% extends 'main/pages/base.html' %}
+{% load staticfiles widget_tweaks get_form socialaccount %}
+
+
+
+    
+    {% block content %}
+        <section id="templatemo_contact" class="section text-center">
+            <div class="container">
+                <h2 class="section-title">Կապվեք Մեզ Հետ</h2>
+
+                <div class="row">
+
+                    <!-- CONTACT FORM -->
+                    <div class="col-md-8 col-md-offset-2 text-left wow fadeInLeft" data-wow-duration="1s">
+                        <form role="form" method="post">
+                            {% csrf_token %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+
+                            {% for vis in form.visible_fields %}
+
+
+                                {% for err in vis.errors %}<span style="color:red">{{ err }}</span>{% endfor %}
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+
+                                        {% render_field vis class="form-control" placeholder=vis.label required="required" %}
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+
+                            <div class="form-group row">
+                                <div class="col-xs-6 col-xs-offset-6">
+                                    <button type="submit" class="form-control">Send</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- END CONTACT FORM -->
+
+
+                </div>
+                <h2 class="section-title">Գրեք Ֆեյսբուքի էջին</h2>
+
+                <div class="row" style="margin-bottom: 20px;">
+                    <img src="static/images/facebook.png" style="width: 50px;"/>
+                </div>
+            </div>
+        </section>        
+    {% endblock %}
+

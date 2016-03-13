@@ -95,9 +95,9 @@ class Contactus(models.Model):
 
 
 class UserSearch(models.Model):
-    fromwhere =  models.CharField(max_length=100, blank=False)
-    towhere = models.CharField(max_length=100, blank=False)
-    leavedate = models.DateField(blank=True)
+    fromwhere =  models.CharField(max_length=80)
+    towhere = models.CharField(max_length=80)
+    leavedate = models.DateField(blank=True, null=True)
 
     class Meta:
         verbose_name = "User Search"

@@ -17,19 +17,27 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from main import views
+from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url("^$", views.contactus, name="home"),
-    url(r'^search',  views.ridesearch, name='ridesearch'),
+    url("^index/", views.index, name="index"),
     url(r'^getcar',  views.get_car_images, name='get_car_images'),
     url("^login$", views.signup, name="signup"),
     url("^logout$", views.logout, name="logout"),
     url("^signup$", views.signup, name="signup"),
     url("^update$", views.profile_update, name="profile_update"),
     url("^profile/home$", views.profile, name="profile"),
-    url("^rides$", views.rides, name="rides"),
+    url("^profile/info$", views.additional_info, name="info"),
+    url("^profile/cars$", views.cars, name="cars"),
+    url("^profile/rides$", views.rides, name="rides"),
     url(r"^mail", views.mail_from_postmark, name="postmark"),
     url(r'^accounts/', include('allauth.urls')),
     url("^ajax_delete$", views.ajax_delete, name="del-ride"),
+    url(r'^ajax$', views.upd_pic, name='ajax-upload'),
+    url(r'^about/', TemplateView.as_view(template_name="main/pages/about.html"), name='about'),
+    url(r'^contact/', views.contact, name='contact'),
+    
 ]
