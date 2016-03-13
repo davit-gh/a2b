@@ -72,7 +72,7 @@ class Ride(models.Model):
     price = models.IntegerField(blank=True)
     passenger_number = models.IntegerField(blank=True, default=2)
     driver = models.ForeignKey(Driver, related_name="rides")
-
+    uuid = models.CharField(max_length=40, blank=False, default='000000000000000')
     class Meta:
         verbose_name = "Ride"
         verbose_name_plural = "Rides"

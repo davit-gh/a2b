@@ -39,7 +39,7 @@ class RideAdminForm(ModelForm):
     starttime   = forms.CharField(label=u"Ժամ", widget=TimeWidget(), required=True)
     class Meta:
         model = Ride
-        fields = ['fromwhere', 'towhere', 'leavedate', 'starttime', 'passenger_number', 'price']
+        exclude = ['endtime', 'driver', 'uuid']
         labels = {
             'passenger_number': u"Ազատ տեղերի քանակ", 
             'price': u"Գին"

@@ -47,10 +47,11 @@ class DriverRideTable(tables.Table):
         return record.leavedate.strftime('%d - %m - %Y')
 
     def render_delete(self, value, record):
-        return mark_safe('<i id=' + str(record.id) + ' data-toggle="modal" data-target="#confirm" class="fa fa-times fa-2x"></i>')
+        return mark_safe('<i id=' + str(record.id) + ' data-toggle="modal" data-target="#confirm" class="fa fa-times fa-2x"></i>'
+                        '<i id=' + record.uuid + ' data-toggle="modal" data-target="#quickview" class="fa fa-eye fa-2x"></i>')
 
     class Meta:
         model = Ride
         attrs = {"class": "table table-hover"}
-        exclude = ("id", "endtime", "driver")
+        exclude = ("id", "endtime", "driver", "uuid")
         empty_text = "Ներկայումս մենք չունենք Ձեր ուղղությամբ երթուղիներ, այցելեք մեզ ավելի ուշ։"
