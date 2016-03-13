@@ -27,7 +27,7 @@ class RideTable(tables.Table):
     class Meta:
         model = Ride
         attrs = {"class": "table table-hover"}
-        exclude = ("id", "endtime", "driver", "passenger_number")
+        exclude = ("id", "endtime", "driver", "passenger_number", "uuid")
         empty_text = "Ներկայումս մենք չունենք Ձեր ուղղությամբ երթուղիներ, այցելեք մեզ ավելի ուշ։"
 
 
