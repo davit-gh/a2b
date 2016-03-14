@@ -214,10 +214,10 @@ class ProfileForm(forms.ModelForm):
         if password1:
             errors = []
             if password1 != password2:
-                errors.append(ugettext("Passwords do not match"))
+                errors.append(ugettext("Ծածկագրերը չեն համընկնում։"))
             if len(password1) < settings.ACCOUNTS_MIN_PASSWORD_LENGTH:
                 errors.append(
-                        ugettext("Password must be at least %s characters") %
+                        ugettext("Ծածկագիրը պետք է լինի առնվազն %s սիմվոլ") %
                         settings.ACCOUNTS_MIN_PASSWORD_LENGTH)
             if errors:
                 self._errors["password1"] = self.error_class(errors)
@@ -253,6 +253,8 @@ class ProfileForm(forms.ModelForm):
                 username = self.cleaned_data["email"].split("@")[0]
                 qs = User.objects.exclude(id=self.instance.id)
                 user.username = unique_slug(qs, "username", slugify_unicode(username))
+            else:
+                username = self.instance.username
         password = self.cleaned_data.get("password1")
         if password:
             user.set_password(password)
