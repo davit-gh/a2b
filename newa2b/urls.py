@@ -40,5 +40,5 @@ urlpatterns = [
     url(r'^about/', TemplateView.as_view(template_name="main/pages/about.html"), name='about'),
     url(r'^contact/', views.contact, name='contact'),
     url(r'^ride/(?P<unique_hash>[a-zA-Z0-9_]*)/$', views.ride_unique, name='runique'),
-       
+    
 ]

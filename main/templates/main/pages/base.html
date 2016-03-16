@@ -136,11 +136,20 @@
         {% endif %}
     {% endblock %}
 
-    <ul>
-        <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'contact' %}">Contact</a></li>
-    </ul>
     
+    
+    {% block sub1 %}            
+        <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
+            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
+                Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
+            </span>
+
+        </div>
+            <ul id="nav">
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+    {% endblock sub1 %}
     
         <div class="templatemo_home_inner_wapper">
             <h1 class="text-center" style="margin: 0.4em 0;">
@@ -148,7 +157,58 @@
                 <span style="color:orange">A</span>-ից
                 <span style="color:orange">B</span></h1>
         </div>
-    
+
+    {% block sub2 %}
+        <div>
+            <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="{% static 'main/images/driver.png' %}">
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <span class="advantage-header">Վարորդներին</span>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="advantage-list">
+                            <ol>
+                                <li>Տեղադրիր հայտարարություն</li>
+                                <li>Վերցրու ուղևոր</li>
+                                <li>Վաստակիր գումար</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <img class="advantage-graphic" src="{% static 'main/images/passenger.png' %}">
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <span class="advantage-header">Ուղևորներին</span>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="advantage-list">
+                            <ol class="advantage-list">
+                                <li>Պայմանավորվիր վարորդի հետ</li>
+                                <li>Ճանապարհորդիր ավելի էժան</li>
+                                <li>Ընկերակցիր</li>
+                            </ol>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    {% endblock sub2 %}
+
+
 {% block content %}
  
             <div class="text-center hide-sm">
@@ -182,6 +242,8 @@
 
     
 {% endblock %}
+
+
 </div>
 </section>
 
