@@ -2,18 +2,6 @@
 {% load render_table from django_tables2 %}
 {% load staticfiles widget_tweaks %}
 
-{% block meta_title %}{{ title }}{% endblock %}
-{% block title %}{{ title }}{% endblock %}
-
-    {% block sub1 %}            
-        <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
-            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
-                Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
-            </span>
-        </div>
-    {% endblock sub1 %}
-    
-    
 
 
 {% block content %}
@@ -25,52 +13,5 @@
     </div>
 {% endblock %}
 
-    {% block sub2 %}
-        <div>
-            <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="{% static 'main/images/driver.png' %}">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Վարորդներին</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol>
-                                <li>Տեղադրիր հայտարարություն</li>
-                                <li>Վերցրու ուղևոր</li>
-                                <li>Վաստակիր գումար</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" src="{% static 'main/images/passenger.png' %}">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Ուղևորներին</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol class="advantage-list">
-                                <li>Պայմանավորվիր վարորդի հետ</li>
-                                <li>Ճանապարհորդիր ավելի էժան</li>
-                                <li>Ընկերակցիր</li>
-                            </ol>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    {% endblock sub2 %}
+{% block sub1 %}{% endblock %}
+{% block sub2 %}{% endblock %}
