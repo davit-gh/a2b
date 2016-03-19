@@ -75,26 +75,22 @@ class LoginForm(forms.Form):
     """
     Fields for login.
     """
-    username = forms.CharField(label=u"Մուտքանուն")
+    username = forms.EmailField(label=u"Մուտքանուն")
     password = forms.CharField(label=u"Գաղտնաբառ",
                                widget=forms.PasswordInput(render_value=False))
-
+        
     def clean(self):
         """
         Authenticate the given username/email and password. If the fields
         are valid, store the authenticated user for returning via save().
         """
-        
-        username = self.cleaned_data.get("username")
-        u = User.objects.get(email=username)
-        username = u.username
         password = self.cleaned_data.get("password")
-        self._user = authenticate(username=username, password=password)
-        if self._user is None:
-            raise forms.ValidationError(
-                             ugettext(u"Սխալ Էլ․ հասցե կամ գաղտնաբառ"))
-        elif not self._user.is_active:
-            raise forms.ValidationError(ugettext(u"Ձեր անձնական էջն ակտիվ չէ։"), code='inactive')
+        email = self.cleaned_data.get("username")
+        try:
+           u = User.objects.get(email=email)
+           self._user = authenticate(username=u.username, password=password)
+        except ObjectDoesNotExist:
+            raise forms.ValidationError(u"Ծածկագիրը կամ գաղտնաբառը սխալ է։", code='nonexistent')
         return self.cleaned_data
 
     def save(self):
