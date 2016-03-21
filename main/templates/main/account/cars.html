@@ -29,7 +29,7 @@
 {% block right %}
 	<form method="post" enctype="multipart/form-data">
 			    		{% csrf_token %}
-	            		<h4 id="car-images">Մեքենայի նկարները</h4>
+	            		<h3 id="car-images">Մեքենայի նկարները</h3>
 						<div id="formset" data-formset-prefix="{{ formset.prefix }}">
 						    {{ formset.management_form }}
 						    <div data-formset-body>

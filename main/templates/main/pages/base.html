@@ -9,19 +9,8 @@
 
     <!-- jQuery-->
     <script src="{% static 'main/js/jquery.min.js' %}"></script>
-    <script src="{% static 'main/js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'main/js/resp_tab/easyResponsiveTabs.js' %}"></script>
-    <script src="{% static 'ajax_upload/js/jquery.iframe-transport.js' %}"></script>
-    <script src="{% static 'ajax_upload/js/ajax-upload-widget.js' %}"></script>
-    <script type="text/javascript">
-    $(function(){
-        $('#accountTab').easyResponsiveTabs({type: 'vertical'});
-        AjaxUploadWidget.autoDiscover({
-            changeButtonText: 'Փոխել նկարս',
-        });      
-    });
-    </script>
+    
     {% block extra_js %}{% endblock %}
 
     {% searchform as searchform %}
@@ -42,29 +31,58 @@
 </head>
 
 <body>
+            <nav class="navbar navbar-default navbar-fixed-top">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>  
+                  <a class="navbar-brand" href="#">
+                    a2b
+                  </a>
+                </div>
+                {% url 'home' as home_url %}
+                {% url 'about' as about_url %}
+                {% url 'contact' as contact_url %}
+              <div id="navbar" class="navbar-collapse collapse">
+                  <ul class="nav navbar-nav">
+                    <li {% if request.get_full_path == home_url %}class="active"{% endif %}><a href="{{ home_url }}">Հիմնական</a></li>
+                    <li {% if request.get_full_path == about_url %}class="active"{% endif %}><a href="{{ about_url }}">Մեր Մասին</a></li>
+                    <li {% if request.get_full_path == contact_url %}class="active"{% endif %}><a href="{{ contact_url }}">Կապ Հաստատել</a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li class="active">
+                        {% block login %}
+                            {% if not request.user.is_authenticated %}
+                                <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
+                                        data-target="#login-modal"
+                                        style="top: 0px;">
+                                    <span>Մուտք գործել/գրանցվել</span>
+                                </button>
+                            {% else %}
+                                <div class="dropdown pull-right" style="right: 50px;">
+                                    <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
+                                            style="top: 0px;">
+                                    <span>Բարև {{ request.user.first_name }}!</span>
+                                    </button>
 
-{% block login %}
-    {% if not request.user.is_authenticated %}
-        <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
-                data-target="#login-modal"
-                style="top: 0px;">
-            <span>Մուտք գործել/գրանցվել</span>
-        </button>
-    {% else %}
-        <div class="dropdown pull-right" style="right: 50px;">
-            <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
-                    style="top: 0px;">
-            <span>Բարև {{ request.user.first_name }}!</span>
-            </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> Անձնական էջ</a></li>
+                                        <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Դուրս գալ</a></li>
+                                    </ul>
+                                </div>
 
-            <ul class="dropdown-menu">
-                <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> Անձնական էջ</a></li>
-                <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Դուրս գալ</a></li>
-            </ul>
-        </div>
+                            {% endif %}
+                        {% endblock %}
 
-    {% endif %}
-{% endblock %}
+                    </li>
+                  </ul>
+                </div><!--/.nav-collapse -->
+              </div>
+            </nav>
 
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -145,10 +163,8 @@
             </span>
 
         </div>
-            <ul id="nav">
-                <li><a href="{% url 'about' %}">About</a></li>
-                <li><a href="{% url 'contact' %}">Contact</a></li>
-            </ul>
+            
+            
     {% endblock sub1 %}
     
         <div class="templatemo_home_inner_wapper">
