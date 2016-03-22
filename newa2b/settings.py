@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.odnoklassniki',
     'allauth.socialaccount.providers.vk',
+    'crispy_forms',
 ]
 
 SITE_ID = 1
@@ -208,3 +209,5 @@ SOCIALACCOUNT_PROVIDERS = {
         'METHOD': 'js_sdk'  # instead of 'oauth2'
     }
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

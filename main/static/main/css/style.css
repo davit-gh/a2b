@@ -1997,3 +1997,7 @@ ul#nav{
 label, .helptext{
   color: #fff;
 }
+
+.controls{
+  display: inline-block;
+}

@@ -187,16 +187,7 @@ class ProfileForm(forms.ModelForm):
                 self.fields[field].required = True
             # Disable auto-complete for password fields.
             # Password isn't required for profile update.
-            if field.startswith("password"):
-                self.fields[field].widget.attrs["autocomplete"] = "off"
-                self.fields[field].widget.attrs.pop("required", "")
-                if not self._signup:
-                    self.fields[field].required = False
-                    if field == "password1":
-                        self.fields[field].help_text = ugettext(
-                        u"Թողեք դատարկ, եթե չեք ուզում փոխել ծածկագիրը։")
-        
-
+            
     
 
     def clean_password2(self):

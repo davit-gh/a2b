@@ -1,5 +1,5 @@
 {% extends "main/pages/base.html" %}
-{% load widget_tweaks tags staticfiles formset_tags debug_tags %}
+{% load widget_tweaks tags staticfiles formset_tags crispy_forms_tags debug_tags %}
 
 {% block menu %}{% endblock %}
 
@@ -50,10 +50,7 @@
 	    <div class="col-md-9"> 
 	    {% block right %}
 	    	<form method="post" action="{% url 'profile' %}">
-			    <table>
-					{% csrf_token %}
-					{{ userform.as_table }}				
-				</table>
+				{{ userform|crispy }}
 				<div class="text-center">
 					<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
 				</div>
@@ -70,7 +67,7 @@
 						</td>
 						<td>
 							{{ driverform.mobile.errors }}
-							{{ driverform.mobile_prefix }}{{ driverform.mobile }}
+							{{ driverform.mobile_prefix }}{% render_field driverform.mobile class="form-control" %}
 							
 						</td>
 					</tr>
@@ -81,7 +78,7 @@
 						</td>
 						<td>
 							{{ driverform.sex.errors }}
-							{{ driverform.sex }}
+							{% render_field driverform.sex class="form-control" %}
 						</td>
 					</tr>
 					<tr>
@@ -91,10 +88,9 @@
 						</td>
 						<td>
 							{{ driverform.dob.errors }}
-							{{ driverform.dob }}
+							{% render_field driverform.dob class="form-control" %}
 						</td>
 					</tr>
-				
 				</table>
 				<div class="text-center">
 	            	<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>

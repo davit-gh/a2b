@@ -1,6 +1,6 @@
 {% extends "main/account/profile.html" %}
 {% load render_table from django_tables2 %}
-{% load widget_tweaks tags staticfiles %}
+{% load widget_tweaks tags staticfiles crispy_forms_tags %}
 
 {% block menu %}{% endblock %}
 
@@ -41,11 +41,9 @@
 
 {% block right %}
 	<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-        	    
-    	<table>
-    		{{ rideform.as_table }}
-    	</table>
+		
+    		{{ rideform|crispy }}
+    	
 		<div class="text-center">
     		<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
 	  	</div>
