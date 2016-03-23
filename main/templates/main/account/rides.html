@@ -42,11 +42,9 @@
 {% block right %}
 	<form method="post" enctype="multipart/form-data">
 		
-    		{{ rideform|crispy }}
+    		{% crispy rideform %}
     	
-		<div class="text-center">
-    		<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
-	  	</div>
+		
     </form>
     <div class="container-fluid">
     	{% render_table table %}

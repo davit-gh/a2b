@@ -40,7 +40,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>  
-                  <a class="navbar-brand" href="#">
+                  <a class="navbar-brand" href="{% url 'home' %}">
                     a2b
                   </a>
                 </div>
@@ -48,7 +48,6 @@
                 {% url 'contact' as contact_url %}
               <div id="navbar" class="navbar-collapse collapse">
                   <ul class="nav navbar-nav">
-                    <li {% if request.get_full_path == home_url %}class="active"{% endif %}><a href="{{ home_url }}">Հիմնական</a></li>
                     <li {% if request.get_full_path == about_url %}class="active"{% endif %}><a href="{{ about_url }}">Մեր Մասին</a></li>
                     <li {% if request.get_full_path == contact_url %}class="active"{% endif %}><a href="{{ contact_url }}">Կապ Հաստատել</a></li>
                   </ul>

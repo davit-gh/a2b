@@ -19,6 +19,9 @@ from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist
 import unicodedata, re, uuid
 from ajax_upload.widgets import AjaxClearableFileInput
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Div
+from crispy_forms.bootstrap import StrictButton
 
 class UserSearchForm(ModelForm):
 	
@@ -48,7 +51,24 @@ class RideAdminForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(RideAdminForm, self).__init__(*args, **kwargs)
-
+        self.helper = FormHelper()
+        self.helper.form_action = 'ride'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-xs-6'
+        self.helper.field_class = 'col-xs-6'
+        self.helper.layout = Layout(
+            'fromwhere',
+            'towhere',
+            'leavedate',
+            'starttime',
+            'price',
+            'passenger_number',
+            Div(
+                StrictButton(u'Պահպանել', css_class='btn-primary'),
+                css_class='text-center',
+                css_id='submit_btn'
+            )
+        )
     def clean_starttime(self):
         st = self.cleaned_data['starttime']
         if not st:
@@ -171,6 +191,23 @@ class ProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_action = 'profile'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-xs-6'
+        self.helper.field_class = 'col-xs-6'
+        self.helper.layout = Layout(
+            'first_name',
+            'last_name',
+            'email',
+            'password1',
+            'password2',
+            Div(
+                StrictButton(u'Պահպանել', css_class='btn-primary'),
+                css_class='text-center',
+                css_id='submit_btn'
+            )
+        )
         self._signup = self.instance.id is None
         user_fields = User._meta.get_fields()
         #self.fields.pop('username')

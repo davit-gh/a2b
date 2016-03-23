@@ -49,51 +49,46 @@
 	    </div>
 	    <div class="col-md-9"> 
 	    {% block right %}
-	    	<form method="post" action="{% url 'profile' %}">
-				{{ userform|crispy }}
-				<div class="text-center">
-					<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
-				</div>
-			</form>
+	    	
+				{% crispy userform %}
+				
+			
 			
 			<form method="post" action="{% url 'info' %}">
 				{% csrf_token %}
 				<h3>Լրացուցիչ տվյալներ</h3>
 				
-				<table>
-					<tr>
-						<td>
-							{{ driverform.mobile.label_tag }}
-						</td>
-						<td>
+						<div class="form-group">
+							<label for="{{ driverform.mobile.id_for_label }}" class="label-align col-xs-6">{{ driverform.mobile.label }}</label>
 							{{ driverform.mobile.errors }}
-							{{ driverform.mobile_prefix }}{% render_field driverform.mobile class="form-control" %}
-							
-						</td>
-					</tr>
-					<tr>
-						<td>
-							
-							{{ driverform.sex.label_tag }}
-						</td>
-						<td>
+							<div class="controls col-xs-6">
+								<div class="form-group row">
+									<div class="col-md-4">
+										{% render_field driverform.mobile_prefix class="form-control" %}
+									</div>
+									<div class="col-md-8">
+										{% render_field driverform.mobile class="form-control" %}
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="{{ driverform.sex.id_for_label }}" class="label-align col-xs-6">{{ driverform.sex.label }}</label>
 							{{ driverform.sex.errors }}
-							{% render_field driverform.sex class="form-control" %}
-						</td>
-					</tr>
-					<tr>
-						<td>
-
-							{{ driverform.dob.label_tag }}
-						</td>
-						<td>
+							<div class="controls col-xs-6">
+								{% render_field driverform.sex class="form-control" %}
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="{{ driverform.dob.id_for_label }}" class="label-align col-xs-6">{{ driverform.dob.label }}</label>
 							{{ driverform.dob.errors }}
-							{% render_field driverform.dob class="form-control" %}
-						</td>
-					</tr>
-				</table>
-				<div class="text-center">
-	            	<button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
+							<div class="controls col-xs-6">
+								{% render_field driverform.dob class="form-control" %}
+							</div>
+						</div>
+
+				<div id="submit_btn" class="text-center">
+	            	<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
 		        </div>
 		    </form>
 		{% endblock %}
