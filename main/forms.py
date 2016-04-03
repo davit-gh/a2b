@@ -28,7 +28,7 @@ class UserSearchForm(ModelForm):
      
 	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", required=False)
 	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", required=False)
-	leavedate   = forms.DateField(widget=DateWidget(options={'startDate':'+0d', 'format': 'dd-mm-yyyy'}), input_formats=['%d-%m-%Y','%d/%m/%Y'], required=False)
+	leavedate   = forms.DateField(widget=DateWidget(options={'startDate':'+0d', 'format': 'dd-mm-yyyy', 'pickerPosition': 'top-right'}), input_formats=['%d-%m-%Y','%d/%m/%Y'], required=False)
 	class Meta:
  		model = UserSearch
 		fields = ['fromwhere', 'towhere', 'leavedate']

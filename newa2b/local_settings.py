@@ -12,36 +12,70 @@ ALLOWED_HOSTS = ["www.a2b.am", "a2b.am"]
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+#production
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'a2b',
-        'USER': 'a2b',
-        'PASSWORD': 'aaa',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
+'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'a2b',
+    'USER': 'a2b',
+    'PASSWORD': 'aaa',
+    'HOST': 'localhost',
+    'PORT': '',
+}
 }
 
+#staging
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'staging_a2b',
+#         'USER': '_staging_a2b',
+#         'PASSWORD': 'aaa',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
+
+#production
+# FABRIC = {
+#      "SSH_USER": "flaunt", # SSH username
+#      "SSH_PASS":  "", # SSH password (consider key-based authentication)
+#      "SSH_KEY_PATH":  "/home/bamby/.ssh/id_rsa.pub", # Local path to SSH key file, for key-based auth
+#      "HOSTS": ["188.166.7.218"],
+#      "DOMAINS": ALLOWED_HOSTS, # List of hosts to deploy to
+#      "VIRTUALENV_HOME":  "/home/flaunt/virtenv", # Absolute remote path for virtualenvs
+#      "PROJECT_NAME": "a2b", # Unique identifier for project
+#      "REQUIREMENTS_PATH": "requirements.txt", # Path to pip requirements, relative to project
+#      "GUNICORN_PORT": 8000, # Port gunicorn will listen on
+#      "LOCALE": "en_US.UTF-8", # Should end with ".UTF-8"
+#      "LIVE_HOSTNAME": "a2b", # Host for public site.
+#      "REPO_URL": "https://github.com/davit-gh/a2b.git", # Git or Mercurial remote repo URL for the project
+#      "DB_PASS": "thisisaproductiondatabase", # Live database password
+#      "ADMIN_PASS": "scanyoga", # Live admin user password
+#      "SECRET_KEY": SECRET_KEY,
+#      "NEVERCACHE_KEY": NEVERCACHE_KEY,
+# }
+
+#staging
 FABRIC = {
      "SSH_USER": "flaunt", # SSH username
      "SSH_PASS":  "", # SSH password (consider key-based authentication)
      "SSH_KEY_PATH":  "/home/bamby/.ssh/id_rsa.pub", # Local path to SSH key file, for key-based auth
      "HOSTS": ["188.166.7.218"],
-     "DOMAINS": ALLOWED_HOSTS, # List of hosts to deploy to
-     "VIRTUALENV_HOME":  "/home/flaunt/virtenv", # Absolute remote path for virtualenvs
-     "PROJECT_NAME": "a2b", # Unique identifier for project
+     "DOMAINS": ['katnaratschool.xyz'], # List of hosts to deploy to
+     "VIRTUALENV_HOME":  "/home/flaunt/staging_virtenv", # Absolute remote path for virtualenvs
+     "PROJECT_NAME": "staging_a2b", # Unique identifier for project
      "REQUIREMENTS_PATH": "requirements.txt", # Path to pip requirements, relative to project
      "GUNICORN_PORT": 8000, # Port gunicorn will listen on
      "LOCALE": "en_US.UTF-8", # Should end with ".UTF-8"
-     "LIVE_HOSTNAME": "a2b", # Host for public site.
+     "LIVE_HOSTNAME": "staging_a2b", # Host for public site.
      "REPO_URL": "https://github.com/davit-gh/a2b.git", # Git or Mercurial remote repo URL for the project
      "DB_PASS": "thisisaproductiondatabase", # Live database password
      "ADMIN_PASS": "scanyoga", # Live admin user password
      "SECRET_KEY": SECRET_KEY,
      "NEVERCACHE_KEY": NEVERCACHE_KEY,
 }
-
 TEMPLATE_DEBUG = True
 
 FORMS_USE_HTML5 = True

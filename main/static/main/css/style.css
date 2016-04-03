@@ -196,8 +196,8 @@ button, input, select, textarea {
   /* 1 */
   font-size: 100%;
   /* 2 */
-  margin: 0
-  /* 3 */ }
+  margin: 0;
+   }
 
 /**
  * Address Firefox 4+ setting `line-height` on `input` using `!important` in
@@ -1834,7 +1834,7 @@ td, th {
 
 .a2b-background{
     padding: 1em 0;
-    background-color: rgba(82, 108, 183, 0.33)
+    background-color: rgba(38, 44, 63, 0.67)
 }
 
 div.pager {
@@ -1995,7 +1995,7 @@ ul#nav{
 }
 
 label, .helptext{
-  color: #fff;
+  color: #9C9494;
 }
 
 .controls{
@@ -2008,4 +2008,31 @@ label, .helptext{
 
 .label-align{
   text-align: right;
+}
+
+/***** How it works *****/
+.how-it-works {
+    background: #154558 url(../images/aboutUsBackground.jpg) fixed;
+    background-size: cover;
+    min-height: 30vh;
+    padding-bottom: 50px;
+    color: #fff;
+}
+
+#templatemo_home {
+    background: #154558 url(../images/jumbo_background.jpg) fixed;
+    /*background:  url(../images/.jpg) fixed;*/
+    background-size: cover;
+    min-height: 100vh;
+    padding-bottom: 70px;
+    color: #fff;
+}
+#templatemo_home .templatemo_home_inner_wapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.btn{
+  padding: 6px 12px;
 }

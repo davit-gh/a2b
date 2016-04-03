@@ -61,10 +61,8 @@ form input.form-control,
 form button.form-control,
 form textarea.form-control ,
 form select.form-control {
-    border: 0px;
-    background-color: transparent;
-    border-bottom: 3px solid #C2E3F3;
-    border-radius: 0px;
+    
+    border-radius: 20px;
     height: 45px;
 }
 form input.form-control:focus,
@@ -434,14 +432,5 @@ color: #565a5c;
 
 #shuffle-controls{
     margin-top: 45px;
-}
-
-/***** How it works *****/
-.how-it-works {
-    background: #154558 url(../images/aboutUsBackground.jpg) fixed;
-    background-size: cover;
-    min-height: 30vh;
-    padding-bottom: 50px;
-    color: #fff;
 }
 

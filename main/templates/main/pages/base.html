@@ -18,7 +18,6 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/templatemo_style.css' %}">
     <!-- Favicon and touch icons -->
     <link rel="shortcut icon" href="{% static 'main/images/favicon.ico' %}"/>
 
@@ -156,7 +155,7 @@
     
     {% block sub1 %}            
         <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
-            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold;">
+            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold; margin-top: 40px">
                 Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
             </span>
 
@@ -241,7 +240,7 @@
                                     {% for field in form.visible_fields %}
                                         {{ field.errors }}
                                         <label style="vertical-align: top">
-                                            {% render_field field class="input-large input-contrast" placeholder="Մեկնման ամսաթիվ" %}
+                                            {% render_field field class="form-control" placeholder="Մեկնման ամսաթիվ" %}
                                         </label>
                                     {% endfor %}
                                     <button class="btn btn-primary"
@@ -266,7 +265,7 @@
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 footer-copyright">
+            <div class="col-xs-12 text-center">
                 <p>Copyright &copy; 2016 <a href="#" target="_parent">a2b</a></p>
             </div>
         </div>
