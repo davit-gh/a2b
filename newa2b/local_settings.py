@@ -14,28 +14,28 @@ ALLOWED_HOSTS = ["www.a2b.am", "a2b.am"]
 # }
 
 #production
-DATABASES = {
-'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'a2b',
-    'USER': 'a2b',
-    'PASSWORD': 'aaa',
-    'HOST': 'localhost',
-    'PORT': '',
-}
-}
+# DATABASES = {
+# 'default': {
+#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#     'NAME': 'a2b',
+#     'USER': 'a2b',
+#     'PASSWORD': 'aaa',
+#     'HOST': 'localhost',
+#     'PORT': '',
+# }
+# }
 
 #staging
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'staging_a2b',
-#         'USER': '_staging_a2b',
-#         'PASSWORD': 'aaa',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'staging_a2b',
+        'USER': '_staging_a2b',
+        'PASSWORD': 'aaa',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 #production
 # FABRIC = {

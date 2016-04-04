@@ -341,6 +341,7 @@ def upd_pic(request, template='main/account/profile.html'):
     return HttpResponseBadRequest(json.dumps({'errors': form.errors}))
 
 def contact(request, template='main/pages/contact.html'):
+    loginform = LoginForm(prefix="login")
     if request.method == "POST":
         
         form = ContactusForm(request.POST)
@@ -350,4 +351,8 @@ def contact(request, template='main/pages/contact.html'):
             return redirect('home')
     else:
         form = ContactusForm()
-    return render(request, template, {'form': form})
+    return render(request, template, {'loginform': loginform,'form': form})
+
+def about(request):
+    loginform = LoginForm(prefix="login")
+    return render(request, 'main/pages/about.html', {'loginform': loginform})

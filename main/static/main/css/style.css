@@ -37,8 +37,12 @@ audio:not([controls]) {
  * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
+@font-face {
+    font-family: "Arian AMU";
+    src: url("../fonts/arnamu.ttf")
+}
 html {
-  font-family: sans-serif;
+  font-family: "Arian AMU";
   /* 1 */
   -ms-text-size-adjust: 100%;
   /* 2 */
@@ -285,8 +289,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+
+
 body {
-  font-family: 'Ubuntu', Verdana, sans-serif;
+  font-family: "Arian AMU", "Open Sans", Arial, Verdana, sans-serif;
   color: #5D6D77; }
 
 a {

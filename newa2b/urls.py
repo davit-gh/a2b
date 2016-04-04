@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url("^ajax_delete$", views.ajax_delete, name="del-ride"),
     url(r'^ajax$', views.upd_pic, name='ajax-upload'),
-    url(r'^about/', TemplateView.as_view(template_name="main/pages/about.html"), name='about'),
+    url(r'^about/', views.about, name='about'),
     url(r'^contact/', views.contact, name='contact'),
     url(r'^ride/(?P<unique_hash>[a-zA-Z0-9_]*)/$', views.ride_unique, name='runique'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
