@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-04 04:01+0400\n"
+"POT-Creation-Date: 2016-04-04 11:58+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -310,9 +310,45 @@ msgstr "Դուք կկարողանաք ավելացնել ձեր երթուղու
 msgid "Enter here your email and password, please"
 msgstr "Մուտքագրեք Ձեր էլ․ հասցեն ու ծածկագիրը"
 
+#: main/views.py:82
+msgid "Successfully logged out."
+msgstr "Հաջողությամբ դուրս եկաք"
+
+#: main/views.py:109
+msgid "Successfully logged in"
+msgstr "Հաջողությամբ մուտք գործեցիք"
+
+#: main/views.py:135
+msgid "Successfully signed up!"
+msgstr "Հագողությամբ գրանցվեցիք"
+
 #: main/views.py:185
 msgid "Profile updated"
 msgstr "Էջը թարմացվեց"
+
+#: main/views.py:210
+msgid "The route is added"
+msgstr "Երթուղին ավելացված է"
+
+#: main/views.py:214
+msgid "First fill in 'Additional details' section, please"
+msgstr "Սկզբում լրացրեք ՛Լրացուցիչ տվյալներ՛ բաժինը, խնդրեմ"
+
+#: main/views.py:268
+msgid "Your personal page has been updated!"
+msgstr "Ձեր անձնական էջը թարգմանվեց"
+
+#: main/views.py:283
+msgid "Successfully changed car images"
+msgstr "Հաջողությամբ փոխեցիք մեքենայի նկարները"
+
+#: main/views.py:309
+msgid "Your additional details has been saved!"
+msgstr "Ձեր լրացուցիչ տվյալները պահպանվեցին"
+
+#: main/views.py:349
+msgid "We received your message and will get back to you soon, thanks!"
+msgstr "Մենք ստացանք ձեր նամակը և շուտով կպատասխանենք, շնորհակալություն"
 
 #: newa2b/settings.py:138
 msgid "Armenian"

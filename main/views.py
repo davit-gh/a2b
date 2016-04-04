@@ -79,7 +79,7 @@ def logout(request):
     Log the user out.
     """
     auth_logout(request)
-    messages.info(request, "Հաջողությամբ դուրս եկաք Ձեր անձնական էջից։")
+    messages.info(request, _("Successfully logged out."))
     return redirect('/')
 
 def signup(request, template="main/register.html"):
@@ -106,7 +106,7 @@ def signup(request, template="main/register.html"):
         
         if login_form.is_valid():
             authenticated_user = login_form.save()
-            messages.info(request, "Հաջողությամբ մուտք գործեցիք։")
+            messages.info(request, _("Successfully logged in"))
             auth_login(request, authenticated_user)
             
             return redirect('/')
@@ -132,7 +132,7 @@ def signup(request, template="main/register.html"):
 #                        dci.save()
 
             
-            messages.info(request, "Հաջողությամբ գրանցվեցիք!")
+            messages.info(request, _("Successfully signed up!"))
             auth_login(request, new_user)
             return redirect("/")
     #import pdb;pdb.set_trace()
@@ -207,11 +207,11 @@ def rides(request, template="main/account/rides.html"):
             ride.starttime = datetime.datetime.now()
             ride.uuid = uuid.uuid4().hex
             ride.save()
-            messages.info(request, "Երթուղին ավելացված է")
+            messages.info(request, _("The route is added"))
             return redirect('rides')
         else:
             if rideform.errors['__all__'][0] == 'mobile':
-                messages.info(request, "Սկզբում լրացրեք ՛Լրացուցրչ տվյալներ՛ բաժինը, խնդրեմ")
+                messages.info(request, _("First fill in 'Additional details' section, please"))
                 return redirect('profile')
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -265,7 +265,7 @@ def profile(request, template='main/account/profile.html'):
         if userform.is_valid():
             user = userform.save()
 
-        messages.info(request, "Ձեր անձնական էջը թարմացվեց։")
+        messages.info(request, _("Your personal page has been updated!"))
     else:
         userform   = ProfileForm(prefix='user', instance=request.user)
     context = {"userform": userform}
@@ -280,7 +280,7 @@ def cars(request):
         #import pdb;pdb.set_trace()
         if formset.is_valid():
             formset.save()
-            messages.info(request, "Հաջողությամբ փոխեցիք մեքենայի նկարները։")
+            messages.info(request, _("Successfully changed car images"))
             return redirect('cars')
     else:
         formset = DriverImageFormSet(instance=request.user.driver)
@@ -306,7 +306,7 @@ def additional_info(request, template='main/account/profile.html'):
             driver.user = request.user
             
             driver.save()
-            messages.info(request, "Ձեր լրացուցիչ տվյալները պահպանվեցին։")
+            messages.info(request, _("Your additional details has been saved!"))
             return redirect('profile')
 
     # if a GET (or any other method) we'll create a blank form
@@ -346,7 +346,7 @@ def contact(request, template='main/pages/contact.html'):
         form = ContactusForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.info(request, "Մենք ստացանք Ձեր նամակը, կպատասխանենք հնարավորինս շուտ։ Շնորհակալություն։")
+            messages.info(request, _("We received your message and will get back to you soon, thanks!"))
             return redirect('home')
     else:
         form = ContactusForm()

@@ -95,8 +95,8 @@ class LoginForm(forms.Form):
     """
     Fields for login.
     """
-    username = forms.EmailField(label=ugettext("Login"))
-    password = forms.CharField(label=ugettext("Password"),
+    username = forms.EmailField(label=ugettext_lazy("Login"))
+    password = forms.CharField(label=ugettext_lazy("Password"),
                                widget=forms.PasswordInput(render_value=False))
         
     def clean(self):
@@ -123,18 +123,18 @@ class LoginForm(forms.Form):
 class CarImageForm(forms.Form):
     image = forms.ImageField(required=False)
 
-CHOICES=[('male', ugettext("Male")),
-         ('female', ugettext("Female"))]
+CHOICES=[('male', ugettext_lazy("Male")),
+         ('female', ugettext_lazy("Female"))]
 
 BIRTH_YEAR_CHOICES = map(lambda x: (str(x),str(x)), range(1970,1992))
 MOBILE_PREFIXES = [('055', '055'), ('095', '095'), ('043', '043'), ('077', '077'), ('093', '093'), ('094', '094'), ('098', '098'), ('091', '091'), ('099', '099')]
 
 class DriverForm(forms.ModelForm):
     mobile_prefix  = forms.ChoiceField(choices=MOBILE_PREFIXES, required=False)
-    mobile         = forms.CharField(label=ugettext("Mobile"), required=False)
-    sex            = forms.ChoiceField(label=ugettext("Gender"), choices=CHOICES, widget=forms.RadioSelect(), initial=ugettext("Male"), required=False)
-    featured_image = forms.ImageField(label=ugettext("My photo"), widget=AjaxClearableFileInput(), required=False)
-    dob            = forms.ChoiceField(label=ugettext("Birth year"), choices=BIRTH_YEAR_CHOICES, initial='1988', required=False)
+    mobile         = forms.CharField(label=ugettext_lazy("Mobile"), required=False)
+    sex            = forms.ChoiceField(label=ugettext_lazy("Gender"), choices=CHOICES, widget=forms.RadioSelect(), initial=ugettext_lazy("Male"), required=False)
+    featured_image = forms.ImageField(label=ugettext_lazy("My photo"), widget=AjaxClearableFileInput(), required=False)
+    dob            = forms.ChoiceField(label=ugettext_lazy("Birth year"), choices=BIRTH_YEAR_CHOICES, initial='1988', required=False)
     image_path     = forms.CharField(max_length=255, widget=forms.HiddenInput(), required=False)
     delete_image   = forms.BooleanField(widget=forms.HiddenInput(), required=False)
 
@@ -174,18 +174,18 @@ class ProfileForm(forms.ModelForm):
     #mobile          = forms.CharField(label=u"Բջջային",)
     #featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
     #gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
-    password1       = forms.CharField(label=ugettext("Password"),
+    password1       = forms.CharField(label=ugettext_lazy("Password"),
                                 widget=forms.PasswordInput(render_value=False))
-    password2       = forms.CharField(label=ugettext("Password (again)"),
+    password2       = forms.CharField(label=ugettext_lazy("Password (again)"),
                                 widget=forms.PasswordInput(render_value=False))
     
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email")
         labels = {
-            'first_name': ugettext("First name"),
-            'last_name': ugettext("Last name"),
-            'email': ugettext("Email"),
+            'first_name': ugettext_lazy("First name"),
+            'last_name': ugettext_lazy("Last name"),
+            'email': ugettext_lazy("Email"),
         }
         
 
