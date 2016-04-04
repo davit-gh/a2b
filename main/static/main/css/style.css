@@ -2036,3 +2036,11 @@ label, .helptext{
 .btn{
   padding: 6px 12px;
 }
+
+#lang_ddown{
+  padding: 6px 0;
+}
+
+#lang_form{
+  margin: 8px;
+}

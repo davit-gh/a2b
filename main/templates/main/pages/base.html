@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-{% load staticfiles widget_tweaks tags get_form socialaccount %}
+{% load i18n staticfiles widget_tweaks tags get_form socialaccount %}
+{% get_available_languages as LANGUAGES %}
 <html lang="en" class="ie_11_scroll">
 <head>
     <meta charset="utf-8">
@@ -47,8 +48,8 @@
                 {% url 'contact' as contact_url %}
               <div id="navbar" class="navbar-collapse collapse">
                   <ul class="nav navbar-nav">
-                    <li {% if request.get_full_path == about_url %}class="active"{% endif %}><a href="{{ about_url }}">Մեր Մասին</a></li>
-                    <li {% if request.get_full_path == contact_url %}class="active"{% endif %}><a href="{{ contact_url }}">Կապ Հաստատել</a></li>
+                    <li {% if request.get_full_path == about_url %}class="active"{% endif %}><a href="{{ about_url }}">{% trans "About us" %}</a></li>
+                    <li {% if request.get_full_path == contact_url %}class="active"{% endif %}><a href="{{ contact_url }}">{% trans "Contact" %}</a></li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                     <li class="active">
@@ -57,24 +58,40 @@
                                 <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
                                         data-target="#login-modal"
                                         style="top: 0px;">
-                                    <span>Մուտք գործել/գրանցվել</span>
+                                    <span>{% trans "Login/Signup" %}</span>
                                 </button>
                             {% else %}
                                 <div class="dropdown pull-right" style="right: 50px;">
                                     <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
                                             style="top: 0px;">
-                                    <span>Բարև {{ request.user.first_name }}!</span>
+                                    <span>{% trans "Hello" %} {{ request.user.first_name }}!</span>
                                     </button>
 
                                     <ul class="dropdown-menu">
-                                        <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> Անձնական էջ</a></li>
-                                        <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Դուրս գալ</a></li>
+                                        <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> {% trans "Personal page" %}</a></li>
+                                        <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> {% trans "Log out" %}</a></li>
                                     </ul>
                                 </div>
 
                             {% endif %}
                         {% endblock %}
 
+                    </li>
+                    <li>
+                        <form id="lang_form" class="form form-inline" action="/i18n/setlang/" method="post">
+                            {% csrf_token %}
+                            <input name="language" type="hidden" value="en" />
+                                <select id="lang_ddown" class="form-control" name="language"> 
+                                    {% for lang in LANGUAGES %}
+                                        <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+                                    {% endfor %}
+                                    <!--
+                                        <option selected="selected" style="background-image:url(static/img/arm-icon.png);">{% trans "Arm" %}</option>
+                                        <option style="background-image:url(static/img/us-icon.png);">{% trans "Eng" %}</option>
+                                    -->
+                                </select>
+                                <button type="submit" class="btn btn-default">{% trans "Go" %}</button>
+                        </form>
                     </li>
                   </ul>
                 </div><!--/.nav-collapse -->
@@ -103,30 +120,30 @@
                             <p class="text-center">
                                 <button class="btn btn-primary"
                                         style="background-color: orange; border-color: orange; font-weight: bold">
-                                    <i class="fa fa-sign-in"></i> Մտնել</button>
+                                    <i class="fa fa-sign-in"></i> {% trans "Log in" %}</button>
                             </p>
 
                         </form>
 
                         <a class="btn btn-primary btn-lg btn-block btn-social" href="/accounts/facebook/login"
                            style="background-color: #3b5998;">
-                            <i class="fa fa-facebook-square"></i> Մուտք Facebook-ով
+                            <i class="fa fa-facebook-square"></i> {% trans "Login with Facebook" %}
                         </a>
                         {% include "socialaccount/snippets/login_extra.html" %}
 
                         <a class="btn btn-primary btn-lg btn-block btn-social" href="user/fb"
                            style="background-color: #F6881F; display: none;">
-                            <i class="fa fa-odnoklassniki-square"></i> Մուտք OK-ով
+                            <i class="fa fa-odnoklassniki-square"></i> {% trans "Login with OK" %}
                         </a>
                         <a class="btn btn-primary btn-lg btn-block btn-social" href="user/fb"
                            style="background-color: #45668e; display: none;">
-                            <i class="fa fa-vk"></i> Մուտք VK-ով
+                            <i class="fa fa-vk"></i> {% trans "Login with VK" %}
                         </a>
 
-                        <p class="text-center text-muted">Դեռ գրանցված չեք?</p>
+                        <p class="text-center text-muted">{% trans "Not yet registered?" %}</p>
                         <p class="text-center text-muted">
-                            <a href="{% url "signup" %}"><strong style="color:orange;">Գրանցվեք հիմա</strong></a>
-                            </strong>! Դա շատ արագ է և կկարողանաք ավելացնել հայտարարություններ։</p>
+                            <a href="{% url "signup" %}"><strong style="color:orange;">{% trans "Register now" %}</strong></a>
+                            </strong>! {% trans "It is very easy and you can post your route details" %}</p>
 
                 </div>
             </div>
@@ -156,7 +173,7 @@
     {% block sub1 %}            
         <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
             <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold; margin-top: 40px">
-                Աննախադեպ նվեր վարորդներին, մինչև ապրիլի 1-ը հայտարարություն տեղադրելը անվճար է
+                {% trans "Exclusive deal for drivers: route listing is free till May 1st" %}
             </span>
 
         </div>
@@ -165,7 +182,7 @@
     {% endblock sub1 %}
     
         <div class="templatemo_home_inner_wapper">
-            <h1 class="text-center" style="margin: 0.4em 0;">
+            <h1 class="text-center" style="margin: 0.6em 0;">
                 <i class="fa fa-car"></i>
                 <span style="color:orange">A</span>-ից
                 <span style="color:orange">B</span></h1>
@@ -173,7 +190,7 @@
 
     {% block sub2 %}
         <div>
-            <h2 class="text-center">Գնում ես ուրիշ բնակավայր <span style="color:orange;font-weight: bold">?</span></h2>
+            <h2 class="text-center">{% trans "Are you heading to another destination" %} <span style="color:orange;font-weight: bold">?</span></h2>
         </div>
 
 
@@ -184,14 +201,14 @@
                         <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="{% static 'main/images/driver.png' %}">
                     </div>
                     <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Վարորդներին</span>
+                        <span class="advantage-header">{% trans "For Drivers" %}</span>
                     </div>
                     <div class="col-sm-12">
                         <div class="advantage-list">
                             <ol>
-                                <li>Տեղադրիր հայտարարություն</li>
-                                <li>Վերցրու ուղևոր</li>
-                                <li>Վաստակիր գումար</li>
+                                <li>{% trans "List your route" %}</li>
+                                <li>{% trans "Take a passenger" %}</li>
+                                <li>{% trans "Earn money" %}</li>
                             </ol>
                         </div>
                     </div>
@@ -203,14 +220,14 @@
                         <img class="advantage-graphic" src="{% static 'main/images/passenger.png' %}">
                     </div>
                     <div class="col-sm-12 text-center">
-                        <span class="advantage-header">Ուղևորներին</span>
+                        <span class="advantage-header">{% trans "For Passengers" %}</span>
                     </div>
                     <div class="col-sm-12">
                         <div class="advantage-list">
                             <ol class="advantage-list">
-                                <li>Պայմանավորվիր վարորդի հետ</li>
-                                <li>Ճանապարհորդիր ավելի էժան</li>
-                                <li>Ընկերակցիր</li>
+                                <li>{% trans "Make an appointment" %}</li>
+                                <li>{% trans "Travel cheaper" %}</li>
+                                <li>{% trans "Make friends" %}</li>
                             </ol>
                         </div>
                     </div>
@@ -223,7 +240,6 @@
 
 
 {% block content %}
- 
             <div class="text-center hide-sm">
                 <div id="center-block searchbar">
                 {% errors_for form %}
@@ -240,11 +256,11 @@
                                     {% for field in form.visible_fields %}
                                         {{ field.errors }}
                                         <label style="vertical-align: top">
-                                            {% render_field field class="form-control" placeholder="Մեկնման ամսաթիվ" %}
+                                            {% render_field field class="form-control" %}
                                         </label>
                                     {% endfor %}
                                     <button class="btn btn-primary"
-                                            style="background-color: orange; border-color: orange; font-weight: bold">Փնտրել
+                                            style="background-color: orange; border-color: orange; font-weight: bold">{% trans "Search" %}
                                     </button>
                                 </div>
                         </form>
@@ -313,7 +329,7 @@
                 <div class="driver-images"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
             </div>
         </div>
 

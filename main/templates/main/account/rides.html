@@ -1,6 +1,6 @@
 {% extends "main/account/profile.html" %}
 {% load render_table from django_tables2 %}
-{% load widget_tweaks tags staticfiles crispy_forms_tags %}
+{% load i18n widget_tweaks tags staticfiles crispy_forms_tags %}
 
 {% block menu %}{% endblock %}
 
@@ -29,7 +29,7 @@
 		  var target = $(event.relatedTarget.parentElement.parentElement);
 		  var modal = $(this);
 		  var body = modal.find('.modal-body');
-		  $(body).html('<table>' + target.html() + '</table><br/><a href="/ride/'+ id +'">Երթուղու դիտում</a>');
+		  $(body).html('<table>' + target.html() + '</table><br/><a href="/ride/'+ id +'">{% trans "View the route" %}</a>');
 		  
 		});
 {% endblock %}
@@ -54,14 +54,14 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Հաստատում</h4>
+	        <h4 class="modal-title" id="myModalLabel">{% trans "Confirmation" %}</h4>
 	      </div>
 	      <div class="modal-body">
-	        Համոզվա՞ծ եք, որ ուզում եք ջնջել
+	        {% trans "Are you sure you want to delete?" %}
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Փակել</button>
-	        <button id="del" type="button" class="btn btn-primary">Ջնջել</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+	        <button id="del" type="button" class="btn btn-primary">{% trans "Delete" %}</button>
 	      </div>
 	    </div>
 	  </div>
@@ -72,12 +72,12 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Երթուղու մանրամասներ</h4>
+	        <h4 class="modal-title" id="myModalLabel">{% trans "Route details" %}</h4>
 	      </div>
 	      <div class="modal-body">
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Փակել</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
 	      </div>
 	    </div>
 	  </div>

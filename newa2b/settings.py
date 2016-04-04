@@ -61,6 +61,7 @@ SITE_ID = 1
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'main.middleware.ForceDefaultLanguageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -130,13 +131,13 @@ AUTHENTICATION_BACKENDS = (
 )
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
+LANGUAGE_CODE = 'io'
 
-_ = lambda s: s
+gettext = lambda s: s
 LANGUAGES = (
-    ('en', _('English')),
-    ('ar', _('Armenian')),
+    ('io', gettext('Armenian')),
+    ('en', gettext('English')),
 )
-LANGUAGE_CODE = 'ar'
 
 TIME_ZONE = 'Asia/Yerevan'
 
@@ -144,7 +145,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -184,9 +185,9 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
 
 # Package/module name to import the root urlpatterns from for the project.
 ROOT_URLCONF = "%s.urls" % PROJECT_DIRNAME
-
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 LOCALE_PATHS = (
-    os.path.join(PROJECT_ROOT, 'locale'),
+    os.path.join(BASE_DIR, 'locale'),
 )
 
 FORMS_USE_HTML5 = True

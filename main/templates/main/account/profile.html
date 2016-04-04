@@ -1,5 +1,5 @@
 {% extends "main/pages/base.html" %}
-{% load widget_tweaks tags staticfiles formset_tags crispy_forms_tags debug_tags %}
+{% load i18n widget_tweaks tags staticfiles formset_tags crispy_forms_tags debug_tags %}
 
 {% block menu %}{% endblock %}
 
@@ -12,7 +12,7 @@
 
 {% block extra_jquery %}
 	AjaxUploadWidget.autoDiscover({
-            changeButtonText: 'Փոխել նկարս',
+            changeButtonText: '{% trans "Change my photo" %}',
         });  
 {% endblock %}
 
@@ -26,7 +26,7 @@
         
 {% errors_for form %}
 	<div class="container text-center">
-	    <h3>Իմ էջը</h3>
+	    <h3>{% trans "My page" %}</h3>
 	</div>
 	<div class="col-md-12">          
 	    <div class="col-md-3"> 
@@ -40,10 +40,10 @@
 					
 			</form>
 			<ul class="unstyled">
-	            <li><a href="{% url 'profile' %}"> Իմ Էջը </a></li>
-	            <li><a href="{% url 'cars' %}"> Իմ Մեքենան </a></li>
-	            <li><a href=""> Իմ Հաշիվը </a></li>
-	            <li><a href="{% url 'rides' %}"> Իմ Երթուղիները </a></li>
+	            <li><a href="{% url 'profile' %}"> {% trans "My page" %} </a></li>
+	            <li><a href="{% url 'cars' %}"> {% trans "My car" %} </a></li>
+	            <li><a href=""> {% trans "My balance" %} </a></li>
+	            <li><a href="{% url 'rides' %}"> {% trans "My routes" %} </a></li>
 	        </ul> 
 
 	    </div>
@@ -56,7 +56,7 @@
 			
 			<form method="post" action="{% url 'info' %}">
 				{% csrf_token %}
-				<h3>Լրացուցիչ տվյալներ</h3>
+				<h3>{% trans "Additional details" %}</h3>
 				
 						<div class="form-group">
 							<label for="{{ driverform.mobile.id_for_label }}" class="label-align col-xs-6">{{ driverform.mobile.label }}</label>
@@ -88,7 +88,7 @@
 						</div>
 
 				<div id="submit_btn" class="text-center">
-	            	<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Պահպանել</button>
+	            	<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> {% trans "Save" %}</button>
 		        </div>
 		    </form>
 		{% endblock %}

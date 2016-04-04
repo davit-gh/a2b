@@ -13,7 +13,7 @@ from datetimewidget.widgets import DateTimeWidget, TimeWidget, DateWidget
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext, ugettext_lazy
 from django.contrib.auth import authenticate
 from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist
@@ -26,8 +26,8 @@ from crispy_forms.bootstrap import StrictButton
 class UserSearchForm(ModelForm):
 	
      
-	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", required=False)
-	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), empty_label="Բոլորը", to_field_name="name_hy", required=False)
+	fromwhere   = forms.ModelChoiceField(queryset=City.objects.all(), empty_label=ugettext_lazy("All"), to_field_name="name_hy", required=False)
+	towhere 	= forms.ModelChoiceField(queryset=City.objects.all(), empty_label=ugettext_lazy("All"), to_field_name="name_hy", required=False)
 	leavedate   = forms.DateField(widget=DateWidget(options={'startDate':'+0d', 'format': 'dd-mm-yyyy', 'pickerPosition': 'top-right'}), input_formats=['%d-%m-%Y','%d/%m/%Y'], required=False)
 	class Meta:
  		model = UserSearch
@@ -36,16 +36,16 @@ class UserSearchForm(ModelForm):
 	
 		
 class RideAdminForm(ModelForm):
-    fromwhere   = forms.ModelChoiceField(label=u"Որտեղի՞ց", queryset=City.objects.all(), to_field_name="name_hy", required=True)
-    towhere 	= forms.ModelChoiceField(label=u"Ու՞ր", queryset=City.objects.all(), to_field_name="name_hy", required=True)
-    leavedate   = forms.CharField(label=u"Ամսաթիվ", widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}), required=True)
-    starttime   = forms.CharField(label=u"Ժամ", widget=TimeWidget(), required=True)
+    fromwhere   = forms.ModelChoiceField(label=ugettext("From where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    towhere 	= forms.ModelChoiceField(label=ugettext("To where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    leavedate   = forms.CharField(label=ugettext("Date"), widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}), required=True)
+    starttime   = forms.CharField(label=ugettext("Time"), widget=TimeWidget(), required=True)
     class Meta:
         model = Ride
         exclude = ['endtime', 'driver', 'uuid']
         labels = {
-            'passenger_number': u"Ազատ տեղերի քանակ", 
-            'price': u"Գին"
+            'passenger_number': ugettext("Free seats"), 
+            'price': ugettext("Price")
         }
     
     def __init__(self, *args, **kwargs):
@@ -64,7 +64,7 @@ class RideAdminForm(ModelForm):
             'price',
             'passenger_number',
             Div(
-                StrictButton(u'Պահպանել', css_class='btn-primary'),
+                StrictButton(ugettext("Save"), css_class='btn-primary'),
                 css_class='text-center',
                 css_id='submit_btn'
             )
@@ -72,7 +72,7 @@ class RideAdminForm(ModelForm):
     def clean_starttime(self):
         st = self.cleaned_data['starttime']
         if not st:
-            raise forms.ValidationError('Նշեք ժամը, խնդրեմ')
+            raise forms.ValidationError(ugettext("Enter the time, please"))
         return st
 
     def clean_leavedate(self):
@@ -95,8 +95,8 @@ class LoginForm(forms.Form):
     """
     Fields for login.
     """
-    username = forms.EmailField(label=u"Մուտքանուն")
-    password = forms.CharField(label=u"Գաղտնաբառ",
+    username = forms.EmailField(label=ugettext("Login"))
+    password = forms.CharField(label=ugettext("Password"),
                                widget=forms.PasswordInput(render_value=False))
         
     def clean(self):
@@ -110,7 +110,7 @@ class LoginForm(forms.Form):
            u = User.objects.get(email=email)
            self._user = authenticate(username=u.username, password=password)
         except ObjectDoesNotExist:
-            raise forms.ValidationError(u"Ծածկագիրը կամ գաղտնաբառը սխալ է։", code='nonexistent')
+            raise forms.ValidationError(ugettext("Your email or password is wrong."), code='nonexistent')
         return self.cleaned_data
 
     def save(self):
@@ -123,18 +123,18 @@ class LoginForm(forms.Form):
 class CarImageForm(forms.Form):
     image = forms.ImageField(required=False)
 
-CHOICES=[('Արական','Արական'),
-         ('Իգական','Իգական')]
+CHOICES=[('male', ugettext("Male")),
+         ('female', ugettext("Female"))]
 
 BIRTH_YEAR_CHOICES = map(lambda x: (str(x),str(x)), range(1970,1992))
 MOBILE_PREFIXES = [('055', '055'), ('095', '095'), ('043', '043'), ('077', '077'), ('093', '093'), ('094', '094'), ('098', '098'), ('091', '091'), ('099', '099')]
 
 class DriverForm(forms.ModelForm):
     mobile_prefix  = forms.ChoiceField(choices=MOBILE_PREFIXES, required=False)
-    mobile         = forms.CharField(label=u"Բջջային", required=False)
-    sex            = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական', required=False)
-    featured_image = forms.ImageField(label=u"Իմ նկարը", widget=AjaxClearableFileInput(), required=False)
-    dob            = forms.ChoiceField(label=u"Ծննդյան տարեթիվ", choices=BIRTH_YEAR_CHOICES, initial='1980', required=False)
+    mobile         = forms.CharField(label=ugettext("Mobile"), required=False)
+    sex            = forms.ChoiceField(label=ugettext("Gender"), choices=CHOICES, widget=forms.RadioSelect(), initial=ugettext("Male"), required=False)
+    featured_image = forms.ImageField(label=ugettext("My photo"), widget=AjaxClearableFileInput(), required=False)
+    dob            = forms.ChoiceField(label=ugettext("Birth year"), choices=BIRTH_YEAR_CHOICES, initial='1988', required=False)
     image_path     = forms.CharField(max_length=255, widget=forms.HiddenInput(), required=False)
     delete_image   = forms.BooleanField(widget=forms.HiddenInput(), required=False)
 
@@ -174,18 +174,18 @@ class ProfileForm(forms.ModelForm):
     #mobile          = forms.CharField(label=u"Բջջային",)
     #featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
     #gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
-    password1       = forms.CharField(label=u"Գաղտնաբառ",
+    password1       = forms.CharField(label=ugettext("Password"),
                                 widget=forms.PasswordInput(render_value=False))
-    password2       = forms.CharField(label=u"Գաղտնաբառ (Կրկնել)",
+    password2       = forms.CharField(label=ugettext("Password (again)"),
                                 widget=forms.PasswordInput(render_value=False))
     
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email")
         labels = {
-            'first_name': u'Անուն',
-            'last_name': u'Ազգանուն',
-            'email': u'Էլեկտրոնային հասցե',
+            'first_name': ugettext("First name"),
+            'last_name': ugettext("Last name"),
+            'email': ugettext("Email"),
         }
         
 
@@ -203,7 +203,7 @@ class ProfileForm(forms.ModelForm):
             'password1',
             'password2',
             Div(
-                StrictButton(u'Պահպանել', css_class='btn-primary'),
+                StrictButton(ugettext("Save"), css_class='btn-primary'),
                 css_class='text-center',
                 css_id='submit_btn'
             )
@@ -238,10 +238,10 @@ class ProfileForm(forms.ModelForm):
         if password1:
             errors = []
             if password1 != password2:
-                errors.append(ugettext("Ծածկագրերը չեն համընկնում։"))
+                errors.append(ugettext("Passwords are not the same։"))
             if len(password1) < settings.ACCOUNTS_MIN_PASSWORD_LENGTH:
                 errors.append(
-                        ugettext("Ծածկագիրը պետք է լինի առնվազն %s սիմվոլ") %
+                        ugettext("Password must contain at least %s symbols") %
                         settings.ACCOUNTS_MIN_PASSWORD_LENGTH)
             if errors:
                 self._errors["password1"] = self.error_class(errors)
@@ -256,7 +256,7 @@ class ProfileForm(forms.ModelForm):
         if len(qs) == 0:
             return email
         raise forms.ValidationError(
-                                ugettext(u"Այս էլ․ հասցեն արդեն գրանցված է։"))
+                                ugettext("This email is already registered."))
 
 
     def save(self, *args, **kwargs):

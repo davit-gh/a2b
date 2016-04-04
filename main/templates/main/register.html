@@ -1,5 +1,5 @@
 {% extends 'main/pages/base.html' %}
-{% load widget_tweaks tags staticfiles formset_tags %}
+{% load i18n widget_tweaks tags staticfiles formset_tags %}
 
 {% block extra_js %}
     <script src="{% static 'js/jquery.formset.js' %}"></script>
@@ -17,11 +17,11 @@
 
                 <div class="col-md-6">
                     <div class="box">
-                        <h1>Գրանցվել</h1>
+                        <h1>{% trans "Sign up" %}</h1>
                         
-                        <p class="lead">Դեռ չե՞ք գրանցվել մեզ մոտ</p>
+                        <p class="lead">{% trans "Have you already registered with us?" %}</p>
                         
-                        <p>Գրանցվելուց հետո հայտարարություններ ավելացնելու հնարավորություն կունենաք</p>
+                        <p>{% trans "You'll be able to post your trip details after registration" %}</p>
 
                         <hr>
 
@@ -46,7 +46,7 @@
                             <div class="text-center">
                                 <button id="register_button" type="submit" class="btn btn-primary"
                                         style="background-color: orange; border-color: orange; font-weight: bold">
-                                    <i class="fa fa-user-md"></i> Գրանցվել</button>
+                                    <i class="fa fa-user-md"></i> {% trans "Sign up" %}</button>
                             </div>
                            
                         </form>
@@ -55,10 +55,10 @@
 
                 <div class="col-md-6">
                     <div class="box">
-                        <h1>Մուտք գործել</h1>
+                        <h1>{% trans "Log in" %}</h1>
                         
-                        <p class="lead">Արդեն գրանցվա՞ծ եք</p>
-                        <p>Մուտքագրեք ձեր օգտանունն ու գաղտնաբառն այստեղ</p>
+                        <p class="lead">{% trans "Have you already registered with us?" %}</p>
+                        <p>{% trans "Enter here your email and password, please" %}</p>
 
                         <hr>
 
@@ -78,7 +78,7 @@
                                 <div class="text-center">
                                     <button id="login_button" type="submit" class="btn btn-primary"
                                             style="background-color: orange; border-color: orange; font-weight: bold"
-                                            ><i class="fa fa-sign-in"></i> Մտնել</button>
+                                            ><i class="fa fa-sign-in"></i> {% trans "Log in" %}</button>
                                 </div>
                         </form>
                     </div>

@@ -1,25 +1,25 @@
 {% extends 'main/pages/base.html' %}
-
+{% load i18n %}
 {% block content %}
 	<table class="table">
 		<tr>
 			<th>
-				Որտեղից
+				{% trans "From where" %}
 			</th>
 			<th>
-				Ուր
+				{% trans "To where" %}
 			</th>
 			<th>
-				Ամսաթիվ
+				{% trans "Date" %}
 			</th>
 			<th>
-				Ժամ
+				{% trans "Time" %}
 			</th>
 			<th>
-				Տեղերի քանակ
+				{% trans "Free seats" %}
 			</th>
 			<th>
-				Գին
+				{% trans "Price" %}
 			</th>
 		</tr>
 		<tr>
