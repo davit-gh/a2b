@@ -2051,3 +2051,19 @@ label, .helptext{
 #lang_form{
   margin: 8px;
 }
+
+#additional{
+  margin: 25px 0;
+}
+
+#social_span{
+  margin-left: 20px;
+}
+
+#ride_table{
+  margin-top: 50px;
+}
+
+#ride_table tr{
+  color: #fff;
+}

@@ -53,10 +53,12 @@
 				{% crispy userform %}
 				
 			
-			
+			<div id="additional" class="text-center">
+				<h3>{% trans "Additional details" %}</h3>
+			</div>
 			<form method="post" action="{% url 'info' %}">
 				{% csrf_token %}
-				<h3>{% trans "Additional details" %}</h3>
+				
 				
 						<div class="form-group">
 							<label for="{{ driverform.mobile.id_for_label }}" class="label-align col-xs-6">{{ driverform.mobile.label }}</label>

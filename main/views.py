@@ -216,7 +216,7 @@ def rides(request, template="main/account/rides.html"):
     # if a GET (or any other method) we'll create a blank form
     else:
         rideform = RideAdminForm(user=request.user)
-    rides = request.user.driver.rides.all()
+    rides = request.user.driver.rides.all() if hasattr(request.user, 'driver') else []
         #items = PortfolioItem.objects.all()
     table = DriverRideTable(rides)
     RequestConfig(request, paginate={"per_page": 3}).configure(table)
@@ -293,7 +293,8 @@ def additional_info(request, template='main/account/profile.html'):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         
-        driverform = DriverForm(request.POST, request.FILES, prefix='driver', instance=request.user.driver)
+        instance = request.user.driver if hasattr(request.user,'driver') else None
+        driverform = DriverForm(request.POST, request.FILES, prefix='driver', instance=instance)
 
         # check whether it's valid:
         if driverform.is_valid():

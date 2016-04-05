@@ -19,7 +19,7 @@
 		  var b = modal.find('#del');
 		  $(b).click(function(){
 		  	$.post("{% url 'del-ride' %}", {'id': id, csrfmiddlewaretoken: '{{ csrf_token  }}'}, function(data){});
-			target.fadeOut('slow');
+			target.hide();
 			modal.modal('hide');
 		  })
 		  
@@ -40,12 +40,10 @@
 {% block section-id %}{% endblock %}
 
 {% block right %}
-	<form method="post" enctype="multipart/form-data">
 		
     		{% crispy rideform %}
     	
 		
-    </form>
     <div class="container-fluid">
     	{% render_table table %}
     </div>

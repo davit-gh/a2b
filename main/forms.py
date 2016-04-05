@@ -36,23 +36,24 @@ class UserSearchForm(ModelForm):
 	
 		
 class RideAdminForm(ModelForm):
-    fromwhere   = forms.ModelChoiceField(label=ugettext("From where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
-    towhere 	= forms.ModelChoiceField(label=ugettext("To where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
-    leavedate   = forms.CharField(label=ugettext("Date"), widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}), required=True)
-    starttime   = forms.CharField(label=ugettext("Time"), widget=TimeWidget(), required=True)
+    fromwhere   = forms.ModelChoiceField(label=ugettext_lazy("From where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    towhere 	= forms.ModelChoiceField(label=ugettext_lazy("To where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    leavedate   = forms.CharField(label=ugettext_lazy("Date"), widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}), required=True)
+    starttime   = forms.CharField(label=ugettext_lazy("Time"), widget=TimeWidget(), required=True)
     class Meta:
         model = Ride
         exclude = ['endtime', 'driver', 'uuid']
         labels = {
-            'passenger_number': ugettext("Free seats"), 
-            'price': ugettext("Price")
+            'passenger_number': ugettext_lazy("Free seats"), 
+            'price': ugettext_lazy("Price")
         }
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(RideAdminForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_action = 'ride'
+        self.helper.form_method = 'POST'
+        self.helper.form_action = 'rides'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-6'
         self.helper.field_class = 'col-xs-6'
@@ -64,7 +65,7 @@ class RideAdminForm(ModelForm):
             'price',
             'passenger_number',
             Div(
-                StrictButton(ugettext("Save"), css_class='btn-primary'),
+                Submit('submit', ugettext("Save"), css_class='btn btn-primary'),
                 css_class='text-center',
                 css_id='submit_btn'
             )
@@ -80,7 +81,7 @@ class RideAdminForm(ModelForm):
         return leave_date
 
     def clean(self):
-        if not self.user.driver.mobile:
+        if not hasattr(self.user, 'driver') or not self.user.driver.mobile:
             raise forms.ValidationError('mobile', code='mobile_error')
     
 class ContactusForm(ModelForm):
@@ -174,10 +175,6 @@ class ProfileForm(forms.ModelForm):
     #mobile          = forms.CharField(label=u"Բջջային",)
     #featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
     #gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
-    password1       = forms.CharField(label=ugettext_lazy("Password"),
-                                widget=forms.PasswordInput(render_value=False))
-    password2       = forms.CharField(label=ugettext_lazy("Password (again)"),
-                                widget=forms.PasswordInput(render_value=False))
     
     class Meta:
         model = User
@@ -192,6 +189,7 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_method = 'POST'
         self.helper.form_action = 'profile'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-xs-6'
@@ -203,7 +201,7 @@ class ProfileForm(forms.ModelForm):
             'password1',
             'password2',
             Div(
-                StrictButton(ugettext("Save"), css_class='btn-primary'),
+                Submit('submit', ugettext("Save"), css_class='btn-primary'),
                 css_class='text-center',
                 css_id='submit_btn'
             )
