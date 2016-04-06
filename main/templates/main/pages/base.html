@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="hhhwidth=device-width, initial-scale=1">
-    <title>A2B</title>
+    <title>{% block head_title %}A2B{% endblock %}</title>
 
     <!-- jQuery-->
     <script src="{% static 'main/js/jquery.min.js' %}"></script>
@@ -107,15 +107,18 @@
 
                             {% csrf_token %}
 
-                            {% for hidden in loginform.hidden_fields %}
-                               {{hidden}}
-                            {% endfor %}
-                            {% for vis in loginform.visible_fields %}
                                 <div class="form-group">
-                                    {{ vis.label_tag }}{{ vis.errors }}
-                                    {% render_field vis class="form-control" %}
+                                    {{ loginform.username.label_tag }}{{ loginform.username.errors }}
+                                    {% with _("Enter your email, please.") as uname %}
+                                    {% render_field loginform.username class="form-control" placeholder=uname %}
+                                    {% endwith %}
                                 </div>
-                            {% endfor %}
+                                <div class="form-group">
+                                    {{ loginform.password.label_tag }}{{ loginform.password.errors }}
+                                    {% with _("Enter your password, please.") as pwd %}
+                                    {% render_field loginform.password class="form-control" placeholder=pwd %}
+                                    {% endwith %}
+                                </div>
                             <input type="hidden" value="from_popup" name="from_popup" />
                             <p class="text-center">
                                 <button class="btn btn-primary"
@@ -125,10 +128,8 @@
 
                         </form>
 
-                        <a class="btn btn-primary btn-lg btn-block btn-social" href="/accounts/facebook/login"
-                           style="background-color: #3b5998;">
-                            <i class="fa fa-facebook-square"></i> {% trans "Login with Facebook" %}
-                        </a>
+                        
+                        <a title="Facebook" class="btn btn-primary btn-lg btn-block btn-social" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998;">Facebook</a>
                         {% include "socialaccount/snippets/login_extra.html" %}
 
                         <a class="btn btn-primary btn-lg btn-block btn-social" href="user/fb"

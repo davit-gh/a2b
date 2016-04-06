@@ -1,0 +1,20 @@
+{% extends "main/pages/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}A2B - {% trans "Login Cancelled" %}{% endblock %}
+
+{% block content %}
+
+<h1>{% trans "Login Cancelled" %}</h1>
+
+{% url 'signup' as login_url %}
+
+<p>{% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endblocktrans %}</p>
+
+{% endblock %}
+       
+
+{% block sub1 %}{% endblock %}
+{% block sub2 %}{% endblock %}
+{% block login %}{% endblock %}

@@ -20,8 +20,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import unicodedata, re, uuid
 from ajax_upload.widgets import AjaxClearableFileInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Div
-from crispy_forms.bootstrap import StrictButton
+from crispy_forms.layout import Submit, Layout, Div, Field
+from crispy_forms.bootstrap import StrictButton, PrependedText
 
 class UserSearchForm(ModelForm):
 	
@@ -96,10 +96,26 @@ class LoginForm(forms.Form):
     """
     Fields for login.
     """
-    username = forms.EmailField(label=ugettext_lazy("Login"))
+    username = forms.EmailField(label=ugettext_lazy("Email"))
     password = forms.CharField(label=ugettext_lazy("Password"),
                                widget=forms.PasswordInput(render_value=False))
-        
+    #from_popup = forms.CharField()
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_action = 'signup'
+        self.helper.layout = Layout(
+            PrependedText('username', '@', placeholder=ugettext("Email, please")),
+            PrependedText('password', '*', placeholder=ugettext("Password, please")),
+            Field('from_popup', type="hidden"),
+            Div(
+                Submit('submit', ugettext("Login")),
+                css_class='text-center',
+                css_id='login_btn'
+            )
+        )
+
     def clean(self):
         """
         Authenticate the given username/email and password. If the fields
@@ -175,7 +191,10 @@ class ProfileForm(forms.ModelForm):
     #mobile          = forms.CharField(label=u"Բջջային",)
     #featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
     #gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
-    
+    password1       = forms.CharField(label=ugettext_lazy("Password"),
+                                widget=forms.PasswordInput(render_value=False), required=False)
+    password2       = forms.CharField(label=ugettext_lazy("Password (again)"),
+                                widget=forms.PasswordInput(render_value=False), required=False)
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email")
@@ -236,7 +255,7 @@ class ProfileForm(forms.ModelForm):
         if password1:
             errors = []
             if password1 != password2:
-                errors.append(ugettext("Passwords are not the same։"))
+                errors.append(ugettext("Passwords are not the same"))
             if len(password1) < settings.ACCOUNTS_MIN_PASSWORD_LENGTH:
                 errors.append(
                         ugettext("Password must contain at least %s symbols") %

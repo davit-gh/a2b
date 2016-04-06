@@ -2067,3 +2067,7 @@ label, .helptext{
 #ride_table tr{
   color: #fff;
 }
+
+#login_btn{
+  margin-bottom: 20px;
+}
