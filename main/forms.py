@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from main.models import City, Ride, Contactus, UserSearch, Driver, Image
+from main.models import City, Ride, Contactus, UserSearch, Driver, Car
 from django.forms import ModelForm, Textarea
 from django import forms
 from django.utils.translation import ugettext as _
@@ -58,11 +58,11 @@ class RideAdminForm(ModelForm):
         self.helper.label_class = 'col-xs-6'
         self.helper.field_class = 'col-xs-6'
         self.helper.layout = Layout(
-            'fromwhere',
-            'towhere',
-            'leavedate',
-            'starttime',
-            'price',
+            Field('fromwhere', required='required'),
+            Field('towhere', required='required'),
+            Field('leavedate', required='required'),
+            Field('starttime', required='required'),
+            Field('price', required='required'),
             'passenger_number',
             Div(
                 Submit('submit', ugettext("Save"), css_class='btn btn-primary'),
@@ -137,9 +137,6 @@ class LoginForm(forms.Form):
         return getattr(self, "_user", None)
 
 
-class CarImageForm(forms.Form):
-    image = forms.ImageField(required=False)
-
 CHOICES=[('male', ugettext_lazy("Male")),
          ('female', ugettext_lazy("Female"))]
 
@@ -178,8 +175,31 @@ class DriverForm(forms.ModelForm):
     #        self.initial['dob'] = self.user.driver.dob
     #        self.initial['sex'] = self.user.driver.sex
         
+class CarForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(CarForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_action = 'cardetails'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-xs-6'
+        self.helper.field_class = 'col-xs-6'
+        self.helper.layout = Layout(
+            Field('car_brand', required='required'),
+            Field('licence_plate', required='required'),
+            Div(
+                Submit('submit', ugettext("Save")),
+                css_class='text-center',
+            )
+        )
+    class Meta:
+        model = Car
+        exclude = ['driver']
 
-    
+    def clean(self):
+        if not hasattr(self.user, 'driver'):
+            raise ValidationError(_("First fill in driver details, please."))
 
 class ProfileForm(forms.ModelForm):
     

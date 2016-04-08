@@ -26,24 +26,12 @@ class Country(models.Model):
             return self.name_hy
 
 
-class Image(models.Model):
-    image = models.ImageField(upload_to="uploads/images", null=True, blank=True)
-    caption = models.CharField(max_length=50, blank=True)
-    class Meta:
-        verbose_name = "Image"
-        verbose_name_plural = "Images"
-        db_table = "ab_image"
-    def __unicode__(self):
-            return self.image.name
-
-
 class Driver(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     mobile = models.IntegerField(blank=False, null=True)
     mobile_prefix = models.IntegerField(default=055, blank=False)
     featured_image = models.ImageField(upload_to="uploads/images/", null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    licence_plate = models.CharField(max_length=10, default="19oo199")
     sex = models.CharField(max_length=10, default="Արական")
     dob = models.IntegerField(default=1985)
     class Meta:
@@ -54,14 +42,22 @@ class Driver(models.Model):
     def __unicode__(self):
             return "%s %s" % (self.user.first_name, self.user.last_name)
             
+class Car(models.Model):
+    licence_plate = models.CharField(max_length=10)
+    car_brand = models.CharField(max_length=30)
+    driver = models.OneToOneField(Driver, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name="Car"
+        verbose_name_plural="Cars"
+        db_table = "ab_car"
 
-class DriverImage(models.Model):
-    driver = models.ForeignKey(Driver, related_name="imgs")
+class CarImage(models.Model):
+    car = models.ForeignKey(Car, related_name="carimgs")
     image = models.ImageField(upload_to="uploads/images", null=True, blank=True)
     class Meta:
-        verbose_name="Driver Image"
-        verbose_name_plural="Driver Images"
-        db_table = "ab_driverimage"
+        verbose_name="Car Image"
+        verbose_name_plural="Car Images"
+        db_table = "ab_carimage"
 
 class Ride(models.Model):
     fromwhere = models.ForeignKey(City, related_name="rides_from", blank=True)

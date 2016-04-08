@@ -41,4 +41,5 @@ urlpatterns = [
     url(r'^contact/', views.contact, name='contact'),
     url(r'^ride/(?P<unique_hash>[a-zA-Z0-9_]*)/$', views.ride_unique, name='runique'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^car/details', views.cardetails, name="cardetails")
 ]

@@ -47,57 +47,70 @@
 	        </ul> 
 
 	    </div>
-	    <div class="col-md-9"> 
+	    <div class="col-md-6"> 
 	    {% block right %}
 	    	
 				{% crispy userform %}
 				
 			
-			<div id="additional" class="text-center">
-				<h3>{% trans "Additional details" %}</h3>
-			</div>
-			<form method="post" action="{% url 'info' %}">
-				{% csrf_token %}
-				
-				
-						<div class="form-group">
-							<label for="{{ driverform.mobile.id_for_label }}" class="label-align col-xs-6">{{ driverform.mobile.label }}</label>
-							{{ driverform.mobile.errors }}
-							<div class="controls col-xs-6">
-								<div class="form-group row">
-									<div class="col-md-4">
-										{% render_field driverform.mobile_prefix class="form-control" %}
-									</div>
-									<div class="col-md-8">
-										{% render_field driverform.mobile class="form-control" %}
+			
+		    
+		{% endblock %}
+	    </div>
+	    <div class="col-md-3"></div>
+	    
+		{% block extra_info %}
+			<div class="col-md-6">
+					<div id="additional" class="text-center">
+					<h3>{% trans "Driver details" %}</h3>
+				</div>
+				<form method="post" action="{% url 'info' %}">
+					{% csrf_token %}
+					
+					
+							<div class="form-group">
+								<label for="{{ driverform.mobile.id_for_label }}" class="label-align col-xs-6">{{ driverform.mobile.label }}</label>
+								{{ driverform.mobile.errors }}
+								<div class="controls col-xs-6">
+									<div class="form-group row">
+										<div class="col-md-4">
+											{% render_field driverform.mobile_prefix class="form-control" %}
+										</div>
+										<div class="col-md-8">
+											{% render_field driverform.mobile class="form-control" %}
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label for="{{ driverform.sex.id_for_label }}" class="label-align col-xs-6">{{ driverform.sex.label }}</label>
-							{{ driverform.sex.errors }}
-							<div class="controls col-xs-6">
-								{% render_field driverform.sex class="form-control" %}
+							<div class="form-group">
+								<label for="{{ driverform.sex.id_for_label }}" class="label-align col-xs-6">{{ driverform.sex.label }}</label>
+								{{ driverform.sex.errors }}
+								<div class="controls col-xs-6">
+									{% render_field driverform.sex class="form-control" %}
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label for="{{ driverform.dob.id_for_label }}" class="label-align col-xs-6">{{ driverform.dob.label }}</label>
-							{{ driverform.dob.errors }}
-							<div class="controls col-xs-6">
-								{% render_field driverform.dob class="form-control" %}
+							<div class="form-group">
+								<label for="{{ driverform.dob.id_for_label }}" class="label-align col-xs-6">{{ driverform.dob.label }}</label>
+								{{ driverform.dob.errors }}
+								<div class="controls col-xs-6">
+									{% render_field driverform.dob class="form-control" %}
+								</div>
 							</div>
-						</div>
 
-				<div id="submit_btn" class="text-center">
-	            	<button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
-		        </div>
-		    </form>
-		{% endblock %}
-	    </div>
-	    
+					<div id="submit_btn" class="text-center">
+		            	<button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+			        </div>
+			    </form>
+			</div>
+			<div class="col-md-6">
+				<div id="additional" class="text-center">
+					<h3>{% trans "Car details" %}</h3>
+				</div>
+			    {% crispy carform %}
+			</div>
+		{% endblock %}	    
 	</div>
-	    
+
 {% endblock %}
 
 {% block sub1 %}{% endblock %}

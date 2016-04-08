@@ -18,11 +18,14 @@ class RideTable(tables.Table):
     price = tables.Column(verbose_name=_("Price"))
     fromwhere = tables.Column(verbose_name=_("From where"))
     towhere = tables.Column(verbose_name=_("To where"))
-
+    details = tables.Column(verbose_name=_("Details"), orderable=False, empty_values=())
 
 
     def render_leavedate(self, value, record):
         return record.leavedate.strftime('%d - %m - %Y')
+
+    def render_details(self, value, record):
+        return mark_safe('<a class="" href="%s">%s</a>' % ("/ride/"+record.uuid, _("Details")))
 
     class Meta:
         model = Ride

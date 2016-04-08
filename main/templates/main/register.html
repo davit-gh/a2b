@@ -72,7 +72,7 @@
                                 <div class="form-group">
                                     {{ vis.errors }}
                                     {{ vis.label_tag }}
-                                    {% render_field vis class="form-control" %}
+                                    {% render_field vis class="form-control" required="required" %}
                                 </div>
                             {% endfor %}
                                 <div class="text-center">
@@ -83,7 +83,14 @@
                         </form>
                     </div>
                     <h3 class="text-center">{% trans "or" %}</h3>
-                    <a title="Facebook" class="btn btn-primary btn-lg btn-block btn-social" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998;">Facebook</a>
+                    <div class="text-center">
+                        <a title="Facebook" class="btn btn-primary btn-social" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998;">Facebook</a>
+                        <a class="btn btn-primary btn-social" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F;"><i class="fa fa-odnoklassniki-square"></i> {% trans "Login with OK" %}
+                        </a>
+                        <a class="btn btn-primary btn-social" title="VK" href="/accounts/vk/login/?process=login" style="background-color: #45668e;">
+                            <i class="fa fa-vk"></i> {% trans "Login with VK" %}
+                        </a>
+                    </div>
                 </div>
 
 

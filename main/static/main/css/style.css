@@ -2071,3 +2071,15 @@ label, .helptext{
 #login_btn{
   margin-bottom: 20px;
 }
+
+#id_ok{
+  margin: 6px 2px;
+}
+
+.align_top{
+  vertical-align: top;
+}
+
+.align_bottom{
+  vertical-align: bottom;
+}

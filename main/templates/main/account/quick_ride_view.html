@@ -1,8 +1,11 @@
 {% extends 'main/pages/base.html' %}
 {% load i18n %}
 {% block content %}
-	<table class="table">
+	<table class="table table-condensed">
 		<tr>
+			<th rowspan="2">
+				<img src="{{ ride.driver.featured_image.url }}" width="200px" />
+			</th>
 			<th>
 				{% trans "From where" %}
 			</th>
@@ -21,7 +24,7 @@
 			<th>
 				{% trans "Price" %}
 			</th>
-		</tr>
+		</tr>		
 		<tr>
 			<td>
 				{{ ride.fromwhere }}
@@ -42,5 +45,77 @@
 				{{ ride.price }}
 			</td>
 		</tr>
+		
 	</table>
+	<div class="col-md-4"></div>
+	<div class="col-md-4">	
+		<table class="table table-condensed">
+			<tr>
+				<td class="align_bottom">
+					{% trans "First name" %}
+				</td>
+				<td class="align_bottom" style="color: orange">
+					{{ ride.driver.user.first_name }}
+				</td>
+				<td></td>
+				<td class="align_bottom">
+					{% trans "Last name" %}
+				</td>
+				<td class="align_bottom" style="color: orange">
+					{{ ride.driver.user.last_name }}
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+					{% trans "Gender" %}
+				</td>
+				<td style="color: orange">
+					<h4>{{ ride.driver.sex }}</h4>
+				</td>
+				<td></td>
+				<td>
+					{% trans "Age" %}
+				</td>
+				<td  style="color: orange">
+					{{ age }}
+				</td>
+				
+			</tr>
+			<tr>
+				<td class="align_top">
+					{% trans "Mobile" %}
+				</td>
+				<td class="align_top"  style="color: orange">
+					{{ ride.driver.mobile }}
+				</td>
+				<td></td>
+				<td class="align_top">
+					{% trans "Email" %}
+				</td>
+				<td class="align_top" style="color: orange">
+					{{ ride.driver.user.email }}
+				</td>
+			</tr>
+			<tr>
+				<td class="align_top">
+					{% trans "Car brand" %}
+				</td>
+				<td class="align_top"  style="color: orange">
+					{{ ride.driver.car.car_brand }}
+				</td>
+				<td></td>
+				<td class="align_top">
+					{% trans "Licence plate" %}
+				</td>
+				<td class="align_top" style="color: orange">
+					{{ ride.driver.car.licence_plate }}
+				</td>
+			</tr>
+		</table>
+	</div>
 {% endblock %}
+
+{% block sub1 %}{% endblock %}
+{% block sub2 %}{% endblock %}
+{% block login %}{% endblock %}

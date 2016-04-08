@@ -110,13 +110,13 @@
                                 <div class="form-group">
                                     {{ loginform.username.label_tag }}{{ loginform.username.errors }}
                                     {% with _("Enter your email, please.") as uname %}
-                                    {% render_field loginform.username class="form-control" placeholder=uname %}
+                                    {% render_field loginform.username class="form-control" placeholder=uname required="required" %}
                                     {% endwith %}
                                 </div>
                                 <div class="form-group">
                                     {{ loginform.password.label_tag }}{{ loginform.password.errors }}
                                     {% with _("Enter your password, please.") as pwd %}
-                                    {% render_field loginform.password class="form-control" placeholder=pwd %}
+                                    {% render_field loginform.password class="form-control" placeholder=pwd required="required" %}
                                     {% endwith %}
                                 </div>
                             <input type="hidden" value="from_popup" name="from_popup" />
@@ -132,8 +132,7 @@
                         <a title="Facebook" class="btn btn-primary btn-lg btn-block btn-social" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998;">Facebook</a>
                         {% include "socialaccount/snippets/login_extra.html" %}
 
-                        <a class="btn btn-primary btn-lg btn-block btn-social" href="user/fb"
-                           style="background-color: #F6881F; display: none;">
+                        <a class="btn btn-primary btn-lg btn-block btn-social" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F;">
                             <i class="fa fa-odnoklassniki-square"></i> {% trans "Login with OK" %}
                         </a>
                         <a class="btn btn-primary btn-lg btn-block btn-social" title="VK" href="/accounts/vk/login/?process=login" style="background-color: #45668e;">

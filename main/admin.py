@@ -1,5 +1,5 @@
 from django.contrib import admin
-from main.models import Driver, Ride, City, Contactus, DriverImage
+from main.models import Driver, Ride, City, Contactus, CarImage
 from main.forms import RideAdminForm
 from main.models import Inboundmail
 
@@ -14,13 +14,13 @@ class RideInline(admin.TabularInline):
 	max_num = 333
 	form = RideAdminForm
 
-class DriverCarImageInline(admin.TabularInline):
-	model=DriverImage
-	extra = 1
-	max_num = 333
+# class DriverCarImageInline(admin.TabularInline):
+# 	model=CarImage
+# 	extra = 1
+# 	max_num = 333
 
 class DriverAdmin(admin.ModelAdmin):
-	inlines=(DriverCarImageInline, RideInline, )
+	inlines=(RideInline, )#DriverCarImageInline, )
 
 
 class InboundmailAdmin(admin.ModelAdmin):

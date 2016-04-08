@@ -15,14 +15,14 @@ ALLOWED_HOSTS = ["www.a2b.am", "a2b.am"]
 
 #production
 DATABASES = {
-'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'a2b',
-    'USER': 'a2b',
-    'PASSWORD': 'aaa',
-    'HOST': 'localhost',
-    'PORT': '',
-}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'a2b',
+        'USER': 'a2b',
+        'PASSWORD': 'aaa',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 #staging
