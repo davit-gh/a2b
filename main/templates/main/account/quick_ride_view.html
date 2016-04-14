@@ -1,52 +1,58 @@
 {% extends 'main/pages/base.html' %}
 {% load i18n %}
 {% block content %}
-	<table class="table table-condensed">
-		<tr>
-			<th rowspan="2">
-				<img src="{{ ride.driver.featured_image.url }}" width="200px" />
-			</th>
-			<th>
-				{% trans "From where" %}
-			</th>
-			<th>
-				{% trans "To where" %}
-			</th>
-			<th>
-				{% trans "Date" %}
-			</th>
-			<th>
-				{% trans "Time" %}
-			</th>
-			<th>
-				{% trans "Free seats" %}
-			</th>
-			<th>
-				{% trans "Price" %}
-			</th>
-		</tr>		
-		<tr>
-			<td>
-				{{ ride.fromwhere }}
-			</td>
-			<td>
-				{{ ride.towhere }}
-			</td>
-			<td>
-				{{ ride.leavedate }}
-			</td>
-			<td>
-				{{ ride.starttime }}
-			</td>
-			<td>
-				{{ ride.passenger_number }}
-			</td>
-			<td>
-				{{ ride.price }}
-			</td>
-		</tr>
-		
-	</table>
+	<div class="col-md-8">
+		<table class="table table-condensed">
+			<tr>
+				<th rowspan="2">
+					{% if ride.driver.featured_image %}
+						<img src="{{ ride.driver.featured_image.url }}" width="200px" />
+					{% else %}
+						<i class="fa fa-user fa-4x"></i>
+					{% endif %}
+				</th>
+				<th>
+					{% trans "From where" %}
+				</th>
+				<th>
+					{% trans "To where" %}
+				</th>
+				<th>
+					{% trans "Date" %}
+				</th>
+				<th>
+					{% trans "Time" %}
+				</th>
+				<th>
+					{% trans "Free seats" %}
+				</th>
+				<th>
+					{% trans "Price" %}
+				</th>
+			</tr>		
+			<tr>
+				<td>
+					{{ ride.fromwhere }}
+				</td>
+				<td>
+					{{ ride.towhere }}
+				</td>
+				<td>
+					{{ ride.leavedate }}
+				</td>
+				<td>
+					{{ ride.starttime }}
+				</td>
+				<td>
+					{{ ride.passenger_number }}
+				</td>
+				<td>
+					{{ ride.price }}
+				</td>
+			</tr>
+			
+		</table>
+	</div>
 	<div class="col-md-4"></div>
 	<div class="col-md-4">	
 		<table class="table table-condensed">
@@ -118,4 +124,3 @@
 
 {% block sub1 %}{% endblock %}
 {% block sub2 %}{% endblock %}
-{% block login %}{% endblock %}

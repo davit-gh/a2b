@@ -1,8 +1,8 @@
-from main.forms import DriverForm
+from main.forms import DriverForm, LoginForm
 
 def driverimage(request):
-	
+	loginform = LoginForm(prefix="login")
 	instance = request.user.driver if hasattr(request.user,'driver') else None
-	driverform = DriverForm(prefix='driver', instance=instance)
-	return {'driverform': driverform}
+	driverform = DriverForm(instance=instance)
+	return {'loginform': loginform, 'driverform': driverform}
 	

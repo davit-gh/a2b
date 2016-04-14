@@ -6,7 +6,6 @@ from django.forms import ModelForm, Textarea
 from django import forms
 from django.utils.translation import ugettext as _
 from functools import partial
-
 # Form Fields
 from django.utils import timezone
 from datetimewidget.widgets import DateTimeWidget, TimeWidget, DateWidget
@@ -17,11 +16,14 @@ from django.utils.translation import ugettext, ugettext_lazy
 from django.contrib.auth import authenticate
 from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist
-import unicodedata, re, uuid
+import unicodedata, re, uuid, random, string
 from ajax_upload.widgets import AjaxClearableFileInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText
+from django.core.validators import RegexValidator
+from django.core.urlresolvers import reverse
+from django.utils.safestring import mark_safe
 
 class UserSearchForm(ModelForm):
 	
@@ -36,17 +38,16 @@ class UserSearchForm(ModelForm):
 	
 		
 class RideAdminForm(ModelForm):
-    fromwhere   = forms.ModelChoiceField(label=ugettext_lazy("From where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
-    towhere 	= forms.ModelChoiceField(label=ugettext_lazy("To where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
-    leavedate   = forms.CharField(label=ugettext_lazy("Date"), widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}), required=True)
-    starttime   = forms.CharField(label=ugettext_lazy("Time"), widget=TimeWidget(), required=True)
+    fromwhere       = forms.ModelChoiceField(label=ugettext_lazy("From where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    towhere 	    = forms.ModelChoiceField(label=ugettext_lazy("To where"), queryset=City.objects.all(), to_field_name="name_hy", required=True)
+    leavedate       = forms.CharField(label=ugettext_lazy("Date"), widget=DateWidget(attrs={'id':"id_source"}, options={'startDate':'+0d'}), required=True)
+    starttime       = forms.CharField(label=ugettext_lazy("Time"), widget=TimeWidget(), required=True)
+    price           = forms.IntegerField(label=ugettext_lazy("Price"), required=True)
+    passenger_number= forms.IntegerField(label=ugettext_lazy("Free seats"), required=True)
     class Meta:
         model = Ride
         exclude = ['endtime', 'driver', 'uuid']
-        labels = {
-            'passenger_number': ugettext_lazy("Free seats"), 
-            'price': ugettext_lazy("Price")
-        }
+        
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -82,13 +83,18 @@ class RideAdminForm(ModelForm):
 
     def clean(self):
         if not hasattr(self.user, 'driver') or not self.user.driver.mobile:
-            raise forms.ValidationError('mobile', code='mobile_error')
+            raise forms.ValidationError(mark_safe(_("First fill in all the fields in <a href=\"%s\">'My page'</a> section, please") % reverse('profile')))
     
 class ContactusForm(ModelForm):
+    
 	class Meta:
 		model = Contactus
 		fields = ['name', 'email', 'message']
-
+        labels = {
+            'name': ugettext_lazy("Name"), 
+            'email': ugettext_lazy("Email"),
+            'message': ugettext_lazy("Message")
+        }
 
 
 
@@ -105,9 +111,11 @@ class LoginForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
         self.helper.form_action = 'signup'
+        self.helper.form_class = 'form-horizontal'
+        
         self.helper.layout = Layout(
             PrependedText('username', '@', placeholder=ugettext("Email, please")),
-            PrependedText('password', '*', placeholder=ugettext("Password, please")),
+            PrependedText('password', '**', placeholder=ugettext("Password, please")),
             Field('from_popup', type="hidden"),
             Div(
                 Submit('submit', ugettext("Login")),
@@ -123,11 +131,16 @@ class LoginForm(forms.Form):
         """
         password = self.cleaned_data.get("password")
         email = self.cleaned_data.get("username")
+        if not email or not password:
+            return
         try:
            u = User.objects.get(email=email)
-           self._user = authenticate(username=u.username, password=password)
+
         except ObjectDoesNotExist:
-            raise forms.ValidationError(ugettext("Your email or password is wrong."), code='nonexistent')
+            raise forms.ValidationError(_("Your email or password is wrong."), code='nonexistent')
+        self._user = authenticate(username=u.username, password=password)
+        if self._user is None:
+            raise forms.ValidationError(_('Your email or password is wrong.'))
         return self.cleaned_data
 
     def save(self):
@@ -140,12 +153,12 @@ class LoginForm(forms.Form):
 CHOICES=[('male', ugettext_lazy("Male")),
          ('female', ugettext_lazy("Female"))]
 
-BIRTH_YEAR_CHOICES = map(lambda x: (str(x),str(x)), range(1970,1992))
+BIRTH_YEAR_CHOICES = map(lambda x: (str(x),str(x)), range(1951,1999))
 MOBILE_PREFIXES = [('055', '055'), ('095', '095'), ('043', '043'), ('077', '077'), ('093', '093'), ('094', '094'), ('098', '098'), ('091', '091'), ('099', '099')]
 
 class DriverForm(forms.ModelForm):
     mobile_prefix  = forms.ChoiceField(choices=MOBILE_PREFIXES, required=False)
-    mobile         = forms.CharField(label=ugettext_lazy("Mobile"), required=False)
+    mobile         = forms.RegexField(label=ugettext_lazy("Mobile"), regex="^(\d+)$", error_messages={'invalid': 'Please enter your name'}, required=False)
     sex            = forms.ChoiceField(label=ugettext_lazy("Gender"), choices=CHOICES, widget=forms.RadioSelect(), initial=ugettext_lazy("Male"), required=False)
     featured_image = forms.ImageField(label=ugettext_lazy("My photo"), widget=AjaxClearableFileInput(), required=False)
     dob            = forms.ChoiceField(label=ugettext_lazy("Birth year"), choices=BIRTH_YEAR_CHOICES, initial='1988', required=False)
@@ -155,6 +168,8 @@ class DriverForm(forms.ModelForm):
     class Meta:
         model = Driver
         exclude = ['user', 'licence_plate' ]
+
+   
 
     def clean_featured_image(self):
         pass
@@ -193,14 +208,19 @@ class CarForm(forms.ModelForm):
                 css_class='text-center',
             )
         )
-    class Meta:
-        model = Car
-        exclude = ['driver']
 
     def clean(self):
         if not hasattr(self.user, 'driver'):
-            raise ValidationError(_("First fill in driver details, please."))
+            raise forms.ValidationError(_("First fill in driver details, please."))
 
+    class Meta:
+        model = Car
+        exclude = ['driver']
+        labels = {
+            'car_brand': ugettext_lazy("Car brand"),
+            'licence_plate': ugettext_lazy("Licence plate"),
+        }
+    
 class ProfileForm(forms.ModelForm):
     
     """
@@ -295,6 +315,8 @@ class ProfileForm(forms.ModelForm):
         raise forms.ValidationError(
                                 ugettext("This email is already registered."))
 
+    def randomword(self, length):
+        return ''.join(random.choice(string.lowercase) for i in range(length))
 
     def save(self, *args, **kwargs):
         """
@@ -307,15 +329,7 @@ class ProfileForm(forms.ModelForm):
         #import pdb;pdb.set_trace()
         kwargs["commit"] = False
         user = super(ProfileForm, self).save(*args, **kwargs)
-        try:
-            username = self.cleaned_data["username"]
-        except KeyError:
-            if not self.instance.username:
-                username = self.cleaned_data["email"].split("@")[0]
-                qs = User.objects.exclude(id=self.instance.id)
-                user.username = unique_slug(qs, "username", slugify_unicode(username))
-            else:
-                username = self.instance.username
+        user.username = self.randomword(10)
         password = self.cleaned_data.get("password1")
         if password:
             user.set_password(password)
@@ -328,7 +342,7 @@ class ProfileForm(forms.ModelForm):
                 pass
         user.save()
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(username=user.username, password=password)
         return user
 
     def get_profile_fields_form(self):
@@ -367,3 +381,15 @@ def slugify_unicode(s):
         elif cat == "Z":
             chars.append(" ")
     return re.sub("[-\s]+", "-", "".join(chars).strip()).lower()
+
+class BaseCarimageFormset(forms.BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(BaseCarimageFormset, self).__init__(*args, **kwargs)
+        
+
+    def clean(self):
+        super(BaseCarimageFormset, self).clean()
+        if not hasattr(self.user.driver, 'car'):
+            raise forms.ValidationError(_("First fill in car details, please."))
+        

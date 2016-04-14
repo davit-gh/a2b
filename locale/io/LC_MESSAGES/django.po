@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-07 15:14+0400\n"
+"POT-Creation-Date: 2016-04-14 17:06+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,135 +18,185 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: main/forms.py:29 main/forms.py:30
+#: main/forms.py:31 main/forms.py:32
 msgid "All"
 msgstr "Բոլորը"
 
-#: main/forms.py:39 main/tables.py:19 main/tables.py:39
-#: main/templates/main/account/quick_ride_view.html:7
+#: main/forms.py:41 main/tables.py:19 main/tables.py:44
+#: main/templates/main/account/quick_ride_view.html:15
 msgid "From where"
 msgstr "Ո՞րտեղից"
 
-#: main/forms.py:40 main/tables.py:20 main/tables.py:40
-#: main/templates/main/account/quick_ride_view.html:10
+#: main/forms.py:42 main/tables.py:20 main/tables.py:45
+#: main/templates/main/account/quick_ride_view.html:18
 msgid "To where"
 msgstr "Ու՞ր"
 
-#: main/forms.py:41 main/tables.py:16 main/tables.py:36
-#: main/templates/main/account/quick_ride_view.html:13
+#: main/forms.py:43 main/tables.py:16 main/tables.py:41
+#: main/templates/main/account/quick_ride_view.html:21
 msgid "Date"
 msgstr "Ամսաթիվ"
 
-#: main/forms.py:42 main/tables.py:17 main/tables.py:37
-#: main/templates/main/account/quick_ride_view.html:16
+#: main/forms.py:44 main/tables.py:17 main/tables.py:42
+#: main/templates/main/account/quick_ride_view.html:24
 msgid "Time"
 msgstr "Ժամ"
 
-#: main/forms.py:47 main/tables.py:41
-#: main/templates/main/account/quick_ride_view.html:19
+#: main/forms.py:49 main/tables.py:46
+#: main/templates/main/account/quick_ride_view.html:27
 msgid "Free seats"
 msgstr "Ազատ նստատեղեր"
 
-#: main/forms.py:48 main/tables.py:18 main/tables.py:38
-#: main/templates/main/account/quick_ride_view.html:22
+#: main/forms.py:50 main/tables.py:18 main/tables.py:43
+#: main/templates/main/account/quick_ride_view.html:30
 msgid "Price"
 msgstr "Գին"
 
-#: main/forms.py:68 main/forms.py:223 main/templates/main/account/cars.html:79
-#: main/templates/main/account/profile.html:93
+#: main/forms.py:70 main/forms.py:204 main/forms.py:260
+#: main/templates/main/account/cars.html:81
+#: main/templates/main/account/profile.html:106
 msgid "Save"
 msgstr "Պահպանել"
 
-#: main/forms.py:76
+#: main/forms.py:78
 msgid "Enter the time, please"
 msgstr "Մուտքագրեք ժամը"
 
-#: main/forms.py:99 main/forms.py:204
+#: main/forms.py:87
+#, python-format
+msgid ""
+"First fill in all the fields in <a href=\"%s\">'My page'</a> section, please"
+msgstr ""
+"Սկզբում խնդրում ենք ամբողջովին լրացնել <a href=\"%s\">՛Իմ էջը՛</a> "
+"բաժինը"
+
+#: main/forms.py:95 main/templates/main/pages/contact.html.py:28
+msgid "Name"
+msgstr "Անուն"
+
+#: main/forms.py:96 main/forms.py:106 main/forms.py:241
+#: main/templates/main/account/quick_ride_view.html:100
+#: main/templates/main/pages/contact.html:36
 msgid "Email"
 msgstr "Էլ․ հասցե"
 
-#: main/forms.py:100 main/forms.py:194
+#: main/forms.py:97 main/templates/main/pages/contact.html.py:44
+msgid "Message"
+msgstr "Հաղորդագրություն"
+
+#: main/forms.py:107 main/forms.py:231
+#: main/templates/account/password_reset_from_key.html:20
 msgid "Password"
-msgstr "Ծածկագիր"
+msgstr "Գաղտնաբառ"
 
-#: main/forms.py:109
+#: main/forms.py:116
 msgid "Email, please"
-msgstr ""
+msgstr "Է․ հասցե"
 
-#: main/forms.py:110
-#, fuzzy
-#| msgid "Password"
+#: main/forms.py:117
 msgid "Password, please"
-msgstr "Ծածկագիր"
+msgstr "Գաղտնաբառ"
 
-#: main/forms.py:113
+#: main/forms.py:120
 msgid "Login"
 msgstr "Մուտք գործել"
 
-#: main/forms.py:130
+#: main/forms.py:137 main/forms.py:140
 msgid "Your email or password is wrong."
-msgstr "Ձեր էլ․ հասցեն կամ ծածկագիրը սխալ է"
+msgstr "Ձեր էլ․ հասցեն կամ գաղտնաբառը սխալ է"
 
-#: main/forms.py:143 main/forms.py:152
+#: main/forms.py:150 main/forms.py:159
 msgid "Male"
 msgstr "Արական"
 
-#: main/forms.py:144
+#: main/forms.py:151
 msgid "Female"
 msgstr "Իգական"
 
-#: main/forms.py:151
+#: main/forms.py:158 main/templates/main/account/quick_ride_view.html.py:93
 msgid "Mobile"
 msgstr "Բջջային"
 
-#: main/forms.py:152
+#: main/forms.py:159 main/templates/main/account/quick_ride_view.html.py:77
 msgid "Gender"
 msgstr "Սեռ"
 
-#: main/forms.py:153
+#: main/forms.py:160
 msgid "My photo"
 msgstr "Իմ նկարը"
 
-#: main/forms.py:154
+#: main/forms.py:161
 msgid "Birth year"
 msgstr "Ծննդյան տարի"
 
-#: main/forms.py:196
-msgid "Password (again)"
-msgstr "Ծածկագիրը (նորից)"
+#: main/forms.py:211
+msgid "First fill in driver details, please."
+msgstr "Խնդրում ենք սկզբում լրացրել ՛Վարորդի տվյալներ՛ բաժինը"
 
-#: main/forms.py:202
+#: main/forms.py:217 main/templates/main/account/quick_ride_view.html.py:108
+msgid "Car brand"
+msgstr "Մեքենայի մակնիշ"
+
+#: main/forms.py:218 main/templates/main/account/quick_ride_view.html.py:115
+msgid "Licence plate"
+msgstr "Համարանիշեր"
+
+#: main/forms.py:233 main/templates/account/password_reset_from_key.html.py:25
+msgid "Password (again)"
+msgstr "Գաղտնաբառը (նորից)"
+
+#: main/forms.py:239 main/templates/main/account/quick_ride_view.html.py:61
 msgid "First name"
 msgstr "Անուն"
 
-#: main/forms.py:203
+#: main/forms.py:240 main/templates/main/account/quick_ride_view.html.py:68
 msgid "Last name"
 msgstr "Ազգանուն"
 
-#: main/forms.py:258
+#: main/forms.py:295
 msgid "Passwords are not the same"
 msgstr "Ծածկագրերը չեն համընկնում"
 
-#: main/forms.py:261
+#: main/forms.py:298
 #, python-format
 msgid "Password must contain at least %s symbols"
-msgstr "Ծածկագիրը պետք է պարունակի նվազագույնը %s սիմվոլ"
+msgstr "Գաղտնաբառը պետք է պարունակի նվազագույնը %s սիմվոլ"
 
-#: main/forms.py:276
+#: main/forms.py:313
 msgid "This email is already registered."
 msgstr "Այս էլ․ հասցեն արդեն գրանցված է"
 
-#: main/tables.py:31
+#: main/forms.py:391
+msgid "First fill in car details, please."
+msgstr "Խնդրում ենք սկզբում լրացնել Մեքենայի տվյալներ բաժինը"
+
+#: main/tables.py:21
+msgid "Details"
+msgstr "Մանրամասն"
+
+#: main/tables.py:30
+msgid "View"
+msgstr "Դիտել"
+
+#: main/tables.py:36
 msgid ""
 "Currently there are no rides matching your search, check back later, please."
 msgstr ""
 "Ներկայումս մենք չունենք Ձեր ուղղությամբ երթուղիներ, այցելեք մեզ ավելի ուշ։"
 
-#: main/tables.py:42 main/templates/main/account/rides.html.py:62
+#: main/tables.py:47 main/templates/main/account/rides.html.py:67
 msgid "Delete"
 msgstr "Ջնջել"
 
-#: main/tables.py:57
+#: main/tables.py:60
+msgid "Ride"
+msgstr "երթուղի"
+
+#: main/tables.py:61
+msgid "Rides"
+msgstr "երթուղիներ"
+
+#: main/tables.py:64
 msgid "You haven't added any routes yet, go ahead and add the first one!"
 msgstr "Դուք դեռ չեք ավելացրել երթուղիներ, ավելացրե՛ք առաջինը հիմա"
 
@@ -155,58 +205,172 @@ msgstr "Դուք դեռ չեք ավելացրել երթուղիներ, ավել
 msgid "Successfully signed in as %(name)s."
 msgstr "Բարև %(name)s, հաջողությամբ մուտք գործեցիք։"
 
-#: main/templates/main/account/cars.html:32
+#: main/templates/account/messages/password_changed.txt:2
+msgid "Password successfully changed."
+msgstr "Հաջողությամբ փոխեցիք գաղտնաբառը"
+
+#: main/templates/account/password_reset.html:6
+#: main/templates/account/password_reset.html:10
+#: main/templates/account/password_reset_done.html:6
+#: main/templates/account/password_reset_done.html:9
+msgid "Password Reset"
+msgstr "Գաղտնաբառի փոխում"
+
+#: main/templates/account/password_reset.html:15
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+"Մոռացե՞լ եք գաղտնաբառը։ Մուտքագրեք Ձեր էլ․ հասցեն և մենք էլ․ նամակ "
+"կուղարկենք, որով կարող եք փոխել գաղտնաբառը։"
+
+#: main/templates/account/password_reset.html:21
+msgid "E-mail:"
+msgstr "Էլ․ հասցե"
+
+#: main/templates/account/password_reset.html:23
+msgid "Reset My Password"
+msgstr "Փոխել իմ գաղտնաբառը"
+
+#: main/templates/account/password_reset.html:23
+msgid "Reset"
+msgstr "Փոխել"
+
+#: main/templates/account/password_reset.html:28
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr "Խնդրում ենք կապվել մեզ հետ եթե գաղտնաբառը փոխելիս խնդիր է առաջացել։"
+
+#: main/templates/account/password_reset_done.html:15
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+"Ձեզ էլ․ նամակ ենք ուղարկել։ Խնդրում ենք կապվել մեզ հետ եթե մի քանի րոպեի "
+"ընթացքում չեք ստացել այն։"
+
+#: main/templates/account/password_reset_from_key.html:4
+#: main/templates/account/password_reset_from_key.html:7
+#: main/templates/account/password_reset_from_key_done.html:4
+#: main/templates/account/password_reset_from_key_done.html:7
+msgid "Change Password"
+msgstr "Փոխել գաղտնաբառը"
+
+#: main/templates/account/password_reset_from_key.html:7
+msgid "Bad Token"
+msgstr "Սխալ կոդ"
+
+#: main/templates/account/password_reset_from_key.html:11
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+"Գաղտնաբառը փոխելու հղումն անվավեր է, հնարավոր է այն արդեն օգտագործվել է։"
+"Խնդրում ենք <a href=\"%(passwd_reset_url)s\">գաղտնաբառը փոխելու</a> հարցում "
+"ուղարկեք։"
+
+#: main/templates/account/password_reset_from_key.html:21
+msgid "Password:"
+msgstr "Գաղտնաբառ"
+
+#: main/templates/account/password_reset_from_key.html:26
+msgid "Password (again):"
+msgstr "Գաղտնաբառը (նորից)"
+
+#: main/templates/account/password_reset_from_key.html:30
+msgid "change password"
+msgstr "Փոխել գաղտնաբառը"
+
+#: main/templates/account/password_reset_from_key.html:36
+#: main/templates/account/password_reset_from_key_done.html:8
+msgid "Your password is now changed."
+msgstr "Ձեր գաղտնաբառը հենց նոր փոխվեց։"
+
+#: main/templates/django_tables2/table.html:55
+msgid "Previous"
+msgstr "Նախորդ"
+
+#: main/templates/django_tables2/table.html:59
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr "%(total)s էջից %(current)s - ը"
+
+#: main/templates/django_tables2/table.html:62
+#, python-format
+msgid "%(count)s of %(total)s"
+msgstr "%(total)s երթուղիներից %(count)s - ը"
+
+#: main/templates/django_tables2/table.html:65
+msgid "Next"
+msgstr "Հաջորդ"
+
+#: main/templates/main/account/cars.html:33
 msgid "Car pictures"
 msgstr "Մեքենայի նկարներ"
 
-#: main/templates/main/account/cars.html:45
+#: main/templates/main/account/cars.html:47
 msgid "Delete picture"
 msgstr "Ջնջել նկարը"
+
+#: main/templates/main/account/cars.html:90
+#: main/templates/main/account/profile.html:50
+msgid "My car"
+msgstr "Իմ մեքենան"
+
+#: main/templates/main/account/cars.html:96
+msgid "Car details"
+msgstr "Մեքենայի տվյալներ"
 
 #: main/templates/main/account/profile.html:15
 msgid "Change my photo"
 msgstr "Փոխել իմ նկարը"
 
-#: main/templates/main/account/profile.html:29
-#: main/templates/main/account/profile.html:43
+#: main/templates/main/account/profile.html:30
+#: main/templates/main/account/profile.html:49
 msgid "My page"
 msgstr "Իմ էջը"
 
-#: main/templates/main/account/profile.html:44
-msgid "My car"
-msgstr "Իմ մեքենան"
-
-#: main/templates/main/account/profile.html:45
+#: main/templates/main/account/profile.html:51
 msgid "My balance"
 msgstr "Իմ հաշիվը"
 
-#: main/templates/main/account/profile.html:46
+#: main/templates/main/account/profile.html:52
+#: main/templates/main/account/rides.html:44
 msgid "My routes"
 msgstr "Իմ երթուղիները"
 
-#: main/templates/main/account/profile.html:57
+#: main/templates/main/account/profile.html:68
 msgid "Additional details"
-msgstr "Լրացուցիչ տվյալներ"
+msgstr "Հավելյալ տվյալներ"
 
-#: main/templates/main/account/rides.html:32
+#: main/templates/main/account/profile.html:83
+msgid "Please enter 6 digits"
+msgstr "Խնդրում ենք մուտքագրել 6 թվանշան"
+
+#: main/templates/main/account/quick_ride_view.html:84
+msgid "Age"
+msgstr "Տարիք"
+
+#: main/templates/main/account/rides.html:33
 msgid "View the route"
 msgstr "Դիտել երթուղին"
 
-#: main/templates/main/account/rides.html:55
+#: main/templates/main/account/rides.html:60
 msgid "Confirmation"
 msgstr "Հաստատում"
 
-#: main/templates/main/account/rides.html:58
+#: main/templates/main/account/rides.html:63
 msgid "Are you sure you want to delete?"
 msgstr "Համոզվա՞ծ եք, որ ուզում եք ջնջել"
 
-#: main/templates/main/account/rides.html:61
-#: main/templates/main/account/rides.html:78
-#: main/templates/main/pages/base.html:336
+#: main/templates/main/account/rides.html:66
+#: main/templates/main/account/rides.html:83
+#: main/templates/main/pages/base.html:335
 msgid "Close"
 msgstr "Փակել"
 
-#: main/templates/main/account/rides.html:73
+#: main/templates/main/account/rides.html:78
 msgid "Route details"
 msgstr "Երթուղու մանրամասներ"
 
@@ -219,8 +383,9 @@ msgid "About us"
 msgstr "Մեր մասին"
 
 #: main/templates/main/pages/base.html:52
-msgid "Contact"
-msgstr "Կապ հաստատել"
+#: main/templates/main/pages/contact.html:10
+msgid "Contact us"
+msgstr "Կապվել մեզ հետ"
 
 #: main/templates/main/pages/base.html:61
 msgid "Login/Signup"
@@ -256,7 +421,7 @@ msgstr "Ձեր էլ․ հասցեն"
 
 #: main/templates/main/pages/base.html:118
 msgid "Enter your password, please."
-msgstr "Ձեր ծածկագիրը"
+msgstr "Ձեր գաղտնաբառը"
 
 #: main/templates/main/pages/base.html:126
 #: main/templates/main/register.html:58 main/templates/main/register.html:81
@@ -285,7 +450,12 @@ msgstr "Գրանցվել հիմա"
 msgid "It is very easy and you can post your route details"
 msgstr "Դա շատ հեշտ է ու կարող եք երթուղիներ ավելացնել"
 
-#: main/templates/main/pages/base.html:175
+#: main/templates/main/pages/base.html:146
+#: main/templates/main/register.html:93
+msgid "Forgot password?"
+msgstr "Մոռացե՞լ եք գաղտնաբառը"
+
+#: main/templates/main/pages/base.html:176
 msgid "Exclusive deal for drivers: route listing is free till May 1st"
 msgstr ""
 "Աննախադեպ առաջարկ վարորդներին՝ մինչև մայիսի 1-ն ավելացված երթուղիներն անվճար "
@@ -331,6 +501,10 @@ msgstr "Ընկերակցիր"
 msgid "Search"
 msgstr "Փնտրել"
 
+#: main/templates/main/pages/contact.html:53
+msgid "Send"
+msgstr "Ուղարկել"
+
 #: main/templates/main/register.html:20 main/templates/main/register.html:49
 msgid "Sign up"
 msgstr "Գրանցվել"
@@ -345,7 +519,7 @@ msgstr "Դուք կկարողանաք ավելացնել ձեր երթուղու
 
 #: main/templates/main/register.html:61
 msgid "Enter here your email and password, please"
-msgstr "Մուտքագրեք Ձեր էլ․ հասցեն ու ծածկագիրը"
+msgstr "Մուտքագրեք Ձեր էլ․ հասցեն ու գաղտնաբառը"
 
 #: main/templates/main/register.html:85
 #: newa2b/templates/accounts/login.html:25
@@ -389,11 +563,11 @@ msgstr ""
 "Մնացել է մի վերջին քայլ մինչև մուտք գործեք Ձեր %(provider_name)s - ի էջով\n"
 "%(site_name)s կայքում. Խնդրում ենք լրացնել հետևյալ դաշտերը:"
 
-#: main/views.py:82
+#: main/views.py:81
 msgid "Successfully logged out."
 msgstr "Հաջողությամբ դուրս եկաք"
 
-#: main/views.py:109
+#: main/views.py:108
 msgid "Successfully logged in"
 msgstr "Հաջողությամբ մուտք գործեցիք"
 
@@ -409,25 +583,25 @@ msgstr "Էջը թարմացվեց"
 msgid "The route is added"
 msgstr "Երթուղին ավելացված է"
 
-#: main/views.py:214
-msgid "First fill in 'Additional details' section, please"
-msgstr "Սկզբում լրացրեք ՛Լրացուցիչ տվյալներ՛ բաժինը, խնդրեմ"
-
 #: main/views.py:268
 msgid "Your personal page has been updated!"
 msgstr "Ձեր անձնական էջը թարգմանվեց"
 
-#: main/views.py:283
+#: main/views.py:286
 msgid "Successfully changed car images"
 msgstr "Հաջողությամբ փոխեցիք մեքենայի նկարները"
 
-#: main/views.py:310
-msgid "Your additional details has been saved!"
-msgstr "Ձեր լրացուցիչ տվյալները պահպանվեցին"
+#: main/views.py:320
+msgid "Your details have been saved!"
+msgstr "Ձեր տվյալները պահպանվեցին"
 
-#: main/views.py:351
+#: main/views.py:360
 msgid "We received your message and will get back to you soon, thanks!"
 msgstr "Մենք ստացանք ձեր նամակը և շուտով կպատասխանենք, շնորհակալություն"
+
+#: main/views.py:383
+msgid "Your car details have been saved!"
+msgstr "Ձեր մեքենայի տվյալները պահպանվեցին"
 
 #: newa2b/settings.py:138
 msgid "Armenian"
@@ -480,7 +654,7 @@ msgstr ""
 
 #: newa2b/templates/accounts/login.html:42
 msgid "Forgot Password?"
-msgstr "Մոռացել ե՞ք ծածկագիրը"
+msgstr "Մոռացել ե՞ք գաղտնաբառը"
 
 #: newa2b/templates/accounts/signup.html:10
 #, python-format
@@ -489,6 +663,15 @@ msgid ""
 msgstr ""
 "Արդեն ուն՞եք անձնական էջ, այդ դեպքում <a href=\"%(login_url)s\">մուտք "
 "գործեք</a>."
+
+#~ msgid "This field is required."
+#~ msgstr "Այս դաշտն անհրաժեշտ է"
+
+#~ msgid "Driver details"
+#~ msgstr "Վարորդի տվյալներ"
+
+#~ msgid "Get in touch"
+#~ msgstr "Կապվեք մեզ հետ"
 
 #~ msgid "Login with Facebook"
 #~ msgstr "Մուտք գործել Facebook-ով"

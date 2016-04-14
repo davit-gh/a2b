@@ -1,8 +1,8 @@
 # coding: utf-8
 from django.shortcuts import render, redirect
-from main.models import Ride, Driver, CarImage, City
+from main.models import Ride, Driver, CarImage, City, Car
 from main.tables import RideTable, DriverRideTable
-from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarForm, DriverForm
+from main.forms import UserSearchForm, ContactusForm, LoginForm, ProfileForm, RideAdminForm, CarForm, DriverForm, BaseCarimageFormset
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
@@ -24,13 +24,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseBadRequest
-
 # Create your views here.
 def contactus(request, template='main/pages/base.html'):
     
     form = UserSearchForm()
-    loginform = LoginForm(prefix="login")
-    return render(request, template, {'loginform': loginform, 'form': form})
+    
+    return render(request, template, {'form': form})
 		
 	
 def index(request):
@@ -91,18 +90,18 @@ def signup(request, template="main/register.html"):
     """
     login_form = LoginForm(prefix="login")
     #DriverImageFormSet = formset_factory(CarImageForm, max_num=6)
-    signup_form = ProfileForm()
+    signup_form = ProfileForm(prefix="signup")
     #formset = DriverImageFormSet
     if request.method == "POST":
         #import pdb;pdb.set_trace()
 
         login_form = LoginForm(request.POST, prefix="login")
-        signup_form = ProfileForm(request.POST, request.FILES)
+        signup_form = ProfileForm(request.POST, prefix="signup")
         #import pdb;pdb.set_trace()
         
 
-        if not login_form.has_changed() and not request.POST.get("from_popup",False): login_form = LoginForm(prefix="login")
-        if not signup_form.has_changed(): signup_form = ProfileForm()
+        #if not login_form.has_changed() and not request.POST.get("from_popup",False): login_form = LoginForm(prefix="login")
+        if not signup_form.has_changed(): signup_form = ProfileForm(prefix="signup")
         
         if login_form.is_valid():
             authenticated_user = login_form.save()
@@ -113,9 +112,10 @@ def signup(request, template="main/register.html"):
 
         if signup_form.has_changed() and signup_form.is_valid():
             #formset = DriverImageFormSet(request.POST, request.FILES)
+            #import pdb; pdb.set_trace()
             new_user = signup_form.save()
-            Driver(user=new_user).save()
-            
+            d = Driver(user=new_user)
+            d.save()
             #import pdb;pdb.set_trace()
             #
             #data = signup_form.cleaned_data
@@ -209,10 +209,7 @@ def rides(request, template="main/account/rides.html"):
             ride.save()
             messages.info(request, _("The route is added"))
             return redirect('rides')
-        else:
-            if rideform.errors['__all__'][0] == 'mobile':
-                messages.info(request, _("First fill in 'Additional details' section, please"))
-                return redirect('profile')
+        
     # if a GET (or any other method) we'll create a blank form
     else:
         rideform = RideAdminForm(user=request.user)
@@ -260,8 +257,8 @@ def mail_from_postmark(request):
 
 def profile(request, template='main/account/profile.html'):
     
-    instance = request.user.driver.car if hasattr(request.user.driver,'car') else None
-    carform = CarForm(prefix='car', user=request.user, instance=instance)
+    instance = request.user.driver.car if hasattr(request.user,'driver') and hasattr(request.user.driver,'car') else None
+    
     if request.method == "POST":
         
         userform   = ProfileForm(request.POST, prefix='user', instance=request.user)
@@ -271,24 +268,27 @@ def profile(request, template='main/account/profile.html'):
         messages.info(request, _("Your personal page has been updated!"))
     else:
         userform   = ProfileForm(prefix='user', instance=request.user)
-    context = {"userform": userform, 'carform': carform}
+    context = {"userform": userform}
     return render(request, template, context)
 
 
 def cars(request):
-    instance = request.user.driver if hasattr(request.user,'driver') else None
-    DriverImageFormSet = inlineformset_factory(Driver, CarImage, fields=('image',), max_num=6, extra=1,
+    instance = request.user.driver.car if hasattr(request.user,'driver') and hasattr(request.user.driver,'car') else None
+    carform = CarForm(prefix='car', instance=instance, user=request.user)
+    CarImageFormSet = inlineformset_factory(Car, CarImage, formset=BaseCarimageFormset, fields=('image',), max_num=6, extra=1,
                             widgets={'image': forms.FileInput()})
     if request.method == 'POST':
-        formset       = DriverImageFormSet(request.POST, request.FILES, instance=instance)
         #import pdb;pdb.set_trace()
+        formset       = CarImageFormSet(request.POST, request.FILES, instance=instance, user=request.user)
         if formset.is_valid():
             formset.save()
+            
             messages.info(request, _("Successfully changed car images"))
             return redirect('cars')
     else:
-        formset = DriverImageFormSet(instance=instance)
-    return render(request, 'main/account/cars.html', {'formset': formset})
+        formset = CarImageFormSet(instance=instance, user=request.user)
+
+    return render(request, 'main/account/cars.html', {'formset': formset, 'carform':carform})
 
 def additional_info(request, template='main/account/profile.html'):
     # if this is a POST request we need to process the form data
@@ -299,7 +299,7 @@ def additional_info(request, template='main/account/profile.html'):
         # create a form instance and populate it with data from the request:
         
         
-        driverform = DriverForm(request.POST, request.FILES, prefix='driver', instance=instance)
+        driverform = DriverForm(request.POST, instance=instance)
 
         # check whether it's valid:
         if driverform.is_valid():
@@ -308,16 +308,21 @@ def additional_info(request, template='main/account/profile.html'):
             # redirect to a new URL:
             #data = driverform.cleaned_data
             #featured = data.get('featured_image')
-            driver = driverform.save(commit=False)
-            driver.user = request.user
+            #import pdb;pdb.set_trace()
+            if instance:
+                #import pdb;pdb.set_trace()
+                driverform.save()
+            else:
+                driver = driverform.save(commit=False)
+                driver.user = request.user
+                driver.save()
             
-            driver.save()
-            messages.info(request, _("Your details has been saved!"))
+            messages.info(request, _("Your details have been saved!"))
             return redirect('profile')
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        driverform = DriverForm(prefix='driver', instance=instance)
+        driverform = DriverForm(instance=instance)
 
     return render(request, template, {'driverform': driverform})
 
@@ -347,7 +352,6 @@ def upd_pic(request, template='main/account/profile.html'):
     return HttpResponseBadRequest(json.dumps({'errors': form.errors}))
 
 def contact(request, template='main/pages/contact.html'):
-    loginform = LoginForm(prefix="login")
     if request.method == "POST":
         
         form = ContactusForm(request.POST)
@@ -357,11 +361,10 @@ def contact(request, template='main/pages/contact.html'):
             return redirect('home')
     else:
         form = ContactusForm()
-    return render(request, template, {'loginform': loginform,'form': form})
+    return render(request, template, {'form': form})
 
 def about(request):
-    loginform = LoginForm(prefix="login")
-    return render(request, 'main/pages/about.html', {'loginform': loginform})
+    return render(request, 'main/pages/about.html')
 
 def cardetails(request, template='main/account/profile.html'):
     instance = request.user.driver.car if hasattr(request.user.driver,'car') else None
@@ -378,7 +381,7 @@ def cardetails(request, template='main/account/profile.html'):
             #import pdb;pdb.set_trace()
             car.save()
             messages.info(request, _("Your car details have been saved!"))
-            return redirect('profile')
+            return redirect('cars')
 
     # if a GET (or any other method) we'll create a blank form
     else:

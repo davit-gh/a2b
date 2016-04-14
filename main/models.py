@@ -29,7 +29,7 @@ class Country(models.Model):
 class Driver(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     mobile = models.IntegerField(blank=False, null=True)
-    mobile_prefix = models.IntegerField(default=055, blank=False)
+    mobile_prefix = models.CharField(default='055', max_length=3, blank=False)
     featured_image = models.ImageField(upload_to="uploads/images/", null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     sex = models.CharField(max_length=10, default="Արական")
@@ -43,8 +43,8 @@ class Driver(models.Model):
             return "%s %s" % (self.user.first_name, self.user.last_name)
             
 class Car(models.Model):
-    licence_plate = models.CharField(max_length=10)
-    car_brand = models.CharField(max_length=30)
+    licence_plate = models.CharField(max_length=10, null=True)
+    car_brand = models.CharField(max_length=30, null=True)
     driver = models.OneToOneField(Driver, on_delete=models.CASCADE)
     class Meta:
         verbose_name="Car"
@@ -66,7 +66,7 @@ class Ride(models.Model):
     starttime = models.TimeField(blank=True)
     endtime = models.TimeField(blank=True, null=True)
     price = models.IntegerField(blank=True)
-    passenger_number = models.IntegerField(blank=True, default=2)
+    passenger_number = models.IntegerField(blank=True, default=1)
     driver = models.ForeignKey(Driver, related_name="rides")
     uuid = models.CharField(max_length=40, blank=False, default='000000000000000')
     class Meta:

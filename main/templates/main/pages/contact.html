@@ -1,5 +1,5 @@
 {% extends 'main/pages/base.html' %}
-{% load staticfiles widget_tweaks get_form socialaccount %}
+{% load i18n staticfiles widget_tweaks get_form socialaccount %}
 
 
 
@@ -7,39 +7,53 @@
     {% block content %}
         <section id="templatemo_contact" class="section text-center">
             <div class="container">
-                <h2 class="section-title">Կապվեք Մեզ Հետ</h2>
+                <h2 class="section-title">{% trans "Contact us" %}</h2>
 
                 <div class="row">
 
                     <!-- CONTACT FORM -->
                     <div class="col-md-8 col-md-offset-2 text-left wow fadeInLeft" data-wow-duration="1s">
                         <form role="form" method="post">
-                            {% csrf_token %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-
-                            {% for vis in form.visible_fields %}
-
-
-                                {% for err in vis.errors %}<span style="color:red">{{ err }}</span>{% endfor %}
-
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-
-                                        {% render_field vis class="form-control" placeholder=vis.label required="required" %}
-                                    </div>
-                                </div>
-
-                            {% endfor %}
-
-                            <div class="form-group row">
-                                <div class="col-xs-6 col-xs-offset-6">
-                                    <button type="submit" class="form-control">Send</button>
-                                </div>
-                            </div>
-                        </form>
+                                                    {% csrf_token %}
+                                                    {% for hidden in form.hidden_fields %}
+                                                        {{ hidden }}
+                                                    {% endfor %}
+                        
+                                                    
+                                                        {% for err in vis.errors %}<span style="color:red">{{ err }}</span>{% endfor %}
+                        
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                                                {% with _("Name") as label_text %}
+                                                                {% render_field form.name class="form-control" placeholder=label_text required="required" %}
+                                                                {% endwith %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                                                {% with _("Email") as label_text %}
+                                                                {% render_field form.email class="form-control" placeholder=label_text required="required" %}
+                                                                {% endwith %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                                                                {% with _("Message") as label_text %}
+                                                                {% render_field form.message class="form-control" placeholder=label_text required="required" %}
+                                                                {% endwith %}
+                                                            </div>
+                                                        </div>
+                                                    
+                        
+                                                    <div class="form-group row">
+                                                        <div class="text-center">
+                                                            <button type="submit" class="form-control center-block">{% trans 'Send' %}</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                     </div>
                     <!-- END CONTACT FORM -->
 

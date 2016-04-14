@@ -1,5 +1,5 @@
 {% extends "main/account/profile.html" %}
-{% load i18n staticfiles formset_tags tags debug_tags %}
+{% load i18n staticfiles formset_tags tags crispy_forms_tags %}
 
 
 {% block extra_js %}
@@ -29,7 +29,9 @@
 {% block right %}
 	<form method="post" enctype="multipart/form-data">
 			    		{% csrf_token %}
+			    		{{ formset.non_form_errors }}
 	            		<h3 id="car-images">{% trans "Car pictures" %}</h3>
+	            		
 						<div id="formset" data-formset-prefix="{{ formset.prefix }}">
 						    {{ formset.management_form }}
 						    <div data-formset-body>
@@ -39,7 +41,7 @@
 										{{ form.id }}
 										<div id="image-div" class="col-sm-6">
 											
-									        {% if form.instance.image %} 
+									        {% if not formset.non_form_errors and form.instance.image %} 
 									        	<img width="100px" src="{{ form.instance.image.url }}">
 									        	<div class="hidden">{{ form.DELETE }}</div>
 									        	<button type="button" data-formset-delete-button>{% trans "Delete picture" %}</button>
@@ -80,5 +82,19 @@
             </button>
         </div>
     </form>
-{% endblock %}
     
+{% endblock %}
+
+{% block header %}
+	<div class="container text-center">
+	    <h3>{% trans "My car" %}</h3>
+	</div>
+{% endblock %}
+
+{% block extra_info %}
+		<div id="additional" class="text-center">
+			<h3>{% trans "Car details" %}</h3>
+		</div>
+	    {% crispy carform %}
+{% endblock %}
+

@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block extra_jquery %}
+		{{ block.super }}
 	    $('#confirm').on('show.bs.modal', function (event) {
 		  var id = $(event.relatedTarget).attr('id');
 		  var target = $(event.relatedTarget.parentElement.parentElement);
@@ -38,7 +39,11 @@
 {% endblock %}
 
 {% block section-id %}{% endblock %}
-
+	{% block header %}
+		<div class="container text-center">
+		    <h3>{% trans "My routes" %}</h3>
+		</div>
+	{% endblock %}
 {% block right %}
 		
     		{% crispy rideform %}

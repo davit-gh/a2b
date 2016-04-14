@@ -217,7 +217,8 @@ button, input {
  * Correct `select` style inheritance in Firefox 4+ and Opera.
  */
 button, select {
-  text-transform: none; }
+  text-transform: none; 
+  }
 
 /**
  * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
@@ -293,7 +294,7 @@ table {
 
 body {
   font-family: "Arian AMU", "Open Sans", Arial, Verdana, sans-serif;
-  color: #5D6D77; }
+  color: #555; }
 
 a {
   text-decoration: none; }
@@ -1840,7 +1841,7 @@ td, th {
 
 .a2b-background{
     padding: 1em 0;
-    background-color: rgba(38, 44, 63, 0.67)
+    background-color: rgba(38, 44, 63, 0.5)
 }
 
 div.pager {
@@ -1892,7 +1893,7 @@ div.pager span.active {
 
 .cardinality{
   display: block !important;
-  width: 155px;
+  width: 200 px;
 }
 
 img#driver-img{
@@ -1905,7 +1906,7 @@ img#driver-img{
 
 .alert{
   padding: 5px;
-  margin-bottom: 0;
+  margin-bottom: 20px;
   margin-top: 20px;
 }
 .alert-dismissable, .alert-dismissible {
@@ -1937,6 +1938,7 @@ padding-right: 35px;
 
 .advantage-list li {
     display: block;
+    color: #fff;
 }
 
 .advantage-list li {
@@ -1997,16 +1999,16 @@ ul.errorlist > li{
   display: inline;
 }
 
+ul.errorlist{
+  padding: 10px;
+}
+
 ul#nav{
     list-style-type: none;
 }
 
 label, .helptext{
-  color: #9C9494;
-}
-
-.controls{
-  display: inline-block;
+  color: #fff;
 }
 
 #submit_btn > button{
@@ -2027,12 +2029,24 @@ label, .helptext{
 }
 
 #templatemo_home {
-    background: #154558 url(../images/jumbo_background.jpg) fixed;
+    position: relative;
+}
+#templatemo_home:after {
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #154558 url(../images/newbg.jpg) fixed;
     /*background:  url(../images/.jpg) fixed;*/
     background-size: cover;
     min-height: 100vh;
     padding-bottom: 70px;
-    color: #fff;
+    color: #fff; 
+    width: 100%;
+    height: 100%;
+    opacity : 0.6;
+    z-index: -1;
 }
 #templatemo_home .templatemo_home_inner_wapper {
     width: 100%;
@@ -2064,7 +2078,7 @@ label, .helptext{
   margin-top: 50px;
 }
 
-#ride_table tr{
+#ride_table tr, .white{
   color: #fff;
 }
 
@@ -2073,7 +2087,7 @@ label, .helptext{
 }
 
 #id_ok{
-  margin: 6px 2px;
+  margin: 8px 0px;
 }
 
 .align_top{
@@ -2082,4 +2096,21 @@ label, .helptext{
 
 .align_bottom{
   vertical-align: bottom;
+}
+
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
+    cursor: auto !important;
+    background-color: #fff !important;
+}
+
+li.active{
+  background-color: #eee;
+}
+
+div.alert > ul > li{
+  list-style: none;
+}
+
+label[for="id_login-username"], label[for="id_login-password"]{
+  color: #555;
 }
