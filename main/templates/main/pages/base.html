@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load i18n staticfiles widget_tweaks tags get_form socialaccount %}
+{% load i18n staticfiles widget_tweaks tags get_form crispy_forms_tags socialaccount %}
 {% get_available_languages as LANGUAGES %}
 <html lang="en" class="ie_11_scroll">
 <head>
@@ -102,49 +102,28 @@
         <div class="modal-dialog modal-sm">
 
             <div class="modal-content">
-                <div class="modal-body">
-                        <form action="{% url "signup" %}" method="post">
+                <div class="modal-body"  id="modal-login">
+                    
+                        <div class="col-md-12">
+                            {% crispy loginform %}
+                        </div>
+                    <p class="text-center">{% trans "or" %}</p>
 
-                            {% csrf_token %}
-
-                                <div class="form-group">
-                                    {{ loginform.username.label_tag }}{{ loginform.username.errors }}
-                                    {% with _("Enter your email, please.") as uname %}
-                                    {% render_field loginform.username class="form-control" placeholder=uname %}
-                                    {% endwith %}
-                                </div>
-                                <div class="form-group">
-                                    {{ loginform.password.label_tag }}{{ loginform.password.errors }}
-                                    {% with _("Enter your password, please.") as pwd %}
-                                    {% render_field loginform.password class="form-control" placeholder=pwd %}
-                                    {% endwith %}
-                                </div>
-                            <input type="hidden" value="from_popup" name="from_popup" />
-                            <p class="text-center">
-                                <button class="btn btn-primary"
-                                        style="background-color: orange; border-color: orange; font-weight: bold">
-                                    <i class="fa fa-sign-in"></i> {% trans "Log in" %}</button>
-                            </p>
-
-                        </form>
-
+                    <div class="text-center">
+                        <a title="Facebook" class="btn btn-social-icon btn-lg" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998; display: inline-block; color: #fff"><i class="fa fa-facebook"></i></a>
                         
-                        <a title="Facebook" class="btn btn-primary btn-lg btn-block btn-social" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998;">Facebook</a>
-                        {% include "socialaccount/snippets/login_extra.html" %}
 
-                        <a class="btn btn-primary btn-lg btn-block btn-social" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F;">
-                            <i class="fa fa-odnoklassniki-square"></i> {% trans "Login with OK" %}
+                        <a class="btn btn-lg btn-social-icon" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F; display: inline-block; color: #fff">
+                            <i class="fa fa-odnoklassniki"></i>
                         </a>
-                        <a class="btn btn-primary btn-lg btn-block btn-social" title="VK" href="/accounts/vk/login/?process=login" style="background-color: #45668e; display: none">
-                            <i class="fa fa-vk"></i> {% trans "Login with VK" %}
-                        </a>
-
+                        
+                    </div>
                         <p class="text-center text-muted">{% trans "Not yet registered?" %}</p>
                         <p class="text-center text-muted">
                             <a href="{% url "signup" %}"><strong style="color:orange;">{% trans "Register now" %}</strong></a>
                             </strong>! {% trans "It is very easy and you can post your route details" %}</p>
                         <p class="text-muted"><a href="{% url 'account_reset_password' %}"><strong style="color:orange;">{% trans "Forgot password?" %}</strong></a></p>
-
+                   
                 </div>
             </div>
         </div>

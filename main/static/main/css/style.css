@@ -362,8 +362,9 @@ h1:hover > a, h2:hover > a, h3:hover > a {
 
 .unstyled {
   list-style-type: none;
-  padding: 0;
-  margin: 0; }
+  padding: 10px;
+  margin: 10px;
+  background-color: rgba(207, 177, 122, 0.72); }
 
 .light-text-dark-box p {
   color: #ECF0F1; }
@@ -2111,6 +2112,22 @@ div.alert > ul > li{
   list-style: none;
 }
 
-label[for="id_login-username"], label[for="id_login-password"]{
+#modal-login label[for="id_login-username"], #modal-login label[for="id_login-password"]{
   color: #555;
+}
+
+.sbmt-btn{
+  margin: 20px 0;
+}
+
+.btn-center{
+  margin-left: 70px;
+}
+
+ul#id_sex > li{
+  display: inline-block;
+}
+
+#user-form{
+  padding-top: 40px;
 }

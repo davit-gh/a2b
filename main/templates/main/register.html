@@ -16,7 +16,7 @@
             <div class="container">           
 
                 <div class="col-md-6">
-                    <div class="box">
+                    
                         <h1 class="white">{% trans "Sign up" %}</h1>
                         
                         <p class="white">{% trans "Have you already registered with us?" %}</p>
@@ -24,53 +24,30 @@
                         <p class="white">{% trans "You'll be able to post your trip details after registration" %}</p>
 
                         <hr>
-
-                        <form action="{% url "signup" %}" method="post" id="register-form">
-                            {% csrf_token %}
-                            {% errors_for signup_form %}
-                            {% for hidden in signup_form.hidden_fields %}
-                               {{hidden}}
-                            {% endfor %}
-                            {% for vis in signup_form.visible_fields %}
-                                {% if vis.name != "gender" %}
-                                    <div class="form-group">
-                                        {{ vis.label_tag }}{% for error in vis.errors %} <span id="error">{{ error }}</span>{% endfor %}
-                                        {% render_field vis class="form-control" %}
-                                    </div>
-                                {% else %}
-                                    {{ vis.label_tag }}{{ vis }}
-                                {% endif %}
-                            {% endfor %} 
-                            
-
-                            <div class="text-center">
-                                <button id="register_button" type="submit" class="btn btn-primary"
-                                        style="background-color: orange; border-color: orange; font-weight: bold">
-                                    <i class="fa fa-user-md"></i> {% trans "Sign up" %}</button>
-                            </div>
-                           
-                        </form>
+                    <div class="col-md-12 col-md-offset-3">
+                        {% crispy signup_form %}
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <div class="box">
+                    
                         <h1 class="white">{% trans "Log in" %}</h1>
                         
                         <p class="white">{% trans "Have you already registered with us?" %}</p>
                         <p class="white">{% trans "Enter here your email and password, please" %}</p>
 
                         <hr>
-
-                        {% crispy login_form %}
+                    <div class="col-md-7 col-md-offset-3">
+                        {% crispy loginform %}
                     </div>
-                    <h3 class="text-center">{% trans "or" %}</h3>
-                    <div class="text-center">
-                        <a title="Facebook" class="btn btn-primary btn-social" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998;">Facebook</a>
-                        <a class="btn btn-primary btn-social" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F;"><i class="fa fa-odnoklassniki-square"></i> {% trans "Login with OK" %}
-                        </a>
-                        <a class="btn btn-primary btn-social" title="VK" href="/accounts/vk/login/?process=login" style="background-color: #45668e; display: none">
-                            <i class="fa fa-vk"></i> {% trans "Login with VK" %}
+                    
+                    <div class="col-md-12 text-center">
+                        <h3>{% trans "or" %}</h3>
+                        <a title="Facebook" class="btn btn-social-icon btn-lg" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998; display: inline-block; color: #fff"><i class="fa fa-facebook"></i></a>
+                        
+
+                        <a class="btn btn-lg btn-social-icon" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F; display: inline-block; color: #fff">
+                            <i class="fa fa-odnoklassniki"></i>
                         </a>
                         <p class="text-muted"><a href="{% url 'account_reset_password' %}"><strong style="color:orange;">{% trans "Forgot password?" %}</strong></a></p>
                     </div>

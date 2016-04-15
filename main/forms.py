@@ -110,17 +110,15 @@ class LoginForm(forms.Form):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
-        self.helper.form_action = 'signup'
-        self.helper.form_class = 'form-horizontal'
+        self.helper.form_action = 'login'
+        self.helper.form_show_labels = False
         
         self.helper.layout = Layout(
-            PrependedText('username', '@', placeholder=ugettext("Email, please")),
-            PrependedText('password', '**', placeholder=ugettext("Password, please")),
-            Field('from_popup', type="hidden"),
+            PrependedText('username', mark_safe('<i class="fa fa-at"></i>'), placeholder=ugettext("Email, please")),
+            PrependedText('password', mark_safe('<i class="fa fa-lock"></i>'), placeholder=ugettext("Password, please")),
             Div(
                 Submit('submit', ugettext("Login")),
-                css_class='text-center',
-                css_id='login_btn'
+                css_class='text-center sbmt-btn',
             )
         )
 
@@ -197,15 +195,15 @@ class CarForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
         self.helper.form_action = 'cardetails'
+        self.helper.form_show_labels = False
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-xs-6'
         self.helper.field_class = 'col-xs-6'
         self.helper.layout = Layout(
-            Field('car_brand', required='required'),
-            Field('licence_plate', required='required'),
+            Field('car_brand', placeholder=_('Car brand')),
+            Field('licence_plate', placeholder=_('License plate')),
             Div(
                 Submit('submit', ugettext("Save")),
-                css_class='text-center',
+                css_class='btn-center',
             )
         )
 
@@ -220,7 +218,33 @@ class CarForm(forms.ModelForm):
             'car_brand': ugettext_lazy("Car brand"),
             'licence_plate': ugettext_lazy("Licence plate"),
         }
-    
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "email")
+        labels = {
+            'first_name': ugettext_lazy("First name"),
+            'last_name': ugettext_lazy("Last name"),
+            'email': ugettext_lazy("Email"),
+        }
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.form_action = 'profile'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.form_show_labels = False
+        self.helper.field_class = 'col-xs-6'
+        self.helper.layout = Layout(
+            PrependedText('first_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("First name")),
+            PrependedText('last_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("Last name")),
+            PrependedText('email', mark_safe('<i class="fa fa-at"></i>'), placeholder=ugettext("Email")),
+            Div(
+                Submit('submit', ugettext("Save"), css_class='btn-primary'),
+                css_class='btn-center',
+            )
+        )
 class ProfileForm(forms.ModelForm):
     
     """
@@ -249,20 +273,19 @@ class ProfileForm(forms.ModelForm):
         super(ProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
-        self.helper.form_action = 'profile'
+        self.helper.form_action = 'signup'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-xs-6'
+        self.helper.form_show_labels = False
         self.helper.field_class = 'col-xs-6'
         self.helper.layout = Layout(
-            'first_name',
-            'last_name',
-            'email',
-            'password1',
-            'password2',
+            PrependedText('first_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("First name")),
+            PrependedText('last_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("Last name")),
+            PrependedText('email', mark_safe('<i class="fa fa-at"></i>'), placeholder=ugettext("Email")),
+            PrependedText('password1', mark_safe('<i class="fa fa-lock"></i>'), placeholder=ugettext("Password")),
+            PrependedText('password2', mark_safe('<i class="fa fa-lock"></i>'), placeholder=ugettext("Password (again)")),
             Div(
                 Submit('submit', ugettext("Save"), css_class='btn-primary'),
-                css_class='text-center',
-                css_id='submit_btn'
+                css_class='btn-center',
             )
         )
         self._signup = self.instance.id is None
@@ -310,6 +333,7 @@ class ProfileForm(forms.ModelForm):
         """
         email = self.cleaned_data.get("email")
         qs = User.objects.exclude(id=self.instance.id).filter(email=email)
+        #import pdb;pdb.set_trace()
         if len(qs) == 0:
             return email
         raise forms.ValidationError(

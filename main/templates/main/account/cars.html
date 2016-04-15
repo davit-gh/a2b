@@ -27,67 +27,68 @@
 {% block section-id %}{% endblock %}
 
 {% block right %}
-	<form method="post" enctype="multipart/form-data">
-			    		{% csrf_token %}
-			    		{{ formset.non_form_errors }}
-	            		<h3 id="car-images">{% trans "Car pictures" %}</h3>
-	            		
-						<div id="formset" data-formset-prefix="{{ formset.prefix }}">
-						    {{ formset.management_form }}
-						    <div data-formset-body>
-						
-								{% for form in formset %}
-									<div data-formset-form>
-										{{ form.id }}
-										<div id="image-div" class="col-sm-6">
-											
-									        {% if not formset.non_form_errors and form.instance.image %} 
-									        	<img width="100px" src="{{ form.instance.image.url }}">
-									        	<div class="hidden">{{ form.DELETE }}</div>
-									        	<button type="button" data-formset-delete-button>{% trans "Delete picture" %}</button>
-									        {% endif %}
-											{{ form.image }}
-								        </div>
-								    </div>
-							    {% endfor %}
-							</div>
-							<script type="form-template" data-formset-empty-form>
-						        {% escapescript %}
-						            <div data-formset-form>
-						                {{ formset.empty_form.id }}
-										<div id="image-div" class="col-sm-6">
-									        {{ formset.empty_form.image }}
-								        </div>
-						            </div>
-						        {% endescapescript %}
-						    </script>
-
-						    <!-- This button will add a new form when clicked -->
-						    
-						    <div id="make-hand"><i class="fa fa-plus-circle fa-3x" data-formset-add></i></div>
-						    <script>jQuery(function($) {
-						        $("#formset").formset({
-						            animateForms: true,
-						            hasMaxFormsClass: true
-						        });
-						        
-						    });
-						    </script>
-
-						</div>
-	            
+	<div class="col-md-8 col-md-offset-2">
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ formset.non_form_errors }}
+			<h3 id="car-images">{% trans "Car pictures" %}</h3>
 			
-		<div class="col-sm-12 text-center">
-            <button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> {% trans "Save" %}
-            </button>
-        </div>
-    </form>
-    
+			<div id="formset" data-formset-prefix="{{ formset.prefix }}">
+			    {{ formset.management_form }}
+			    <div data-formset-body>
+			
+					{% for form in formset %}
+						<div data-formset-form>
+							{{ form.id }}
+							<div id="image-div" class="col-sm-6">
+								
+						        {% if not formset.non_form_errors and form.instance.image %} 
+						        	<img width="100px" src="{{ form.instance.image.url }}">
+						        	<div class="hidden">{{ form.DELETE }}</div>
+						        	<button type="button" data-formset-delete-button>{% trans "Delete picture" %}</button>
+						        {% endif %}
+								{{ form.image }}
+					        </div>
+					    </div>
+				    {% endfor %}
+				</div>
+				<script type="form-template" data-formset-empty-form>
+			        {% escapescript %}
+			            <div data-formset-form>
+			                {{ formset.empty_form.id }}
+							<div id="image-div" class="col-sm-6">
+						        {{ formset.empty_form.image }}
+					        </div>
+			            </div>
+			        {% endescapescript %}
+			    </script>
+
+			    <!-- This button will add a new form when clicked -->
+			    
+			    <div id="make-hand"><i class="fa fa-plus-circle fa-3x" data-formset-add></i></div>
+			    <script>jQuery(function($) {
+			        $("#formset").formset({
+			            animateForms: true,
+			            hasMaxFormsClass: true
+			        });
+			        
+			    });
+			    </script>
+
+			</div>
+		            
+				
+			<div class="col-sm-12 text-center">
+	            <button id="sbmt_btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> {% trans "Save" %}
+	            </button>
+	        </div>
+	    </form>
+    </div>
 {% endblock %}
 
 {% block header %}
-	<div class="container text-center">
-	    <h3>{% trans "My car" %}</h3>
+	<div class="text-center">
+	    <h2>{% trans "My car" %}</h2>
 	</div>
 {% endblock %}
 
@@ -95,6 +96,8 @@
 		<div id="additional" class="text-center">
 			<h3>{% trans "Car details" %}</h3>
 		</div>
-	    {% crispy carform %}
+		<div class="col-md-8 col-md-offset-4">
+	    	{% crispy carform %}
+	    </div>
 {% endblock %}
 

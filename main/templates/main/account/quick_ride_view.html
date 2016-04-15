@@ -1,8 +1,9 @@
 {% extends 'main/pages/base.html' %}
-{% load i18n %}
+{% load i18n staticfiles %}
 {% block content %}
 	<div class="col-md-8">
-		<table class="table table-condensed">
+		<a href="{% url 'index' %}"><i class="fa fa-chevron-left fa-2x">{% trans "Go back" %}</i></a>
+		<table class="table table-condensed white">
 			<tr>
 				<th rowspan="2">
 					{% if ride.driver.featured_image %}
@@ -55,7 +56,7 @@
 	</div>
 	<div class="col-md-4"></div>
 	<div class="col-md-4">	
-		<table class="table table-condensed">
+		<table class="table table-condensed white">
 			<tr>
 				<td class="align_bottom">
 					{% trans "First name" %}
@@ -119,7 +120,10 @@
 				</td>
 			</tr>
 		</table>
+		
 	</div>
+	
+	<a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{{ object.get_absolute_url }}"><img src="{% static 'main/images/facebook-share-button.png' %}" width="100px" /></a>
 {% endblock %}
 
 {% block sub1 %}{% endblock %}
