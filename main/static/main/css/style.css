@@ -1876,10 +1876,6 @@ div.pager span.active {
     margin: 0.5em 0.5em;
 }
 
-.message{
-  margin-top: 1.5em;
-}
-
 .alert-info{
     background-color: #FFDA92;
     border: none;
@@ -1908,8 +1904,7 @@ img#driver-img{
 
 .alert{
   padding: 5px;
-  margin-bottom: 0;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .alert-dismissable, .alert-dismissible {
 padding-right: 35px;
@@ -2171,4 +2166,19 @@ ul#id_sex > li{
 
 td.details > a{
   color: #58AAE3;
+}
+
+.red{
+  color: red;
+}
+
+ul.nav-pills > li > a:hover {
+  background-color: #99d6ff;
+}
+
+ul.nav-pills > li {
+    font-size: 14px;
+    background: linear-gradient(to left, rgba(206, 226, 233, 0.65), rgb(248, 248, 248) 100%);
+    border-width: 1px;
+    border-radius: 8px;
 }

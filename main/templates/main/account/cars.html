@@ -3,10 +3,12 @@
 
 
 {% block extra_js %}
-	 <script src="{% static 'js/jquery.formset.min.js' %}"></script>
+	{{ block.super }}
+	<script src="{% static 'js/jquery.formset.min.js' %}"></script>
 {% endblock %}
 
 {% block extra_jquery %}
+
 	$('#confirm').on('show.bs.modal', function (event) {
 	  var id = $(event.relatedTarget).attr('id');
 	  var modal = $(this);

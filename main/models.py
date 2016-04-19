@@ -29,7 +29,8 @@ class Country(models.Model):
 class Driver(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     mobile = models.IntegerField(blank=False, null=True)
-    mobile_prefix = models.CharField(default='055', max_length=3, blank=False)
+    #mobile_prefix = models.CharField(default='055', max_length=3, blank=False)
+    mobile_verified = models.BooleanField(default=False)
     featured_image = models.ImageField(upload_to="uploads/images/", null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     sex = models.CharField(max_length=10, default="Արական")

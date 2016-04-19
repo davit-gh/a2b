@@ -83,7 +83,8 @@ class RideAdminForm(ModelForm):
     def clean(self):
         if not hasattr(self.user, 'driver') or not self.user.driver.mobile:
             raise forms.ValidationError(mark_safe(_("First fill in all the fields in <a href=\"%s\">'My page'</a> section, please") % reverse('profile')))
-    
+        if not self.user.driver.mobile_verified:
+            raise forms.ValidationError(_("You'll be able to add rides after we verify your mobile, thank you."))
 class ContactusForm(ModelForm):
     
 	class Meta:
@@ -152,21 +153,24 @@ CHOICES=[('male', ugettext_lazy("Male")),
 
 BIRTH_YEAR_CHOICES = map(lambda x: (str(x),str(x)), range(1951,1999))
 MOBILE_PREFIXES = [('055', '055'), ('095', '095'), ('043', '043'), ('077', '077'), ('093', '093'), ('094', '094'), ('098', '098'), ('091', '091'), ('099', '099')]
-
+VERIFIED_CHOICES = [('yes', 'yes'), ('no', 'no')]
 class DriverForm(forms.ModelForm):
-    mobile_prefix  = forms.ChoiceField(choices=MOBILE_PREFIXES, required=False)
-    mobile         = forms.RegexField(label=ugettext_lazy("Mobile"), regex="^(\d+)$", error_messages={'invalid': 'Please enter your name'}, required=False)
+    mobile         = forms.RegexField(label=ugettext_lazy("Mobile"), regex="^(\d+)$", required=False)
     sex            = forms.ChoiceField(label=ugettext_lazy("Gender"), choices=CHOICES, widget=forms.RadioSelect(), initial=ugettext_lazy("Male"), required=False)
     featured_image = forms.ImageField(label=ugettext_lazy("My photo"), widget=AjaxClearableFileInput(), required=False)
     dob            = forms.ChoiceField(label=ugettext_lazy("Birth year"), choices=BIRTH_YEAR_CHOICES, initial='1988', required=False)
+    mobile_verified= forms.ChoiceField(choices=VERIFIED_CHOICES, required=False)
     image_path     = forms.CharField(max_length=255, widget=forms.HiddenInput(), required=False)
     delete_image   = forms.BooleanField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Driver
-        exclude = ['user', 'licence_plate' ]
+        exclude = ['user', 'licence_plate', 'mobile_verified']
 
    
+    def clean_mobile(self):
+        mobile = self.cleaned_data.get('mobile')
+        return mobile
 
     def clean_featured_image(self):
         pass
