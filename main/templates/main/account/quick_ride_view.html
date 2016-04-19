@@ -1,8 +1,17 @@
 {% extends 'main/pages/base.html' %}
 {% load i18n staticfiles %}
 {% block content %}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 	<div class="col-md-8">
-		<a href="{% url 'index' %}"><i class="fa fa-chevron-left fa-2x">{% trans "Go back" %}</i></a>
+		<a href="{% url 'index' %}"><i class="fa fa-chevron-left fa-2x" style="color: #58AAE3">{% trans "Go back" %}</i></a>
 		<table class="table table-condensed white">
 			<tr>
 				<th rowspan="2">
@@ -122,8 +131,8 @@
 		</table>
 		
 	</div>
-	
-	<a target="_blank" href="http://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{{ object.get_absolute_url }}"><img src="{% static 'main/images/facebook-share-button.png' %}" width="100px" /></a>
+	<div class="fb-share-button" data-href="{{ request.build_absolute_uri }}{{ object.get_absolute_url }}" data-layout="button_count" data-mobile-iframe="false"></div>
+
 {% endblock %}
 
 {% block sub1 %}{% endblock %}

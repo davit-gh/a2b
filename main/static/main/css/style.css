@@ -53,7 +53,8 @@ html {
  * Remove default margin.
  */
 body {
-  margin: 0; }
+  margin: 0; 
+  height: 100%}
 
 /* ==========================================================================
    Links
@@ -299,7 +300,7 @@ body {
 a {
   text-decoration: none; }
 a, a:visited {
-  color: #3498DB; }
+  color: #285574; }
 a:hover {
   text-decoration: underline; }
 a:active {
@@ -362,9 +363,9 @@ h1:hover > a, h2:hover > a, h3:hover > a {
 
 .unstyled {
   list-style-type: none;
-  padding: 10px;
-  margin: 10px;
-  background-color: rgba(207, 177, 122, 0.72); }
+  margin: 20px 0;
+  background-color: #fff;
+  border-radius: 10px }
 
 .light-text-dark-box p {
   color: #ECF0F1; }
@@ -1841,7 +1842,7 @@ td, th {
 }
 
 .a2b-background{
-    padding: 1em 0;
+    padding: 5em 0;
     background-color: rgba(38, 44, 63, 0.5)
 }
 
@@ -1876,7 +1877,7 @@ div.pager span.active {
 }
 
 .message{
-  margin: 1.5em 0;
+  margin-top: 1.5em;
 }
 
 .alert-info{
@@ -1907,7 +1908,7 @@ img#driver-img{
 
 .alert{
   padding: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   margin-top: 20px;
 }
 .alert-dismissable, .alert-dismissible {
@@ -2032,6 +2033,7 @@ label, .helptext{
 #templatemo_home {
     position: relative;
 }
+
 #templatemo_home:after {
     content : "";
     display: block;
@@ -2046,13 +2048,13 @@ label, .helptext{
     color: #fff; 
     width: 100%;
     height: 100%;
-    opacity : 0.6;
     z-index: -1;
 }
+
 #templatemo_home .templatemo_home_inner_wapper {
     width: 100%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 10px auto 0;
 }
 
 .btn{
@@ -2130,4 +2132,43 @@ ul#id_sex > li{
 
 #user-form{
   padding-top: 40px;
+}
+
+#sbm{
+  margin-left: 180px;
+}
+
+#or_h3{
+  margin-top: -12px
+}
+
+.lang-form{
+  margin: 15px 5px;
+}
+
+.footer {
+
+    height: 40px;
+    background-color: #f5f5f5;
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -40px;
+}
+
+@media (max-width: 767px) {
+.footer {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+}
+
+td.details > a{
+  color: #58AAE3;
 }

@@ -31,291 +31,291 @@
 </head>
 
 <body>
-            <nav class="navbar navbar-default navbar-fixed-top">
-              <div class="container-fluid">
-                <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </button>  
-                  <a class="pull-left" href="{% url 'home' %}">
-                    <img src="{% static 'main/images/A2BLogo_Transparent.png' %}" style="height: 50px; margin-right: 20px" class="img-responsive">
-                  </a>
-                </div>
-                {% url 'about' as about_url %}
-                {% url 'contact' as contact_url %}
-              <div id="navbar" class="navbar-collapse collapse">
-                  <ul class="nav navbar-nav">
-                    <li {% if request.get_full_path == about_url %}class="active"{% endif %}><a href="{{ about_url }}">{% trans "About us" %}</a></li>
-                    <li {% if request.get_full_path == contact_url %}class="active"{% endif %}><a href="{{ contact_url }}">{% trans "Contact us" %}</a></li>
-                  </ul>
-                  <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        {% block login %}
-                            {% if not request.user.is_authenticated %}
-                                <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
-                                        data-target="#login-modal"
+    <div id="wrap">
+        <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>  
+              <a class="pull-left" href="{% url 'home' %}">
+                <img src="{% static 'main/images/A2BLogo_Transparent.png' %}" style="height: 50px; margin-right: 20px" class="img-responsive">
+              </a>
+            </div>
+            {% url 'about' as about_url %}
+            {% url 'contact' as contact_url %}
+          <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li {% if request.get_full_path == about_url %}class="active"{% endif %}><a href="{{ about_url }}">{% trans "About us" %}</a></li>
+                <li {% if request.get_full_path == contact_url %}class="active"{% endif %}><a href="{{ contact_url }}">{% trans "Contact us" %}</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+                    {% block login %}
+                        {% if not request.user.is_authenticated %}
+                            <button type="button" class="show-menu btn btn-default navbar-btn login" data-toggle="modal"
+                                    data-target="#login-modal"
+                                    style="top: 0px;">
+                                <span>{% trans "Login/Signup" %}</span>
+                            </button>
+                        {% else %}
+                            <div class="dropdown pull-right" style="right: 50px;">
+                                <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
                                         style="top: 0px;">
-                                    <span>{% trans "Login/Signup" %}</span>
+                                <span>{% trans "Hello" %} {{ request.user.first_name }}!</span>
                                 </button>
-                            {% else %}
-                                <div class="dropdown pull-right" style="right: 50px;">
-                                    <button type="button" class="btn btn-default navbar-btn login  dropdown-toggle" data-toggle="dropdown"
-                                            style="top: 0px;">
-                                    <span>{% trans "Hello" %} {{ request.user.first_name }}!</span>
-                                    </button>
 
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> {% trans "Personal page" %}</a></li>
-                                        <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> {% trans "Log out" %}</a></li>
-                                    </ul>
-                                </div>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url "profile" %}"><i class="fa fa-user"></i> {% trans "Personal page" %}</a></li>
+                                    <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> {% trans "Log out" %}</a></li>
+                                </ul>
+                            </div>
 
-                            {% endif %}
-                        {% endblock %}
+                        {% endif %}
+                    {% endblock %}
 
-                    </li>
-                    <li>
-                        <form id="lang_form" class="form form-inline" action="/i18n/setlang/" method="post">
-                            {% csrf_token %}
-                            <input name="language" type="hidden" value="en" />
-                                <select id="lang_ddown" class="form-control" name="language"> 
-                                    {% for lang in LANGUAGES %}
-                                        <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-                                    {% endfor %}
-                                    <!--
-                                        <option selected="selected" style="background-image:url(static/img/arm-icon.png);">{% trans "Arm" %}</option>
-                                        <option style="background-image:url(static/img/us-icon.png);">{% trans "Eng" %}</option>
-                                    -->
-                                </select>
-                                <button type="submit" class="btn btn-default">{% trans "Go" %}</button>
-                        </form>
-                    </li>
-                  </ul>
-                </div><!--/.nav-collapse -->
-              </div>
-            </nav>
+                </li>
+                <li>
+                    <form class="lang-form" action="/i18n/setlang/" method="post">
+                        {% csrf_token %}
+                        <input name="language" type="hidden" value="en" />
+                        <input type="image" src="{% static 'img/us-icon.png' %}" />
+                    </form>
+                </li>
+                <li>
+                    <form class="lang-form" action="/i18n/setlang/" method="post">
+                        {% csrf_token %}
+                        <input name="language" type="hidden" value="io" />
+                        <input type="image" src="{% static 'img/arm-icon.png' %}" />
+                    </form>
+                </li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
 
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
 
-            <div class="modal-content">
-                <div class="modal-body"  id="modal-login">
-                    
-                        <div class="col-md-12">
-                            {% crispy loginform %}
+                <div class="modal-content">
+                    <div class="modal-body"  id="modal-login">
+                        
+                            <div class="col-md-12">
+                                {% crispy loginform %}
+                            </div>
+                        <h3 class="text-center" style="color: #555">{% trans "or" %}</h3>
+                        {% include "socialaccount/snippets/login_extra.html" %}
+                        <div class="text-center">
+                            <a title="Facebook" class="btn btn-social-icon btn-lg" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998; display: inline-block; color: #fff"><i class="fa fa-facebook"></i></a>
+                            
+                            
+                            <a class="btn btn-lg btn-social-icon" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F; display: inline-block; color: #fff">
+                                <i class="fa fa-odnoklassniki"></i>
+                            </a>
+                            
                         </div>
-                    <p class="text-center">{% trans "or" %}</p>
-
-                    <div class="text-center">
-                        <a title="Facebook" class="btn btn-social-icon btn-lg" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998; display: inline-block; color: #fff"><i class="fa fa-facebook"></i></a>
-                        
-
-                        <a class="btn btn-lg btn-social-icon" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F; display: inline-block; color: #fff">
-                            <i class="fa fa-odnoklassniki"></i>
-                        </a>
-                        
+                            <p class="text-center text-muted">{% trans "Not yet registered?" %}</p>
+                            <p class="text-center text-muted">
+                                <a href="{% url "signup" %}"><strong style="color:orange;">{% trans "Register now" %}</strong></a>
+                                </strong>! {% trans "It is very easy and you can post your route details" %}</p>
+                            <p class="text-center"><a href="{% url 'account_reset_password' %}"><strong style="color:orange;">{% trans "Forgot password?" %}</strong></a></p>
+                       
                     </div>
-                        <p class="text-center text-muted">{% trans "Not yet registered?" %}</p>
-                        <p class="text-center text-muted">
-                            <a href="{% url "signup" %}"><strong style="color:orange;">{% trans "Register now" %}</strong></a>
-                            </strong>! {% trans "It is very easy and you can post your route details" %}</p>
-                        <p class="text-muted"><a href="{% url 'account_reset_password' %}"><strong style="color:orange;">{% trans "Forgot password?" %}</strong></a></p>
-                   
                 </div>
             </div>
         </div>
-    </div>
 <!-- Home -->
 
 
 
-<section {% block section-id %}id="templatemo_home"{% endblock %}>
-    <div class="container a2b-background">
-    {% block message %}
-        {% if messages %}
-            <div class="container message">
-                {% for message in messages %}
-                    <div id="alert-div" class="alert alert-dismissable alert-info" data-alert="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+        <section {% block section-id %}id="templatemo_home"{% endblock %}>
+            <div class="container a2b-background">
+            {% block message %}
+                {% if messages %}
+                    <div class="container message">
+                        {% for message in messages %}
+                            <div id="alert-div" class="alert alert-dismissable alert-info" data-alert="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endblock %}
+                {% endif %}
+            {% endblock %}
 
-    
-    
-    {% block sub1 %}            
-        <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
-            <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold; margin-top: 40px; color: #fff">
-                {% trans "Exclusive deal for drivers: route listing is free till May 1st" %}
-            </span>
-
-        </div>
             
             
-    {% endblock sub1 %}
-    
-        <div class="templatemo_home_inner_wapper">
-            <h1 class="text-center" style="margin: 0.6em 0;">
-                <span style="color:orange">A</span>-ից
-                <span style="color:orange">B</span></h1>
-        </div>
-
-    {% block sub2 %}
-        <div>
-            <h2 class="text-center">{% trans "Are you heading to another destination" %} <span style="color:orange;font-weight: bold">?</span></h2>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="{% static 'main/images/driver.png' %}">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">{% trans "For Drivers" %}</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol>
-                                <li>{% trans "List your route" %}</li>
-                                <li>{% trans "Take a passenger" %}</li>
-                                <li>{% trans "Earn money" %}</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <img class="advantage-graphic" src="{% static 'main/images/passenger.png' %}">
-                    </div>
-                    <div class="col-sm-12 text-center">
-                        <span class="advantage-header">{% trans "For Passengers" %}</span>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="advantage-list">
-                            <ol class="advantage-list">
-                                <li>{% trans "Make an appointment" %}</li>
-                                <li>{% trans "Travel cheaper" %}</li>
-                                <li>{% trans "Make friends" %}</li>
-                            </ol>
-                        </div>
-                    </div>
-
+            {% block sub1 %}            
+                <div class="container-fluid row" style="padding-left:20%; padding-right: 20%;">
+                    <span style="border: 2px solid orange; display: block; text-align: center; padding: 5px 5px; font-weight: bold; color: #fff">
+                        {% trans "Exclusive deal for drivers: route listing is free till June 30th" %}
+                    </span>
 
                 </div>
-            </div>
-        </div>
-    {% endblock sub2 %}
+                    
+                    
+            {% endblock sub1 %}
+            
+                <div class="templatemo_home_inner_wapper">
+                    <h1 class="text-center" style="margin: 0; color: #fff">
+                        <span style="color:orange">A</span>-ից
+                        <span style="color:orange">B</span></h1>
+                </div>
+
+            {% block sub2 %}
+                <div>
+                    <h2 class="text-center">{% trans "Are you heading to another destination" %} <span style="color:orange;font-weight: bold">?</span></h2>
+                </div>
 
 
-{% block content %}
-            <div class="text-center hide-sm">
-                <div id="center-block searchbar">
-                {% errors_for form %}
-                    <div class="searchbar">
-                        <form id="searchbar-form" action="{% url 'index' %}" method="post">                            
-                            <div>
-                                {% csrf_token %}
-                                {% for hidden in form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-
-                                <div class="searchbar__input-wrapper">
-
-                                    {% for field in form.visible_fields %}
-                                        {{ field.errors }}
-                                        <label style="vertical-align: top">
-                                            {% render_field field class="form-control" %}
-                                        </label>
-                                    {% endfor %}
-                                    <button class="btn btn-primary"
-                                            style="background-color: orange; border-color: orange; font-weight: bold">{% trans "Search" %}
-                                    </button>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <img class="advantage-graphic" style="height: 70px; margin-top: 30px;" src="{% static 'main/images/driver.png' %}">
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <span class="advantage-header">{% trans "For Drivers" %}</span>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="advantage-list">
+                                    <ol>
+                                        <li>{% trans "List your route" %}</li>
+                                        <li>{% trans "Take a passenger" %}</li>
+                                        <li>{% trans "Earn money" %}</li>
+                                    </ol>
                                 </div>
-                        </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <img class="advantage-graphic" src="{% static 'main/images/passenger.png' %}">
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <span class="advantage-header">{% trans "For Passengers" %}</span>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="advantage-list">
+                                    <ol class="advantage-list">
+                                        <li>{% trans "Make an appointment" %}</li>
+                                        <li>{% trans "Travel cheaper" %}</li>
+                                        <li>{% trans "Make friends" %}</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            {% endblock sub2 %}
+
+
+        {% block content %}
+                    <div class="text-center hide-sm">
+                        <div id="center-block searchbar">
+                        {% errors_for form %}
+                            <div class="searchbar">
+                                <form id="searchbar-form" action="{% url 'index' %}" method="post">                            
+                                    <div>
+                                        {% csrf_token %}
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+
+                                        <div class="searchbar__input-wrapper">
+
+                                            {% for field in form.visible_fields %}
+                                                {{ field.errors }}
+                                                <label style="vertical-align: top">
+                                                    {% render_field field class="form-control" %}
+                                                </label>
+                                            {% endfor %}
+                                            <button class="btn btn-primary"
+                                                    style="background-color: orange; border-color: orange; font-weight: bold">{% trans "Search" %}
+                                            </button>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+            
+        {% endblock %}
+
+
+        </div>
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <span>Copyright &copy; 2016 <a href="#" target="_parent">a2b</a></span>
+                        <span id="social_span">
+                            <a href="https://www.facebook.com/a2bRide" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+                            <a href="https://twitter.com/a2b_Ride" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+                        </span>
+                        
                     </div>
                 </div>
             </div>
-
-
-    
-{% endblock %}
-
-
-</div>
-</section>
-
-
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 text-center">
-                <span>Copyright &copy; 2016 <a href="#" target="_parent">a2b</a></span>
-                <span id="social_span">
-                    <a href="https://www.facebook.com/a2bRide" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
-                    <a href="https://twitter.com/a2b_Ride" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
-                </span>
-                
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- modal javascript -->
-<script>
-    $(function () {
-        $('#myModal').modal({
-            keyboard: true,
-            backdrop: "static",
-            show: false
-        }).on('show.bs.modal', function (event) { //subscribe to show method
-            var getIdFromRow = $(event.relatedTarget).closest('img').data('id'); //get the id from tr
-            //make your ajax call populate items or what even you need
-            $.post("{% url 'get_car_images' %}", {
-                id: getIdFromRow,
-                csrfmiddlewaretoken: '{{ csrf_token  }}'
-            }, function (data) {
-                var images = data.images,
-                        html = '';
-                for (var i in images) {
-                    html += '<img src="' + images[i] + '" width="300px"/>';
-                }
-                $('h4.modal-title').html(data.name + ' - ' + data.mobile);
-                $('.driver-images').html(html);
+        </footer>
+        <!-- modal javascript -->
+        <script>
+            $(function () {
+                $('#myModal').modal({
+                    keyboard: true,
+                    backdrop: "static",
+                    show: false
+                }).on('show.bs.modal', function (event) { //subscribe to show method
+                    var getIdFromRow = $(event.relatedTarget).closest('img').data('id'); //get the id from tr
+                    //make your ajax call populate items or what even you need
+                    $.post("{% url 'get_car_images' %}", {
+                        id: getIdFromRow,
+                        csrfmiddlewaretoken: '{{ csrf_token  }}'
+                    }, function (data) {
+                        var images = data.images,
+                                html = '';
+                        for (var i in images) {
+                            html += '<img src="' + images[i] + '" width="300px"/>';
+                        }
+                        $('h4.modal-title').html(data.name + ' - ' + data.mobile);
+                        $('.driver-images').html(html);
+                    });
+                });
+                {% block extra_jquery %}{% endblock %}
             });
-        });
-        {% block extra_jquery %}{% endblock %}
-    });
-</script>
+        </script>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-dialog-wide">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-wide">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <div class="driver-images"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="driver-images"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                    </div>
+                </div>
+
             </div>
         </div>
-
     </div>
-</div>
 </body>
 </html>

@@ -40,12 +40,12 @@
                     <div class="col-md-7 col-md-offset-3">
                         {% crispy loginform %}
                     </div>
-                    
-                    <div class="col-md-12 text-center">
-                        <h3>{% trans "or" %}</h3>
+                    {% include "socialaccount/snippets/login_extra.html" %}
+                    <div class="col-md-9 col-md-offset-2 text-center">
+                        <h3 id="or_h3">{% trans "or" %}</h3>
                         <a title="Facebook" class="btn btn-social-icon btn-lg" href="javascript:allauth.facebook.login('', 'authenticate', 'login')" style="background-color: #3b5998; display: inline-block; color: #fff"><i class="fa fa-facebook"></i></a>
                         
-
+                        
                         <a class="btn btn-lg btn-social-icon" title="OK" id="id_ok" href="/accounts/odnoklassniki/login/?process=login" style="background-color: #F6881F; display: inline-block; color: #fff">
                             <i class="fa fa-odnoklassniki"></i>
                         </a>

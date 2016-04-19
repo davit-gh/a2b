@@ -32,7 +32,7 @@
 	{% endblock %}
 	<div class="col-md-12">          
 	    <div class="col-md-2"> 
-	    	
+
 	        <form method="post" id="img_upload_form" action="" enctype="multipart/form-data">
 				
 					{{ driverform.featured_image.errors }}
@@ -45,7 +45,7 @@
             {% url 'rides' as rides_url %}
             {% url 'cars' as cars_url %}
             {% url 'account_change_password' as p_url %}
-			<ul class="unstyled">
+			<ul class="nav nav-pills nav-stacked unstyled">
 	            <li {% if request.get_full_path == profile_url %}class="active"{% endif %}><a href="{{ profile_url }}"> {% trans "My Page" %} </a></li>
 	            <li {% if request.get_full_path == cars_url %}class="active"{% endif %}><a href="{{ cars_url }}"> {% trans "My Car" %} </a></li>
 	            <li><a href=""> {% trans "My balance" %} </a></li>
@@ -56,62 +56,61 @@
 	    </div>
 	    <div class="col-md-10"> 
 	    {% block right %}
-	    	<div class="col-md-8 col-md-offset-3" id="user-form">
+	    	<div class="col-md-8 col-md-offset-4" id="user-form">
 				{% crispy userform %}
 			</div>
-		{% endblock %}
-	    </div>
-	
-		<div class="col-md-12 center-block">
 	    	{% block extra_info %}
 					
-					<div id="additional" class="text-center">
+					<div id="additional" class="col-md-12 text-center">
 						<h3>{% trans "Additional details" %}</h3>
 					</div>
-					<div class="col-md-6 col-md-offset-2">
-						<form method="post" class="form-horizontal" action="{% url 'info' %}">
+					<div class="col-md-4 col-md-offset-4">
+						<form method="post" class="form form-horizontal" action="{% url 'info' %}">
 							{% csrf_token %}
 							
 							
 									<div class="form-group">
-										<label for="{{ driverform.mobile.id_for_label }}" class="label-align col-xs-6">{{ driverform.mobile.label }}</label>
 										{{ driverform.mobile.errors }}
-										<div class="controls col-xs-6">
-											<div class="form-group row">
-													<div class="col-md-5">
-													{% render_field driverform.mobile_prefix class="form-control fix_width" %}
+										
+											<div class="controls" style="display: inline-block">
+													<div class="col-md-5" style="display: inline-block">
+													{% render_field driverform.mobile_prefix class="form-control" %}
 													</div>
-													<div class="col-md-7">
+													<div class="col-md-7" style="display: inline-block">
+													{% with _('Mobile number') as mob %}
 													{% with _('Please enter 6 digits') as constraint %}
-													{% render_field driverform.mobile class="form-control fix_width" title=constraint pattern="^(\d{6})$" %}
+													{% render_field driverform.mobile class="form-control" title=constraint pattern="^(\d{6})$" placeholder=mob %}
+													{% endwith %}
 													{% endwith %}
 													</div>
 											</div>
-										</div>
+										
 									</div>
 									<div class="form-group">
-										<label for="{{ driverform.sex.id_for_label }}" class="label-align col-xs-6">{{ driverform.sex.label }}</label>
 										{{ driverform.sex.errors }}
-										<div class="controls col-xs-6">
 											{% render_field driverform.sex %}
-										</div>
 									</div>
 									<div class="form-group">
-										<label for="{{ driverform.dob.id_for_label }}" class="label-align col-xs-6">{{ driverform.dob.label }}</label>
+										
 										{{ driverform.dob.errors }}
-										<div class="controls col-xs-6">
-											{% render_field driverform.dob class="form-control fix_width" %}
-										</div>
+											<div class="col-md-12">
+											{% with _('Birth year') as by %}
+												{% render_field driverform.dob class="form-control fix_width" placeholder=by %}
+											{% endwith %}
+											</div>
 									</div>
 
-							<div id="submit_btn" class="text-center">
+							<div class="col-md-6 col-md-offset-4">
 				            	<button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
 					        </div>
 					    </form>
 					</div>
-				
 			{% endblock %}	    
+
+		{% endblock %}
 	    </div>
+	
+		
 	    
 		
 	</div>

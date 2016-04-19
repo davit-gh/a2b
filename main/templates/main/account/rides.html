@@ -25,14 +25,7 @@
 		  })
 		  
 		});
-		$('#quickview').on('show.bs.modal', function (event) {
-		  var id = $(event.relatedTarget).attr('id');
-		  var target = $(event.relatedTarget.parentElement.parentElement);
-		  var modal = $(this);
-		  var body = modal.find('.modal-body');
-		  $(body).html('<table>' + target.html() + '</table><br/><a href="/ride/'+ id +'">{% trans "View the route" %}</a>');
-		  
-		});
+		
 {% endblock %}
 
 {% block extra_css %}
@@ -40,16 +33,16 @@
 
 {% block section-id %}{% endblock %}
 	{% block header %}
-		<div class="container text-center">
+		<div class="col-md-12 text-center">
 		    <h2>{% trans "My routes" %}</h2>
 		</div>
 	{% endblock %}
 {% block right %}
-		
+		<div class="col-md-8 col-md-offset-3">
     		{% crispy rideform %}
-    	
+    	</div>
 		
-    <div class="container-fluid">
+    <div class="col-md-12">
     	{% render_table table %}
     </div>
     <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

@@ -12,7 +12,7 @@ from datetimewidget.widgets import DateTimeWidget, TimeWidget, DateWidget
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.utils.translation import ugettext, ugettext_lazy
+from django.utils.translation import ugettext_lazy
 from django.contrib.auth import authenticate
 from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist
@@ -56,25 +56,24 @@ class RideAdminForm(ModelForm):
         self.helper.form_method = 'POST'
         self.helper.form_action = 'rides'
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-xs-6'
+        self.helper.form_show_labels = False
         self.helper.field_class = 'col-xs-6'
         self.helper.layout = Layout(
-            Field('fromwhere', required='required'),
-            Field('towhere', required='required'),
-            Field('leavedate', required='required'),
-            Field('starttime', required='required'),
-            Field('price', required='required'),
-            'passenger_number',
+            Field('fromwhere', placeholder=_('From where')),
+            Field('towhere', placeholder=_('To where')),
+            Field('leavedate', placeholder=_('Leave date')),
+            Field('starttime', placeholder=_('Start time')),
+            Field('price', placeholder=_('Price')),
+            Field('passenger_number', placeholder=_('Free seats')),
             Div(
-                Submit('submit', ugettext("Save"), css_class='btn btn-primary'),
-                css_class='text-center',
-                css_id='submit_btn'
+                Submit('submit', _("Save"), css_class='btn btn-primary'),
+                css_class='btn-center sbmt-btn',
             )
         )
     def clean_starttime(self):
         st = self.cleaned_data['starttime']
         if not st:
-            raise forms.ValidationError(ugettext("Enter the time, please"))
+            raise forms.ValidationError(_("Enter the time, please"))
         return st
 
     def clean_leavedate(self):
@@ -114,10 +113,10 @@ class LoginForm(forms.Form):
         self.helper.form_show_labels = False
         
         self.helper.layout = Layout(
-            PrependedText('username', mark_safe('<i class="fa fa-at"></i>'), placeholder=ugettext("Email, please")),
-            PrependedText('password', mark_safe('<i class="fa fa-lock"></i>'), placeholder=ugettext("Password, please")),
+            PrependedText('username', mark_safe('<i class="fa fa-at"></i>'), placeholder=_("Email, please")),
+            PrependedText('password', mark_safe('<i class="fa fa-lock"></i>'), placeholder=_("Password, please")),
             Div(
-                Submit('submit', ugettext("Login")),
+                Submit('submit', _("Login")),
                 css_class='text-center sbmt-btn',
             )
         )
@@ -202,7 +201,7 @@ class CarForm(forms.ModelForm):
             Field('car_brand', placeholder=_('Car brand')),
             Field('licence_plate', placeholder=_('License plate')),
             Div(
-                Submit('submit', ugettext("Save")),
+                Submit('submit', _("Save")),
                 css_class='btn-center',
             )
         )
@@ -237,12 +236,12 @@ class UserForm(forms.ModelForm):
         self.helper.form_show_labels = False
         self.helper.field_class = 'col-xs-6'
         self.helper.layout = Layout(
-            PrependedText('first_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("First name")),
-            PrependedText('last_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("Last name")),
-            PrependedText('email', mark_safe('<i class="fa fa-at"></i>'), placeholder=ugettext("Email")),
+            PrependedText('first_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=_("First name")),
+            PrependedText('last_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=_("Last name")),
+            PrependedText('email', mark_safe('<i class="fa fa-at"></i>'), placeholder=_("Email")),
             Div(
-                Submit('submit', ugettext("Save"), css_class='btn-primary'),
-                css_class='btn-center',
+                Submit('submit', _("Save"), css_class='btn-primary'),
+                css_class='col-md-6 text-center',
             )
         )
 class ProfileForm(forms.ModelForm):
@@ -252,9 +251,9 @@ class ProfileForm(forms.ModelForm):
     If a Profile model is defined via ``AUTH_PROFILE_MODULE``, its
     fields are injected into the form.
     """
-    #mobile          = forms.CharField(label=u"Բջջային",)
-    #featured_image  = forms.ImageField(label=u"Գլխավոր նկար", required=True, widget=forms.FileInput)
-    #gender          = forms.ChoiceField(label=u"Սեռ", choices=CHOICES, widget=forms.RadioSelect(), initial='Արական')
+    first_name = forms.CharField(label=ugettext_lazy("First name"), required=True)
+    last_name = forms.CharField(label=ugettext_lazy("Last name"), required=True)
+    email = forms.CharField(label=ugettext_lazy("Email"), required=True)
     password1       = forms.CharField(label=ugettext_lazy("Password"),
                                 widget=forms.PasswordInput(render_value=False), required=False)
     password2       = forms.CharField(label=ugettext_lazy("Password (again)"),
@@ -262,11 +261,6 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email")
-        labels = {
-            'first_name': ugettext_lazy("First name"),
-            'last_name': ugettext_lazy("Last name"),
-            'email': ugettext_lazy("Email"),
-        }
         
 
     def __init__(self, *args, **kwargs):
@@ -278,13 +272,13 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_show_labels = False
         self.helper.field_class = 'col-xs-6'
         self.helper.layout = Layout(
-            PrependedText('first_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("First name")),
-            PrependedText('last_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=ugettext("Last name")),
-            PrependedText('email', mark_safe('<i class="fa fa-at"></i>'), placeholder=ugettext("Email")),
-            PrependedText('password1', mark_safe('<i class="fa fa-lock"></i>'), placeholder=ugettext("Password")),
-            PrependedText('password2', mark_safe('<i class="fa fa-lock"></i>'), placeholder=ugettext("Password (again)")),
+            PrependedText('first_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=_("First name")),
+            PrependedText('last_name', mark_safe('<i class="fa fa-user"></i>'), placeholder=_("Last name")),
+            PrependedText('email', mark_safe('<i class="fa fa-at"></i>'), placeholder=_("Email")),
+            PrependedText('password1', mark_safe('<i class="fa fa-lock"></i>'), placeholder=_("Password")),
+            PrependedText('password2', mark_safe('<i class="fa fa-lock"></i>'), placeholder=_("Password (again)")),
             Div(
-                Submit('submit', ugettext("Save"), css_class='btn-primary'),
+                Submit('submit', _("Save"), css_class='btn-primary'),
                 css_class='btn-center',
             )
         )
@@ -318,10 +312,10 @@ class ProfileForm(forms.ModelForm):
         if password1:
             errors = []
             if password1 != password2:
-                errors.append(ugettext("Passwords are not the same"))
+                errors.append(_("Passwords are not the same"))
             if len(password1) < settings.ACCOUNTS_MIN_PASSWORD_LENGTH:
                 errors.append(
-                        ugettext("Password must contain at least %s symbols") %
+                        _("Password must contain at least %s symbols") %
                         settings.ACCOUNTS_MIN_PASSWORD_LENGTH)
             if errors:
                 self._errors["password1"] = self.error_class(errors)
@@ -337,7 +331,7 @@ class ProfileForm(forms.ModelForm):
         if len(qs) == 0:
             return email
         raise forms.ValidationError(
-                                ugettext("This email is already registered."))
+                                _("This email is already registered."))
 
     def randomword(self, length):
         return ''.join(random.choice(string.lowercase) for i in range(length))
